@@ -14,8 +14,11 @@ struct WateryWatWatApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            MainView(
+                viewModel: MainViewModel(
+                    service: HydrationService(context: persistenceController.container.viewContext)
+                )
+            )
         }
     }
 }
