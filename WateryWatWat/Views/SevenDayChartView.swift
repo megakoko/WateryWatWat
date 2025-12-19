@@ -3,6 +3,7 @@ import Charts
 
 struct SevenDayChartView: View {
     let dailyTotals: [Date: Int64]
+    let dailyGoal: Int64
 
     private let calendar = Calendar.current
 
@@ -14,7 +15,12 @@ struct SevenDayChartView: View {
                     y: .value("Volume", dailyTotals[calendar.startOfDay(for: date)] ?? 0)
                 )
                 .foregroundStyle(Color.aquaBlue)
+                .cornerRadius(8)
             }
+
+            RuleMark(y: .value("Goal", dailyGoal))
+                .lineStyle(StrokeStyle(lineWidth: 2, dash: [10, 5]))
+                .foregroundStyle(Color.aquaBlue)
         }
         .chartXAxis {
             AxisMarks(values: .stride(by: .day)) { value in
@@ -50,6 +56,15 @@ struct SevenDayChartView: View {
         today: 1750
     ]
 
-    return SevenDayChartView(dailyTotals: dailyTotals)
+    return ScrollView {
+        VStack(spacing: 20) {
+            SevenDayChartView(dailyTotals: dailyTotals, dailyGoal: 1000)
+            SevenDayChartView(dailyTotals: dailyTotals, dailyGoal: 2000)
+            SevenDayChartView(dailyTotals: dailyTotals, dailyGoal: 4000)
+            
+            SevenDayChartView(dailyTotals: [:], dailyGoal: 1000)
+            SevenDayChartView(dailyTotals: [:], dailyGoal: 2000)
+        }
         .padding()
+    }
 }

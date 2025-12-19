@@ -65,7 +65,7 @@ struct MainView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("7-Day History")
                 .font(.headline)
-            SevenDayChartView(dailyTotals: viewModel.dailyTotals)
+            SevenDayChartView(dailyTotals: viewModel.dailyTotals, dailyGoal: viewModel.dailyGoal)
         }
         .padding()
         .background(.regularMaterial)
