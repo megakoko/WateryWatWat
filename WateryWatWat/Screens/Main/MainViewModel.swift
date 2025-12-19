@@ -6,6 +6,7 @@ final class MainViewModel {
     var todayTotal: Int64 = 0
     var dailyTotals: [Date: Int64] = [:]
     var dailyGoal: Int64 = Constants.defaultDailyGoalML
+    var streak: Int = 0
     var addEntryViewModel: AddEntryViewModel?
     var settingsViewModel: SettingsViewModel?
 
@@ -61,8 +62,9 @@ final class MainViewModel {
         async let todayTask: Void = fetchTodayTotal()
         async let historyTask: Void = fetchSevenDayHistory()
         async let goalTask: Void = fetchDailyGoal()
+        async let streakTask: Void = fetchStreak()
 
-        _ = await (todayTask, historyTask, goalTask)
+        _ = await (todayTask, historyTask, goalTask, streakTask)
     }
 
     private func fetchDailyGoal() async {
@@ -86,6 +88,14 @@ final class MainViewModel {
             dailyTotals = try await service.fetchDailyTotals(from: startDate, to: endDate)
         } catch {
             dailyTotals = [:]
+        }
+    }
+
+    private func fetchStreak() async {
+        do {
+            streak = try await service.calculateStreak(goal: dailyGoal)
+        } catch {
+            streak = 0
         }
     }
 }

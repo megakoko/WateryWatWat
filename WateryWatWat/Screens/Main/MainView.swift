@@ -9,6 +9,7 @@ struct MainView: View {
                 VStack(spacing: 20) {
                     circularProgressCard
                     todayVolumeCard
+                    streakCard
                     sevenDayChartCard
                 }
                 .padding()
@@ -53,6 +54,19 @@ struct MainView: View {
             Text("Today's Volume")
                 .font(.headline)
             Text("\(viewModel.todayTotal.formattedLiters()) L / \(viewModel.dailyGoal.formattedLiters()) L")
+                .font(.largeTitle)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(.regularMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+    }
+
+    private var streakCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Streak")
+                .font(.headline)
+            Text("\(viewModel.streak) days")
                 .font(.largeTitle)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

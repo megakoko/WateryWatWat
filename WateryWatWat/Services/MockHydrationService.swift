@@ -42,4 +42,12 @@ final class MockHydrationService: HydrationServiceProtocol {
         }
         return 1750
     }
+
+    func calculateStreak(goal: Int64) async throws -> Int {
+        try await Task.sleep(for: .seconds(delay))
+        if fail {
+            throw NSError(domain: "MockHydrationService", code: -1)
+        }
+        return 5
+    }
 }

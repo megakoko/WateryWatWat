@@ -5,6 +5,7 @@ protocol HydrationServiceProtocol {
     func addEntry(volume: Int64, type: String, date: Date) async throws
     func fetchDailyTotals(from startDate: Date, to endDate: Date) async throws -> [Date: Int64]
     func fetchTodayTotal() async throws -> Int64
+    func calculateStreak(goal: Int64) async throws -> Int
 }
 
 final class HydrationService: HydrationServiceProtocol {
@@ -58,6 +59,34 @@ final class HydrationService: HydrationServiceProtocol {
 
             let entries = try self.context.fetch(request)
             return entries.reduce(0) { $0 + $1.volume }
+        }
+    }
+
+    func calculateStreak(goal: Int64) async throws -> Int {
+        try await context.perform {
+            let calendar = Calendar.current
+            var currentDate = calendar.startOfDay(for: Date())
+            var streak = 0
+
+            while true {
+                let nextDay = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+
+                let request = HydrationEntry.fetchRequest()
+                request.predicate = NSPredicate(format: "date >= %@ AND date < %@", currentDate as NSDate, nextDay as NSDate)
+
+                let entries = try self.context.fetch(request)
+                let dailyTotal = entries.reduce(0) { $0 + $1.volume }
+
+                if dailyTotal >= goal {
+                    streak += 1
+                    guard let previousDate = calendar.date(byAdding: .day, value: -1, to: currentDate) else { break }
+                    currentDate = previousDate
+                } else {
+                    break
+                }
+            }
+
+            return streak
         }
     }
 }
