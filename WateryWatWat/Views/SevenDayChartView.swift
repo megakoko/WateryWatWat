@@ -34,7 +34,8 @@ struct SevenDayChartView: View {
     }
 
     private func barRectangle(for date: Date) -> some View {
-        let volume = dailyTotals[date] ?? 0
+        let normalizedDate = calendar.startOfDay(for: date)
+        let volume = dailyTotals[normalizedDate] ?? 0
         let height = maxVolume > 0 ? (Double(volume) / Double(maxVolume)) * 120 : 0
 
         return RoundedRectangle(cornerRadius: 4)
