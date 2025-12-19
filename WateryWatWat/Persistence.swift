@@ -35,6 +35,13 @@ struct PersistenceController {
         container = NSPersistentCloudKitContainer(name: "WateryWatWat")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+        } else {
+            guard let description = container.persistentStoreDescriptions.first else {
+                fatalError("No persistent store description")
+            }
+            description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.chukavin.WateryWatWat")
+            description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+            description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
         }
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {

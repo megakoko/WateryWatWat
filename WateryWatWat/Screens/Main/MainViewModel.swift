@@ -1,4 +1,5 @@
 import Foundation
+import CoreData
 
 @Observable
 final class MainViewModel {
@@ -10,6 +11,16 @@ final class MainViewModel {
 
     init(service: HydrationServiceProtocol) {
         self.service = service
+
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name.NSPersistentStoreRemoteChange,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task {
+                await self?.loadData()
+            }
+        }
     }
 
     func onAppear() async {
