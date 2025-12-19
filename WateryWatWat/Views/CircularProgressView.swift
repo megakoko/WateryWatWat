@@ -25,9 +25,9 @@ struct CircularProgressView: View {
                 .shadow(color: .aquaBlue.opacity(0.3), radius: 20, x: 0, y: 0)
 
             VStack(spacing: 8) {
-                Text("\(current)")
+                Text(current.formattedLiters())
                     .font(.system(size: 60, weight: .bold))
-                Text("ml")
+                Text("L")
                     .font(.title)
                     .foregroundStyle(.secondary)
             }

@@ -52,7 +52,7 @@ struct MainView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Today's Volume")
                 .font(.headline)
-            Text("\(viewModel.todayTotal) ml / \(viewModel.dailyGoal) ml")
+            Text("\(viewModel.todayTotal.formattedLiters()) L / \(viewModel.dailyGoal.formattedLiters()) L")
                 .font(.largeTitle)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
