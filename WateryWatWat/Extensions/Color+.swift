@@ -1,7 +1,16 @@
 import SwiftUI
 
 extension Color {
-    static let aquaBlue = Color(hex: "5BC7FB")
+    static let aquaBlue = Color(
+        light: Color(hex: "007AFF"),
+        dark: Color(hex: "5BC7FB")
+    )
+
+    init(light: Color, dark: Color) {
+        self = Color(uiColor: UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark ? UIColor(dark) : UIColor(light)
+        })
+    }
 
     init(hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
