@@ -9,6 +9,10 @@ final class MainViewModel {
     var addEntryViewModel: AddEntryViewModel?
     var settingsViewModel: SettingsViewModel?
 
+    var progress: Double {
+        Double(todayTotal) / Double(dailyGoal)
+    }
+
     private let service: HydrationServiceProtocol
     private let settingsService: SettingsServiceProtocol
 

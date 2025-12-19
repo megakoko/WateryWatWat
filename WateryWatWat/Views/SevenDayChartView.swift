@@ -13,7 +13,7 @@ struct SevenDayChartView: View {
                     x: .value("Day", date, unit: .day),
                     y: .value("Volume", dailyTotals[calendar.startOfDay(for: date)] ?? 0)
                 )
-                .foregroundStyle(.blue)
+                .foregroundStyle(Color.aquaBlue)
             }
         }
         .chartXAxis {

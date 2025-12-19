@@ -7,6 +7,7 @@ struct MainView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
+                    circularProgressCard
                     todayVolumeCard
                     sevenDayChartCard
                 }
@@ -33,6 +34,18 @@ struct MainView: View {
                 await viewModel.onAppear()
             }
         }
+    }
+
+    private var circularProgressCard: some View {
+        CircularProgressView(
+            progress: viewModel.progress,
+            current: viewModel.todayTotal,
+            goal: viewModel.dailyGoal
+        )
+        .padding(40)
+        .background(.regularMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .aspectRatio(1, contentMode: .fit)
     }
 
     private var todayVolumeCard: some View {
