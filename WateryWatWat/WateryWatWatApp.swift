@@ -16,7 +16,8 @@ struct WateryWatWatApp: App {
         WindowGroup {
             MainView(
                 viewModel: MainViewModel(
-                    service: HydrationService(context: persistenceController.container.viewContext)
+                    service: HydrationService(context: persistenceController.container.viewContext),
+                    settingsService: SettingsService()
                 )
             )
         }

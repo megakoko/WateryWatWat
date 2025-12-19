@@ -14,12 +14,20 @@ struct MainView: View {
             }
             .navigationTitle("Hydration")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: viewModel.showSettings) {
+                        Image(systemName: "gearshape")
+                    }
+                }
                 ToolbarItem(placement: .primaryAction) {
                     Button("Add", action: viewModel.showAddEntry)
                 }
             }
             .navigationDestination(item: $viewModel.addEntryViewModel) { addEntryViewModel in
                 AddEntryView(viewModel: addEntryViewModel)
+            }
+            .navigationDestination(item: $viewModel.settingsViewModel) { settingsViewModel in
+                SettingsView(viewModel: settingsViewModel)
             }
             .task {
                 await viewModel.onAppear()
@@ -31,7 +39,7 @@ struct MainView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Today's Volume")
                 .font(.headline)
-            Text("\(viewModel.todayTotal) ml")
+            Text("\(viewModel.todayTotal) ml / \(viewModel.dailyGoal) ml")
                 .font(.largeTitle)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -53,5 +61,5 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView(viewModel: MainViewModel(service: MockHydrationService()))
+    MainView(viewModel: MainViewModel(service: MockHydrationService(), settingsService: MockSettingsService()))
 }
