@@ -1,4 +1,5 @@
 import SwiftUI
+import Charts
 
 struct SevenDayChartView: View {
     let dailyTotals: [Date: Int64]
@@ -6,9 +7,23 @@ struct SevenDayChartView: View {
     private let calendar = Calendar.current
 
     var body: some View {
-        HStack(alignment: .bottom, spacing: 8) {
+        Chart {
             ForEach(lastSevenDays, id: \.self) { date in
-                barView(for: date)
+                BarMark(
+                    x: .value("Day", date, unit: .day),
+                    y: .value("Volume", dailyTotals[calendar.startOfDay(for: date)] ?? 0)
+                )
+                .foregroundStyle(.blue)
+            }
+        }
+        .chartXAxis {
+            AxisMarks(values: .stride(by: .day)) { value in
+                AxisValueLabel(format: .dateTime.weekday(.abbreviated), centered: true)
+            }
+        }
+        .chartYAxis {
+            AxisMarks { _ in
+                AxisValueLabel()
             }
         }
         .frame(height: 150)
@@ -19,37 +34,6 @@ struct SevenDayChartView: View {
         return (0..<7).compactMap { offset in
             calendar.date(byAdding: .day, value: -offset, to: endDate)
         }.reversed()
-    }
-
-    private var maxVolume: Int64 {
-        dailyTotals.values.max() ?? 1
-    }
-
-    private func barView(for date: Date) -> some View {
-        VStack(spacing: 4) {
-            barRectangle(for: date)
-            dayLabel(for: date)
-        }
-        .frame(maxWidth: .infinity)
-    }
-
-    private func barRectangle(for date: Date) -> some View {
-        let normalizedDate = calendar.startOfDay(for: date)
-        let volume = dailyTotals[normalizedDate] ?? 0
-        let height = maxVolume > 0 ? (Double(volume) / Double(maxVolume)) * 120 : 0
-
-        return RoundedRectangle(cornerRadius: 4)
-            .fill(.blue)
-            .frame(height: max(height, 4))
-            .frame(maxHeight: 120, alignment: .bottom)
-    }
-
-    private func dayLabel(for date: Date) -> some View {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEE"
-
-        return Text(formatter.string(from: date))
-            .font(.caption2)
     }
 }
 
