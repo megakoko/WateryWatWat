@@ -16,15 +16,31 @@ struct SettingsView: View {
 
     private var dailyGoalSection: some View {
         Section {
-            HStack {
-                Text("Daily Goal")
-                Spacer()
-                Stepper(
-                    value: $viewModel.dailyGoal,
-                    in: 500...5000,
-                    step: 50
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text("Daily Goal")
+                    Spacer()
+                    Text("\(viewModel.dailyGoal.formattedLiters()) L")
+                        .foregroundStyle(.secondary)
+                        .monospacedDigit()
+                }
+                Slider(
+                    value: Binding(
+                        get: { Double(viewModel.dailyGoal) },
+                        set: { viewModel.dailyGoal = Int64($0) }
+                    ),
+                    in: Double(Constants.minGoalML)...Double(Constants.maxGoalML),
+                    step: Double(Constants.stepGoalML)
                 ) {
-                    Text("\(viewModel.dailyGoal) ml")
+                    Text("Daily Goal")
+                } minimumValueLabel: {
+                    Text("\(Constants.minGoalML.formattedLiters()) L")
+                        .font(.caption)
+                        .monospacedDigit()
+                } maximumValueLabel: {
+                    Text("\(Constants.maxGoalML.formattedLiters()) L")
+                        .font(.caption)
+                        .monospacedDigit()
                 }
             }
         }
