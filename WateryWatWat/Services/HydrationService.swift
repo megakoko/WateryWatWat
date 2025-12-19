@@ -2,7 +2,7 @@ import Foundation
 import CoreData
 
 protocol HydrationServiceProtocol {
-    func addEntry(volume: Int64, type: String) async throws
+    func addEntry(volume: Int64, type: String, date: Date) async throws
     func fetchDailyTotals(from startDate: Date, to endDate: Date) async throws -> [Date: Int64]
     func fetchTodayTotal() async throws -> Int64
 }
@@ -14,10 +14,10 @@ final class HydrationService: HydrationServiceProtocol {
         self.context = context
     }
 
-    func addEntry(volume: Int64, type: String = "water") async throws {
+    func addEntry(volume: Int64, type: String = "water", date: Date = Date()) async throws {
         try await context.perform {
             let entry = HydrationEntry(context: self.context)
-            entry.date = Date()
+            entry.date = date
             entry.volume = volume
             entry.type = type
             try self.context.save()

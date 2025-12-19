@@ -6,6 +6,7 @@ struct AddEntryView: View {
 
     var body: some View {
         VStack(spacing: 24) {
+            datePicker
             volumeGrid
             okButton
         }
@@ -17,6 +18,11 @@ struct AddEntryView: View {
                 dismiss()
             }
         }
+    }
+
+    private var datePicker: some View {
+        DatePicker("Date", selection: $viewModel.selectedDate, displayedComponents: [.date, .hourAndMinute])
+            .datePickerStyle(.compact)
     }
 
     private var volumeGrid: some View {

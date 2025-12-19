@@ -4,6 +4,7 @@ import Foundation
 final class AddEntryViewModel: Identifiable {
     let id = UUID()
     var selectedVolume: Int64?
+    var selectedDate = Date()
     var isLoading = false
 
     private let service: HydrationServiceProtocol
@@ -24,7 +25,7 @@ final class AddEntryViewModel: Identifiable {
 
         isLoading = true
         do {
-            try await service.addEntry(volume: volume, type: "water")
+            try await service.addEntry(volume: volume, type: "water", date: selectedDate)
             onEntryAdded?()
         } catch {
         }

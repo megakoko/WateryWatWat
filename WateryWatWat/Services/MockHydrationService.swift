@@ -9,7 +9,7 @@ final class MockHydrationService: HydrationServiceProtocol {
         self.fail = fail
     }
 
-    func addEntry(volume: Int64, type: String) async throws {
+    func addEntry(volume: Int64, type: String, date: Date) async throws {
         try await Task.sleep(for: .seconds(delay))
         if fail {
             throw NSError(domain: "MockHydrationService", code: -1)
