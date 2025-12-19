@@ -38,52 +38,35 @@ struct MainView: View {
     }
 
     private var circularProgressCard: some View {
-        CircularProgressView(
-            progress: viewModel.progress,
-            current: viewModel.todayTotal,
-            goal: viewModel.dailyGoal
-        )
-        .padding(40)
-        .background(.regularMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        CardPanel {
+            CircularProgressView(
+                progress: viewModel.progress,
+                current: viewModel.todayTotal,
+                goal: viewModel.dailyGoal
+            )
+            .padding(20)
+        }
         .aspectRatio(1, contentMode: .fit)
     }
 
     private var todayVolumeCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Today's Volume")
-                .font(.headline)
+        CardPanel("Today's Volume") {
             Text("\(viewModel.todayTotal.formattedLiters()) L / \(viewModel.dailyGoal.formattedLiters()) L")
                 .font(.largeTitle)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .background(.regularMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
     private var streakCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Streak")
-                .font(.headline)
+        CardPanel("Streak") {
             Text("\(viewModel.streak) days")
                 .font(.largeTitle)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
-        .background(.regularMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
     private var sevenDayChartCard: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("7-Day History")
-                .font(.headline)
+        CardPanel("7-Day History") {
             SevenDayChartView(dailyTotals: viewModel.dailyTotals, dailyGoal: viewModel.dailyGoal)
         }
-        .padding()
-        .background(.regularMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
 
