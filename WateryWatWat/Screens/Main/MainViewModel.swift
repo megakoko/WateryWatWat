@@ -28,8 +28,10 @@ final class MainViewModel {
     }
 
     private func loadData() async {
-        await fetchTodayTotal()
-        await fetchSevenDayHistory()
+        async let todayTask: Void = fetchTodayTotal()
+        async let historyTask: Void = fetchSevenDayHistory()
+
+        _ = await (todayTask, historyTask)
     }
 
     private func fetchTodayTotal() async {

@@ -1,16 +1,8 @@
 import Foundation
 
 @Observable
-final class AddEntryViewModel: Identifiable, Hashable {
+final class AddEntryViewModel: Identifiable {
     let id = UUID()
-
-    static func == (lhs: AddEntryViewModel, rhs: AddEntryViewModel) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
     var selectedVolume: Int64?
     var isLoading = false
 
@@ -37,5 +29,15 @@ final class AddEntryViewModel: Identifiable, Hashable {
         } catch {
         }
         isLoading = false
+    }
+}
+
+extension AddEntryViewModel: Hashable {
+    static func == (lhs: AddEntryViewModel, rhs: AddEntryViewModel) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
