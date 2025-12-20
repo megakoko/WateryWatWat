@@ -10,6 +10,7 @@ struct MainView: View {
                     circularProgressCard
                     todayVolumeCard
                     streakCard
+                    historyPanel
                     sevenDayChartCard
                 }
                 .padding()
@@ -30,6 +31,9 @@ struct MainView: View {
             }
             .navigationDestination(item: $viewModel.settingsViewModel) { settingsViewModel in
                 SettingsView(viewModel: settingsViewModel)
+            }
+            .navigationDestination(item: $viewModel.historyViewModel) { historyViewModel in
+                HistoryView(viewModel: historyViewModel)
             }
             .task {
                 await viewModel.onAppear()
@@ -60,6 +64,39 @@ struct MainView: View {
         CardPanel("Streak") {
             Text("\(viewModel.streak) days")
                 .font(.largeTitle)
+        }
+    }
+
+    private var historyPanel: some View {
+        CardPanel("History", usePadding: false) {
+            historyScrollView
+        } trailingButton: {
+            Button("See All", action: viewModel.showHistory)
+                .font(.subheadline)
+        }
+    }
+
+    private var historyScrollView: some View {
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    ForEach(viewModel.recentEntries) { group in
+                        HStack(alignment: .bottom, spacing: 20) {
+                            ForEach(group.entries, id: \.objectID) { entry in
+                                EntryCard(entry: entry)
+                            }
+                            DayCard(date: group.date, totalVolume: group.totalVolume)
+                        }
+                        .id(group.id)
+                    }
+                }
+                .padding(.horizontal)
+            }
+            .onChange(of: viewModel.recentEntries) { _, newEntries in
+                if let lastGroup = newEntries.last {
+                    proxy.scrollTo(lastGroup.id, anchor: .leading)
+                }
+            }
         }
     }
 

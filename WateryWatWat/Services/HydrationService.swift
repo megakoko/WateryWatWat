@@ -6,6 +6,8 @@ protocol HydrationServiceProtocol {
     func fetchDailyTotals(from startDate: Date, to endDate: Date) async throws -> [Date: Int64]
     func fetchTodayTotal() async throws -> Int64
     func calculateStreak(goal: Int64) async throws -> Int
+    func fetchEntries(from startDate: Date, to endDate: Date) async throws -> [HydrationEntry]
+    func deleteEntry(_ entry: HydrationEntry) async throws
 }
 
 final class HydrationService: HydrationServiceProtocol {
@@ -87,6 +89,27 @@ final class HydrationService: HydrationServiceProtocol {
             }
 
             return streak
+        }
+    }
+
+    func fetchEntries(from startDate: Date, to endDate: Date) async throws -> [HydrationEntry] {
+        try await context.perform {
+            let calendar = Calendar.current
+            let normalizedStart = calendar.startOfDay(for: startDate)
+            let normalizedEnd = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: endDate))!
+
+            let request = HydrationEntry.fetchRequest()
+            request.predicate = NSPredicate(format: "date >= %@ AND date < %@", normalizedStart as NSDate, normalizedEnd as NSDate)
+            request.sortDescriptors = [NSSortDescriptor(keyPath: \HydrationEntry.date, ascending: false)]
+
+            return try self.context.fetch(request)
+        }
+    }
+
+    func deleteEntry(_ entry: HydrationEntry) async throws {
+        try await context.perform {
+            self.context.delete(entry)
+            try self.context.save()
         }
     }
 }

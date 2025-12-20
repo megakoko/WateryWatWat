@@ -7,8 +7,10 @@ final class MainViewModel {
     var dailyTotals: [Date: Int64] = [:]
     var dailyGoal: Int64 = Constants.defaultDailyGoalML
     var streak: Int = 0
+    var recentEntries: [GroupedHydrationEntries] = []
     var addEntryViewModel: AddEntryViewModel?
     var settingsViewModel: SettingsViewModel?
+    var historyViewModel: HistoryViewModel?
 
     var progress: Double {
         Double(todayTotal) / Double(dailyGoal)
@@ -58,13 +60,18 @@ final class MainViewModel {
         }
     }
 
+    func showHistory() {
+        historyViewModel = HistoryViewModel(service: service)
+    }
+
     private func loadData() async {
         async let todayTask: Void = fetchTodayTotal()
         async let historyTask: Void = fetchSevenDayHistory()
         async let goalTask: Void = fetchDailyGoal()
         async let streakTask: Void = fetchStreak()
+        async let recentTask: Void = fetchRecentEntries()
 
-        _ = await (todayTask, historyTask, goalTask, streakTask)
+        _ = await (todayTask, historyTask, goalTask, streakTask, recentTask)
     }
 
     private func fetchDailyGoal() async {
@@ -96,6 +103,28 @@ final class MainViewModel {
             streak = try await service.calculateStreak(goal: dailyGoal)
         } catch {
             streak = 0
+        }
+    }
+
+    private func fetchRecentEntries() async {
+        do {
+            let calendar = Calendar.current
+            let endDate = calendar.startOfDay(for: Date())
+            let startDate = calendar.date(byAdding: .day, value: -6, to: endDate)!
+
+            let entries = try await service.fetchEntries(from: startDate, to: endDate)
+
+            var grouped: [Date: [HydrationEntry]] = [:]
+            for entry in entries {
+                let dayStart = calendar.startOfDay(for: entry.date!)
+                grouped[dayStart, default: []].append(entry)
+            }
+
+            recentEntries = grouped.map { date, entries in
+                GroupedHydrationEntries(date: date, entries: entries.reversed())
+            }.sorted { $0.date < $1.date }
+        } catch {
+            recentEntries = []
         }
     }
 }

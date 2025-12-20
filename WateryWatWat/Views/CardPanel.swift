@@ -1,24 +1,46 @@
 import SwiftUI
 
-struct CardPanel<Content: View>: View {
+struct CardPanel<Content: View, TrailingButton: View>: View {
     let title: String?
     let content: Content
+    let trailingButton: TrailingButton?
+    let usePadding: Bool
 
-    init(_ title: String? = nil, @ViewBuilder content: () -> Content) {
+    init(_ title: String? = nil, usePadding: Bool = true, @ViewBuilder content: () -> Content) where TrailingButton == EmptyView {
         self.title = title
         self.content = content()
+        self.trailingButton = nil
+        self.usePadding = usePadding
+    }
+
+    init(_ title: String? = nil, usePadding: Bool = true, @ViewBuilder content: () -> Content, @ViewBuilder trailingButton: () -> TrailingButton) {
+        self.title = title
+        self.content = content()
+        self.trailingButton = trailingButton()
+        self.usePadding = usePadding
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             if let title {
-                Text(title)
-                    .font(.headline)
+                HStack {
+                    Text(title)
+                        .font(.headline)
+                    Spacer()
+                    trailingButton
+                }
+                .padding(.horizontal)
             }
-            content
+            
+            if usePadding {
+                content
+                    .padding(.horizontal)
+            } else {
+                content
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding()
+        .padding(.vertical, 16)
         .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
