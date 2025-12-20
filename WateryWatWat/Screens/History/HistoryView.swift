@@ -8,7 +8,12 @@ struct HistoryView: View {
             ForEach(viewModel.groupedEntries) { group in
                 Section {
                     ForEach(group.entries, id: \.objectID) { entry in
-                        EntryRow(entry: entry)
+                        Button {
+                            viewModel.onDidTap(entry)
+                        } label: {
+                            EntryRow(entry: entry)
+                        }
+                        .buttonStyle(.plain)
                     }
                     .onDelete { indexSet in
                         deleteEntries(at: indexSet, in: group)
@@ -20,6 +25,11 @@ struct HistoryView: View {
         }
         .navigationTitle("History")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $viewModel.editEntryViewModel) { editEntryViewModel in
+            NavigationStack {
+                AddEntryView(viewModel: editEntryViewModel)
+            }
+        }
         .task {
             await viewModel.onAppear()
         }

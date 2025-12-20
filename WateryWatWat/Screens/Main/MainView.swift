@@ -26,8 +26,10 @@ struct MainView: View {
                     Button("Add", action: viewModel.showAddEntry)
                 }
             }
-            .navigationDestination(item: $viewModel.addEntryViewModel) { addEntryViewModel in
-                AddEntryView(viewModel: addEntryViewModel)
+            .sheet(item: $viewModel.addEntryViewModel) { addEntryViewModel in
+                NavigationStack {
+                    AddEntryView(viewModel: addEntryViewModel)
+                }
             }
             .navigationDestination(item: $viewModel.settingsViewModel) { settingsViewModel in
                 SettingsView(viewModel: settingsViewModel)

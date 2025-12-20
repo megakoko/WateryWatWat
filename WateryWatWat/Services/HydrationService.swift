@@ -8,6 +8,7 @@ protocol HydrationServiceProtocol {
     func calculateStreak(goal: Int64) async throws -> Int
     func fetchEntries(from startDate: Date, to endDate: Date) async throws -> [HydrationEntry]
     func deleteEntry(_ entry: HydrationEntry) async throws
+    func updateEntry(_ entry: HydrationEntry, volume: Int64, date: Date) async throws
 }
 
 final class HydrationService: HydrationServiceProtocol {
@@ -109,6 +110,14 @@ final class HydrationService: HydrationServiceProtocol {
     func deleteEntry(_ entry: HydrationEntry) async throws {
         try await context.perform {
             self.context.delete(entry)
+            try self.context.save()
+        }
+    }
+
+    func updateEntry(_ entry: HydrationEntry, volume: Int64, date: Date) async throws {
+        try await context.perform {
+            entry.volume = volume
+            entry.date = date
             try self.context.save()
         }
     }

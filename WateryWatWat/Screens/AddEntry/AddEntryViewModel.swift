@@ -8,12 +8,22 @@ final class AddEntryViewModel: Identifiable {
     var isLoading = false
 
     private let service: HydrationServiceProtocol
+    private let entry: HydrationEntry?
     var onEntryAdded: (() -> Void)?
 
     let availableVolumes: [Int64] = [100, 200, 250, 500]
 
-    init(service: HydrationServiceProtocol) {
+    var isEditing: Bool {
+        entry != nil
+    }
+
+    init(service: HydrationServiceProtocol, entry: HydrationEntry? = nil) {
         self.service = service
+        self.entry = entry
+        if let entry {
+            self.selectedVolume = entry.volume
+            self.selectedDate = entry.date ?? Date()
+        }
     }
 
     func selectVolume(_ volume: Int64) {
@@ -25,7 +35,11 @@ final class AddEntryViewModel: Identifiable {
 
         isLoading = true
         do {
-            try await service.addEntry(volume: volume, type: "water", date: selectedDate)
+            if let entry {
+                try await service.updateEntry(entry, volume: volume, date: selectedDate)
+            } else {
+                try await service.addEntry(volume: volume, type: "water", date: selectedDate)
+            }
             onEntryAdded?()
         } catch {
         }

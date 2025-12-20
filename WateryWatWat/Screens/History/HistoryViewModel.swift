@@ -1,9 +1,11 @@
 import Foundation
+import CoreData
 
 @Observable
 final class HistoryViewModel: Identifiable {
     let id = UUID()
     var groupedEntries: [GroupedHydrationEntries] = []
+    var editEntryViewModel: AddEntryViewModel?
 
     private let service: HydrationServiceProtocol
 
@@ -21,6 +23,10 @@ final class HistoryViewModel: Identifiable {
             await fetchEntries()
         } catch {
         }
+    }
+
+    func onDidTap(_ entry: HydrationEntry) {
+        editEntryViewModel = AddEntryViewModel(service: service, entry: entry)
     }
 
     private func fetchEntries() async {

@@ -88,4 +88,11 @@ final class MockHydrationService: HydrationServiceProtocol {
             throw NSError(domain: "MockHydrationService", code: -1)
         }
     }
+
+    func updateEntry(_ entry: HydrationEntry, volume: Int64, date: Date) async throws {
+        try await Task.sleep(for: .seconds(delay))
+        if fail {
+            throw NSError(domain: "MockHydrationService", code: -1)
+        }
+    }
 }

@@ -11,7 +11,7 @@ struct AddEntryView: View {
             okButton
         }
         .padding()
-        .navigationTitle("Add Entry")
+        .navigationTitle(viewModel.isEditing ? "Edit Entry" : "Add Entry")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             viewModel.onEntryAdded = {
