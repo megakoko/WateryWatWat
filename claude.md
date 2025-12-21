@@ -37,6 +37,7 @@
 - never hardcode font sizes, only use things like 'title', 'body', 'caption'
 - both separate views and screens must have preview
 - avoid onChange in swiftUI views
+- in SwiftUI views there must be no complex logic. if there's a piece of code that needs to be called then all the underlying logic must be in a ViewModel method. If there's a complex bool condition then it must be in ViewModel
 
 ## Project Structure
 /Screens - screens containing pairs of view + view model in subdirectories. Each Screen (view + view model must be separate subdirectory)
