@@ -36,6 +36,7 @@
 - instead of horizontal spacer try to use frame(maxWidth: .infinity)
 - never hardcode font sizes, only use things like 'title', 'body', 'caption'
 - both separate views and screens must have preview
+- avoid onChange in swiftUI views
 
 ## Project Structure
 /Screens - screens containing pairs of view + view model in subdirectories. Each Screen (view + view model must be separate subdirectory)
