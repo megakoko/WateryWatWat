@@ -84,6 +84,20 @@ final class MainViewModel {
         addEntryViewModel = AddEntryViewModel(service: service)
     }
 
+    func quickAddEntry(volume: Int64) {
+        Task {
+            await addQuickEntry(volume: volume)
+        }
+    }
+
+    private func addQuickEntry(volume: Int64) async {
+        do {
+            try await service.addEntry(volume: volume, type: "water", date: Date())
+            await loadData()
+        } catch {
+        }
+    }
+
     func onEntryAdded() {
         addEntryViewModel = nil
         Task {

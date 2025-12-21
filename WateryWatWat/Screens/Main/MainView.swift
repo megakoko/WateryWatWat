@@ -25,9 +25,7 @@ struct MainView: View {
                     }
                 }
                 ToolbarItem(placement: .primaryAction) {
-                    Button(action: viewModel.showAddEntry) {
-                        Image(systemName: "plus")
-                    }
+                    addButton
                 }
             }
             .sheet(item: $viewModel.addEntryViewModel) { addEntryViewModel in
@@ -122,6 +120,18 @@ struct MainView: View {
             nextReminderTime: viewModel.nextReminderTime,
             onAddReminder: viewModel.showSettings
         )
+    }
+
+    private var addButton: some View {
+        Menu("Add", systemImage: "plus") {
+            ForEach(Constants.standardVolumes, id: \.self) { volume in
+                Button("\(volume.formattedLiters()) L") {
+                    viewModel.quickAddEntry(volume: volume)
+                }
+            }
+        } primaryAction: {
+            viewModel.showAddEntry()
+        }
     }
 }
 

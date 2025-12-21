@@ -11,7 +11,7 @@ final class AddEntryViewModel: Identifiable {
     private let entry: HydrationEntry?
     var onEntryAdded: (() -> Void)?
 
-    let availableVolumes: [Int64] = [200, 300, 500, 750, 1000, 1500]
+    let availableVolumes = Constants.standardVolumes
     var showCustomPicker = false
     var customVolume: Int64 = 100
 

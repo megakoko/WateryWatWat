@@ -17,4 +17,6 @@ enum Constants {
 
     static let notificationIdentifierPrefix = "hydration_"
     static let notificationCategoryId = "HYDRATION_REMINDER"
+
+    static let standardVolumes: [Int64] = [200, 300, 500, 750, 1000, 1500]
 }
