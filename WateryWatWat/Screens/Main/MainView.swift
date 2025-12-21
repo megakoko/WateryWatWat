@@ -125,7 +125,7 @@ struct MainView: View {
     private var addButton: some View {
         Menu("Add", systemImage: "plus") {
             ForEach(Constants.standardVolumes, id: \.self) { volume in
-                Button("\(volume.formattedLiters()) L") {
+                Button("\(volume) ml") {
                     viewModel.quickAddEntry(volume: volume)
                 }
             }
