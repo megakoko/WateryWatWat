@@ -1,5 +1,6 @@
 import Foundation
 import CoreData
+import Combine
 
 @Observable
 final class MainViewModel {
@@ -18,6 +19,7 @@ final class MainViewModel {
 
     private let service: HydrationServiceProtocol
     private let settingsService: SettingsServiceProtocol
+    private var cancellables = Set<AnyCancellable>()
 
     init(service: HydrationServiceProtocol, settingsService: SettingsServiceProtocol) {
         self.service = service
@@ -32,6 +34,14 @@ final class MainViewModel {
                 await self?.loadData()
             }
         }
+
+        UserDefaults.standard.publisher(for: \.dailyGoalML)
+            .sink { [weak self] _ in
+                Task {
+                    await self?.fetchDailyGoal()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func onAppear() async {
@@ -51,13 +61,6 @@ final class MainViewModel {
 
     func showSettings() {
         settingsViewModel = SettingsViewModel(service: settingsService)
-    }
-
-    func onSettingsDismissed() {
-        settingsViewModel = nil
-        Task {
-            await loadData()
-        }
     }
 
     func showHistory() {

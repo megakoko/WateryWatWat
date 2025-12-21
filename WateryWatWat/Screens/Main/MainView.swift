@@ -31,8 +31,10 @@ struct MainView: View {
                     AddEntryView(viewModel: addEntryViewModel)
                 }
             }
-            .navigationDestination(item: $viewModel.settingsViewModel) { settingsViewModel in
-                SettingsView(viewModel: settingsViewModel)
+            .sheet(item: $viewModel.settingsViewModel) { settingsViewModel in
+                NavigationStack {
+                    SettingsView(viewModel: settingsViewModel)
+                }
             }
             .navigationDestination(item: $viewModel.historyViewModel) { historyViewModel in
                 HistoryView(viewModel: historyViewModel)

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @State var viewModel: SettingsViewModel
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         Form {
@@ -9,6 +10,13 @@ struct SettingsView: View {
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Done") {
+                    dismiss()
+                }
+            }
+        }
         .task {
             await viewModel.onAppear()
         }
