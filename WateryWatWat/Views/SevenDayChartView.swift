@@ -15,7 +15,7 @@ struct SevenDayChartView: View {
                     y: .value("Volume", dailyTotals[calendar.startOfDay(for: date)] ?? 0)
                 )
                 .foregroundStyle(Color.aquaBlue)
-                .cornerRadius(8)
+                .cornerRadius(2)
             }
 
             RuleMark(y: .value("Goal", dailyGoal))
@@ -24,7 +24,7 @@ struct SevenDayChartView: View {
         }
         .chartXAxis {
             AxisMarks(values: .stride(by: .day)) { value in
-                AxisValueLabel(format: .dateTime.weekday(.abbreviated), centered: true)
+                AxisValueLabel(format: .dateTime.weekday(.narrow), centered: true)
             }
         }
         .chartYAxis {
@@ -32,7 +32,7 @@ struct SevenDayChartView: View {
                 AxisValueLabel()
             }
         }
-        .frame(height: 150)
+        .frame(height: 100)
     }
 
     private var lastSevenDays: [Date] {

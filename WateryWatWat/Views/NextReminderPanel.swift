@@ -6,29 +6,17 @@ struct NextReminderPanel: View {
 
     var body: some View {
         if let nextTime = nextReminderTime {
-            activeReminderView(nextTime)
-        } else {
-            inactiveReminderView
-        }
-    }
-}
-
-private extension NextReminderPanel {
-    func activeReminderView(_ time: Date) -> some View {
-        CardPanel("Next Reminder") {
-            Text(timeUntilReminder(time))
+            Text(timeUntilReminder(nextTime))
                 .font(.title)
-        }
-    }
-
-    var inactiveReminderView: some View {
-        CardPanel("Drink Reminders") {
+                .frame(maxHeight: .infinity)
+        } else {
             Button("Add Reminder", action: onAddReminder)
                 .font(.title3)
+                .frame(maxHeight: .infinity)
         }
     }
 
-    func timeUntilReminder(_ time: Date) -> String {
+    private func timeUntilReminder(_ time: Date) -> String {
         let interval = time.timeIntervalSince(Date())
 
         guard interval > 0 else {

@@ -3,17 +3,51 @@ import SwiftUI
 struct MainView: View {
     @State var viewModel: MainViewModel
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.sizeCategory) private var sizeCategory
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 20) {
-                    circularProgressCard
-                    todayVolumeCard
-                    streakCard
-                    nextReminderPanel
-                    historyPanel
-                    sevenDayChartCard
+                Grid(horizontalSpacing: 12, verticalSpacing: 20) {
+                    GridRow {
+                        circularProgressCard
+                            .gridCellColumns(2)
+                    }
+
+                    if shouldUseAccessibilityLayout {
+                        GridRow {
+                            todayVolumeCard
+                        }
+                        .gridCellColumns(2)
+                        
+                        GridRow {
+                            streakCard
+                        }
+                        .gridCellColumns(2)
+                        
+                        GridRow {
+                            nextReminderPanel
+                                .gridCellColumns(2)
+                        }
+                        
+                        GridRow {
+                            sevenDayChartCard
+                                .gridCellColumns(2)
+                        }
+                    } else {
+                        GridRow {
+                            todayVolumeCard
+                            streakCard
+                        }
+                        GridRow {
+                            nextReminderPanel
+                            sevenDayChartCard
+                        }
+                    }
+                    GridRow {
+                        historyPanel
+                            .gridCellColumns(2)
+                    }
                 }
                 .padding()
             }
@@ -63,8 +97,9 @@ struct MainView: View {
     }
 
     private var todayVolumeCard: some View {
-        CardPanel("Today's Volume") {
+        CardPanel("Today") {
             Text("\(viewModel.todayTotal.formattedLiters()) L / \(viewModel.dailyGoal.formattedLiters()) L")
+                .lineLimit(1)
                 .font(.largeTitle)
         }
     }
@@ -72,6 +107,7 @@ struct MainView: View {
     private var streakCard: some View {
         CardPanel("Streak") {
             Text("\(viewModel.streak) days")
+                .lineLimit(1)
                 .font(.largeTitle)
         }
     }
@@ -116,10 +152,12 @@ struct MainView: View {
     }
 
     private var nextReminderPanel: some View {
-        NextReminderPanel(
-            nextReminderTime: viewModel.nextReminderTime,
-            onAddReminder: viewModel.showSettings
-        )
+        CardPanel("Next Drink") {
+            NextReminderPanel(
+                nextReminderTime: viewModel.nextReminderTime,
+                onAddReminder: viewModel.showSettings
+            )
+        }
     }
 
     private var addButton: some View {
@@ -132,6 +170,10 @@ struct MainView: View {
         } primaryAction: {
             viewModel.showAddEntry()
         }
+    }
+
+    private var shouldUseAccessibilityLayout: Bool {
+        sizeCategory.isAccessibilityCategory
     }
 }
 
