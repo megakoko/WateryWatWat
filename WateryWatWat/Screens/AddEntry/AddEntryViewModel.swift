@@ -11,7 +11,9 @@ final class AddEntryViewModel: Identifiable {
     private let entry: HydrationEntry?
     var onEntryAdded: (() -> Void)?
 
-    let availableVolumes: [Int64] = [100, 200, 250, 500]
+    let availableVolumes: [Int64] = [200, 300, 500, 750, 1000, 1500]
+    var showCustomPicker = false
+    var customVolume: Int64 = 100
 
     var isEditing: Bool {
         entry != nil
@@ -28,6 +30,15 @@ final class AddEntryViewModel: Identifiable {
 
     func selectVolume(_ volume: Int64) {
         selectedVolume = volume
+        showCustomPicker = false
+    }
+
+    func selectCustom() {
+        if let selectedVolume {
+            customVolume = selectedVolume
+        }
+        showCustomPicker = true
+        selectedVolume = nil
     }
 
     func confirm() async {
