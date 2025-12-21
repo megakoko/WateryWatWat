@@ -103,7 +103,7 @@ struct MainView: View {
             }
             .onChange(of: viewModel.recentEntries) { _, newEntries in
                 if let lastGroup = newEntries.last {
-                    proxy.scrollTo(lastGroup.id, anchor: .leading)
+                    proxy.scrollTo(lastGroup.id, anchor: .trailing)
                 }
             }
         }
