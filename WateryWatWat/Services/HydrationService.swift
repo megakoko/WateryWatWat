@@ -68,7 +68,8 @@ final class HydrationService: HydrationServiceProtocol {
     func calculateStreak(goal: Int64) async throws -> Int {
         try await context.perform {
             let calendar = Calendar.current
-            var currentDate = calendar.startOfDay(for: Date())
+            let today = calendar.startOfDay(for: Date())
+            var currentDate = today
             var streak = 0
 
             while true {
@@ -82,11 +83,11 @@ final class HydrationService: HydrationServiceProtocol {
 
                 if dailyTotal >= goal {
                     streak += 1
-                    guard let previousDate = calendar.date(byAdding: .day, value: -1, to: currentDate) else { break }
-                    currentDate = previousDate
-                } else {
+                } else if currentDate != today {
                     break
                 }
+
+                currentDate = calendar.date(byAdding: .day, value: -1, to: currentDate)!
             }
 
             return streak

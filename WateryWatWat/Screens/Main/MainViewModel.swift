@@ -42,6 +42,7 @@ final class MainViewModel {
             .sink { [weak self] _ in
                 Task {
                     await self?.fetchDailyGoal()
+                    await self?.fetchStreak()
                 }
             }
             .store(in: &cancellables)
