@@ -11,6 +11,7 @@ struct MainView: View {
                     circularProgressCard
                     todayVolumeCard
                     streakCard
+                    nextReminderPanel
                     historyPanel
                     sevenDayChartCard
                 }
@@ -113,8 +114,21 @@ struct MainView: View {
             SevenDayChartView(dailyTotals: viewModel.dailyTotals, dailyGoal: viewModel.dailyGoal)
         }
     }
+
+    private var nextReminderPanel: some View {
+        NextReminderPanel(
+            nextReminderTime: viewModel.nextReminderTime,
+            onAddReminder: viewModel.showSettings
+        )
+    }
 }
 
 #Preview {
-    MainView(viewModel: MainViewModel(service: MockHydrationService(), settingsService: MockSettingsService()))
+    MainView(
+        viewModel: MainViewModel(
+            service: MockHydrationService(),
+            settingsService: MockSettingsService(),
+            notificationService: MockNotificationService()
+        )
+    )
 }

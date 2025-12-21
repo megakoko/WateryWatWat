@@ -13,6 +13,7 @@ final class MainViewModel {
     var addEntryViewModel: AddEntryViewModel?
     var settingsViewModel: SettingsViewModel?
     var historyViewModel: HistoryViewModel?
+    var nextReminderTime: Date?
 
     var progress: Double {
         Double(todayTotal) / Double(dailyGoal)
@@ -20,13 +21,16 @@ final class MainViewModel {
 
     private let service: HydrationServiceProtocol
     private let settingsService: SettingsServiceProtocol
+    private let notificationService: NotificationService
+    private let notificationDelegate = NotificationDelegate()
     private var cancellables = Set<AnyCancellable>()
     private var midnightTimer: Timer?
     private var lastRefreshDate: Date = Date()
 
-    init(service: HydrationServiceProtocol, settingsService: SettingsServiceProtocol) {
+    init(service: HydrationServiceProtocol, settingsService: SettingsServiceProtocol, notificationService: NotificationService) {
         self.service = service
         self.settingsService = settingsService
+        self.notificationService = notificationService
 
         NotificationCenter.default.addObserver(
             forName: NSNotification.Name.NSPersistentStoreRemoteChange,
@@ -46,6 +50,12 @@ final class MainViewModel {
                 }
             }
             .store(in: &cancellables)
+
+        notificationService.nextReminderTimePublisher
+            .sink { [weak self] nextTime in
+                self?.nextReminderTime = nextTime
+            }
+            .store(in: &cancellables)
     }
 
     deinit {
@@ -54,7 +64,20 @@ final class MainViewModel {
 
     func onAppear() async {
         await loadData()
+        await updateReminders()
         scheduleMidnightRefresh()
+        setupNotificationDelegate()
+    }
+    
+    private func setupNotificationDelegate() {
+        UNUserNotificationCenter.current().delegate = notificationDelegate
+        notificationDelegate.onNotificationTap = { [weak self] in
+            self?.handleNotificationTap()
+        }
+    }
+
+    private func handleNotificationTap() {
+        showAddEntry()
     }
 
     func showAddEntry() {
@@ -69,7 +92,7 @@ final class MainViewModel {
     }
 
     func showSettings() {
-        settingsViewModel = SettingsViewModel(service: settingsService)
+        settingsViewModel = SettingsViewModel(service: settingsService, notificationService: notificationService)
     }
 
     func showHistory() {
@@ -164,6 +187,7 @@ final class MainViewModel {
 
         lastRefreshDate = Date()
         await loadData()
+        await updateReminders()
         scheduleMidnightRefresh()
     }
 
@@ -172,6 +196,22 @@ final class MainViewModel {
             Task {
                 await handleMidnightTransition()
             }
+        }
+    }
+
+    private func updateReminders() async {
+        let settings = settingsService.getReminderSettings()
+
+        guard settings.enabled else {
+            nextReminderTime = nil
+            return
+        }
+
+        do {
+            try await notificationService.scheduleReminders(settings: settings)
+            nextReminderTime = await notificationService.getNextScheduledReminder()
+        } catch {
+            nextReminderTime = nil
         }
     }
 }

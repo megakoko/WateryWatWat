@@ -3,20 +3,76 @@ import Foundation
 @Observable
 final class SettingsViewModel: Identifiable {
     let id = UUID()
-    var dailyGoal: Int64 = Constants.defaultDailyGoalML
+    var dailyGoal: Int64 = Constants.defaultDailyGoalML {
+        didSet {
+            Task {
+                await saveDailyGoal()
+            }
+        }
+    }
+    var remindersEnabled = false {
+        didSet {
+            Task {
+                await saveReminderEnabled()
+            }
+        }
+    }
+    var reminderStartTime = Date() {
+        didSet {
+            Task {
+                await saveReminderStartTime()
+            }
+        }
+    }
+    var reminderEndTime = Date() {
+        didSet {
+            Task {
+                await saveReminderEndTime()
+            }
+        }
+    }
+    var reminderPeriodMinutes = Constants.defaultReminderPeriodMinutes {
+        didSet {
+            Task {
+                await saveReminderPeriod()
+            }
+        }
+    }
     var isLoading = false
 
-    private let service: SettingsServiceProtocol
+    var availablePeriods: [Int] {
+        Array(stride(
+            from: Constants.minReminderPeriodMinutes,
+            through: Constants.maxReminderPeriodMinutes,
+            by: Constants.stepReminderPeriodMinutes
+        ))
+    }
 
-    init(service: SettingsServiceProtocol) {
+    private let service: SettingsServiceProtocol
+    private let notificationService: NotificationService
+    private var isInitialLoad = true
+
+    init(service: SettingsServiceProtocol, notificationService: NotificationService) {
         self.service = service
+        self.notificationService = notificationService
     }
 
     func onAppear() async {
+        isInitialLoad = true
+
         dailyGoal = service.getDailyGoal()
+
+        let settings = service.getReminderSettings()
+        remindersEnabled = settings.enabled
+        reminderStartTime = dateFromComponents(hour: settings.startHour, minute: settings.startMinute)
+        reminderEndTime = dateFromComponents(hour: settings.endHour, minute: settings.endMinute)
+        reminderPeriodMinutes = settings.periodMinutes
+
+        isInitialLoad = false
     }
 
-    func saveDailyGoal() async {
+    private func saveDailyGoal() async {
+        guard !isInitialLoad else { return }
         isLoading = true
         defer { isLoading = false }
 
@@ -24,6 +80,77 @@ final class SettingsViewModel: Identifiable {
             try await service.setDailyGoal(dailyGoal)
         } catch {
         }
+    }
+
+    private func saveReminderEnabled() async {
+        guard !isInitialLoad else { return }
+
+        if remindersEnabled {
+            _ = await notificationService.requestPermission()
+        }
+
+        isLoading = true
+        defer { isLoading = false }
+
+        do {
+            try await service.setReminderEnabled(remindersEnabled)
+        } catch {
+        }
+    }
+
+    private func saveReminderStartTime() async {
+        guard !isInitialLoad else { return }
+        isLoading = true
+        defer { isLoading = false }
+
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: reminderStartTime)
+
+        do {
+            try await service.setReminderStartTime(hour: components.hour ?? 8, minute: components.minute ?? 0)
+        } catch {
+        }
+    }
+
+    private func saveReminderEndTime() async {
+        guard !isInitialLoad else { return }
+        isLoading = true
+        defer { isLoading = false }
+
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: reminderEndTime)
+
+        do {
+            try await service.setReminderEndTime(hour: components.hour ?? 22, minute: components.minute ?? 0)
+        } catch {
+        }
+    }
+
+    private func saveReminderPeriod() async {
+        guard !isInitialLoad else { return }
+        isLoading = true
+        defer { isLoading = false }
+
+        do {
+            try await service.setReminderPeriod(reminderPeriodMinutes)
+        } catch {
+        }
+    }
+
+    private func dateFromComponents(hour: Int, minute: Int) -> Date {
+        let calendar = Calendar.current
+        var components = calendar.dateComponents([.year, .month, .day], from: Date())
+        components.hour = hour
+        components.minute = minute
+        return calendar.date(from: components) ?? Date()
+    }
+
+    func formatPeriod(_ minutes: Int) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute]
+        formatter.unitsStyle = .abbreviated
+        formatter.zeroFormattingBehavior = .dropAll
+        return formatter.string(from: TimeInterval(minutes * 60)) ?? "\(minutes) min"
     }
 }
 

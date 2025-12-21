@@ -7,6 +7,7 @@ struct SettingsView: View {
     var body: some View {
         Form {
             dailyGoalSection
+            reminderSection
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
@@ -52,16 +53,44 @@ struct SettingsView: View {
                 }
             }
         }
-        .onChange(of: viewModel.dailyGoal) { _, _ in
-            Task {
-                await viewModel.saveDailyGoal()
+    }
+
+    private var reminderSection: some View {
+        Section {
+            Toggle("Enable Reminders", isOn: $viewModel.remindersEnabled)
+
+            if viewModel.remindersEnabled {
+                DatePicker(
+                    "Start Time",
+                    selection: $viewModel.reminderStartTime,
+                    displayedComponents: [.hourAndMinute]
+                )
+
+                DatePicker(
+                    "End Time",
+                    selection: $viewModel.reminderEndTime,
+                    displayedComponents: [.hourAndMinute]
+                )
+
+                Picker("Remind Every", selection: $viewModel.reminderPeriodMinutes) {
+                    ForEach(viewModel.availablePeriods, id: \.self) { minutes in
+                        Text(viewModel.formatPeriod(minutes)).tag(minutes)
+                    }
+                }
             }
+        } header: {
+            Text("Drink Reminders")
         }
     }
 }
 
 #Preview {
     NavigationStack {
-        SettingsView(viewModel: SettingsViewModel(service: MockSettingsService()))
+        SettingsView(
+            viewModel: SettingsViewModel(
+                service: MockSettingsService(),
+                notificationService: MockNotificationService()
+            )
+        )
     }
 }
