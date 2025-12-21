@@ -1,6 +1,7 @@
 import Foundation
 import CoreData
 import Combine
+import SwiftUI
 
 @Observable
 final class MainViewModel {
@@ -20,6 +21,8 @@ final class MainViewModel {
     private let service: HydrationServiceProtocol
     private let settingsService: SettingsServiceProtocol
     private var cancellables = Set<AnyCancellable>()
+    private var midnightTimer: Timer?
+    private var lastRefreshDate: Date = Date()
 
     init(service: HydrationServiceProtocol, settingsService: SettingsServiceProtocol) {
         self.service = service
@@ -44,8 +47,13 @@ final class MainViewModel {
             .store(in: &cancellables)
     }
 
+    deinit {
+        midnightTimer?.invalidate()
+    }
+
     func onAppear() async {
         await loadData()
+        scheduleMidnightRefresh()
     }
 
     func showAddEntry() {
@@ -128,6 +136,41 @@ final class MainViewModel {
             }.sorted { $0.date < $1.date }
         } catch {
             recentEntries = []
+        }
+    }
+
+    func scheduleMidnightRefresh() {
+        midnightTimer?.invalidate()
+
+        let calendar = Calendar.current
+        let now = Date()
+        let tomorrow = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: now))!
+        let timeInterval = tomorrow.timeIntervalSince(now)
+
+        midnightTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { [weak self] _ in
+            Task { @MainActor in
+                await self?.handleMidnightTransition()
+            }
+        }
+    }
+
+    private func handleMidnightTransition() async {
+        let calendar = Calendar.current
+        let currentDay = calendar.startOfDay(for: Date())
+        let lastRefreshDay = calendar.startOfDay(for: lastRefreshDate)
+
+        guard currentDay > lastRefreshDay else { return }
+
+        lastRefreshDate = Date()
+        await loadData()
+        scheduleMidnightRefresh()
+    }
+
+    func handleScenePhaseChange(_ phase: ScenePhase) {
+        if phase == .active {
+            Task {
+                await handleMidnightTransition()
+            }
         }
     }
 }

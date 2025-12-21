@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MainView: View {
     @State var viewModel: MainViewModel
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         NavigationStack {
@@ -42,6 +43,9 @@ struct MainView: View {
             .task {
                 await viewModel.onAppear()
             }
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            viewModel.handleScenePhaseChange(newPhase)
         }
     }
 
