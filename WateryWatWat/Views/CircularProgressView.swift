@@ -5,6 +5,8 @@ struct CircularProgressView: View {
     let current: Int64
     let goal: Int64
 
+    @State private var unitWidth: CGFloat = 0
+
     private var cappedProgress: Double {
         min(progress, 1.0)
     }
@@ -24,13 +26,23 @@ struct CircularProgressView: View {
                 .shadow(color: .aquaBlue.opacity(0.6), radius: 10, x: 0, y: 0)
                 .shadow(color: .aquaBlue.opacity(0.3), radius: 20, x: 0, y: 0)
 
-            VStack(spacing: 8) {
+            HStack(alignment: .firstTextBaseline, spacing: 0) {
                 Text(current.formattedLiters())
-                    .font(.system(size: 60, weight: .bold))
-                Text("L")
-                    .font(.title)
+                    
+                Text(" L")
                     .foregroundStyle(.secondary)
+                    .background(
+                        GeometryReader { geo in
+                            Color.clear.preference(key: UnitWidthKey.self, value: geo.size.width)
+                        }
+                    )
+                    
             }
+            .font(.system(size: 60, weight: .bold))
+            .onPreferenceChange(UnitWidthKey.self) { width in
+                unitWidth = width
+            }
+            .offset(x: unitWidth / 2)
         }
     }
 }
@@ -39,4 +51,11 @@ struct CircularProgressView: View {
     CircularProgressView(progress: 0.65, current: 1300, goal: 2000)
         .frame(height: 300)
         .padding()
+}
+
+private struct UnitWidthKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
 }
