@@ -11,6 +11,6 @@ struct GroupedHydrationEntries: Identifiable, Equatable {
     }
 
     static func == (lhs: GroupedHydrationEntries, rhs: GroupedHydrationEntries) -> Bool {
-        lhs.date == rhs.date
+        lhs.date == rhs.date && lhs.entries == rhs.entries
     }
 }
