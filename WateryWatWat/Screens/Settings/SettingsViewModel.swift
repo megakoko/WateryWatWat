@@ -148,7 +148,7 @@ final class SettingsViewModel: Identifiable {
     func formatPeriod(_ minutes: Int) -> String {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.hour, .minute]
-        formatter.unitsStyle = .abbreviated
+        formatter.unitsStyle = .full
         formatter.zeroFormattingBehavior = .dropAll
         return formatter.string(from: TimeInterval(minutes * 60)) ?? "\(minutes) min"
     }
