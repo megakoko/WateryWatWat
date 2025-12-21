@@ -132,15 +132,13 @@ struct MainView: View {
                             }
                             DayCard(date: group.date, totalVolume: group.totalVolume)
                         }
-                        .id(group.id)
                     }
                 }
                 .padding(.horizontal)
+                .id("history-scroll-content")
             }
             .onChange(of: viewModel.recentEntries) { _, newEntries in
-                if let lastGroup = newEntries.last {
-                    proxy.scrollTo(lastGroup.id, anchor: .trailing)
-                }
+                proxy.scrollTo("history-scroll-content", anchor: .trailing)
             }
         }
     }
