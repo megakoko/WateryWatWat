@@ -23,8 +23,14 @@ final class AddEntryViewModel: Identifiable {
         self.service = service
         self.entry = entry
         if let entry {
-            self.selectedVolume = entry.volume
             self.selectedDate = entry.date ?? Date()
+
+            if availableVolumes.contains(entry.volume) {
+                self.selectedVolume = entry.volume
+            } else {
+                self.customVolume = entry.volume
+                self.showCustomPicker = true
+            }
         }
     }
 
