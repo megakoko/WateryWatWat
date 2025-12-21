@@ -58,6 +58,7 @@ struct SettingsView: View {
     private var reminderSection: some View {
         Section {
             Toggle("Enable Reminders", isOn: $viewModel.remindersEnabled)
+                .disabled(viewModel.shouldShowPermissionDenied)
 
             if viewModel.remindersEnabled {
                 DatePicker(

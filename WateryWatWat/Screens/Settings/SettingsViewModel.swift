@@ -99,8 +99,13 @@ final class SettingsViewModel: Identifiable {
         guard !isInitialLoad else { return }
 
         if remindersEnabled {
-            _ = await notificationService.requestPermission()
+            let granted = await notificationService.requestPermission()
             await checkPermissionStatus()
+
+            if !granted {
+                remindersEnabled = false
+                return
+            }
         }
 
         isLoading = true
