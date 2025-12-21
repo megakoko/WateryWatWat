@@ -26,6 +26,7 @@ struct AddEntryView: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button(action: viewModel.confirmWithCustom) {
                     Image(systemName: "checkmark")
+                        .foregroundStyle(.blue)
                 }
                 .disabled(!viewModel.canConfirm)
             }
