@@ -25,7 +25,9 @@ struct MainView: View {
                     }
                 }
                 ToolbarItem(placement: .primaryAction) {
-                    Button("Add", action: viewModel.showAddEntry)
+                    Button(action: viewModel.showAddEntry) {
+                        Image(systemName: "plus")
+                    }
                 }
             }
             .sheet(item: $viewModel.addEntryViewModel) { addEntryViewModel in

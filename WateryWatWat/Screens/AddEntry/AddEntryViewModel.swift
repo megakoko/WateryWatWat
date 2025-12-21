@@ -47,6 +47,19 @@ final class AddEntryViewModel: Identifiable {
         selectedVolume = nil
     }
 
+    var canConfirm: Bool {
+        (selectedVolume != nil || showCustomPicker) && !isLoading
+    }
+
+    func confirmWithCustom() {
+        if showCustomPicker {
+            selectedVolume = customVolume
+        }
+        Task {
+            await confirm()
+        }
+    }
+
     func confirm() async {
         guard let volume = selectedVolume else { return }
 
@@ -61,6 +74,10 @@ final class AddEntryViewModel: Identifiable {
         } catch {
         }
         isLoading = false
+    }
+
+    func cancel() {
+        onEntryAdded?()
     }
 }
 

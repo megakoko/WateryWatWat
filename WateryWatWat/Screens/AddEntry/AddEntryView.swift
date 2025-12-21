@@ -9,15 +9,27 @@ struct AddEntryView: View {
             datePicker
             volumeGrid
             customButton
-            Spacer()
             if viewModel.showCustomPicker {
                 customPicker
             }
-            okButton
+            Spacer()
         }
         .padding()
         .navigationTitle(viewModel.isEditing ? "Edit Entry" : "Add Entry")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button(action: viewModel.cancel) {
+                    Image(systemName: "xmark")
+                }
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button(action: viewModel.confirmWithCustom) {
+                    Image(systemName: "checkmark")
+                }
+                .disabled(!viewModel.canConfirm)
+            }
+        }
         .onAppear {
             viewModel.onEntryAdded = {
                 dismiss()
@@ -65,21 +77,6 @@ struct AddEntryView: View {
         .frame(height: 150)
     }
 
-    private var okButton: some View {
-        Button {
-            Task {
-                if viewModel.showCustomPicker {
-                    viewModel.selectedVolume = viewModel.customVolume
-                }
-                await viewModel.confirm()
-            }
-        } label: {
-            Text("OK")
-                .frame(maxWidth: .infinity)
-        }
-        .buttonStyle(.borderedProminent)
-        .disabled((viewModel.selectedVolume == nil && !viewModel.showCustomPicker) || viewModel.isLoading)
-    }
 }
 
 #Preview {
