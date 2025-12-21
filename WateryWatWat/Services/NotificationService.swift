@@ -115,6 +115,11 @@ extension DefaultNotificationService: NotificationService {
 
         return dates.min()
     }
+
+    func getAuthorizationStatus() async -> UNAuthorizationStatus {
+        let settings = await notificationCenter.notificationSettings()
+        return settings.authorizationStatus
+    }
 }
 
 private extension DefaultNotificationService {

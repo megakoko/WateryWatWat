@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import UserNotifications
 
 final class MockNotificationService {
     private let delay: TimeInterval
@@ -63,6 +64,13 @@ extension MockNotificationService: NotificationService {
             try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
         }
         return scheduledReminders.min()
+    }
+
+    func getAuthorizationStatus() async -> UNAuthorizationStatus {
+        if delay > 0 {
+            try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+        }
+        return permissionGranted ? .authorized : .denied
     }
 }
 

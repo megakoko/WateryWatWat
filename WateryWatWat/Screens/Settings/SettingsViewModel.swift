@@ -1,4 +1,6 @@
 import Foundation
+import UIKit
+import UserNotifications
 
 @Observable
 final class SettingsViewModel: Identifiable {
@@ -39,6 +41,15 @@ final class SettingsViewModel: Identifiable {
         }
     }
     var isLoading = false
+    var permissionStatus: UNAuthorizationStatus = .notDetermined
+
+    var shouldShowPermissionDenied: Bool {
+        remindersEnabled && permissionStatus == .denied
+    }
+
+    var shouldShowNotificationSettings: Bool {
+        remindersEnabled && permissionStatus == .authorized
+    }
 
     var availablePeriods: [Int] {
         Array(stride(
@@ -68,6 +79,8 @@ final class SettingsViewModel: Identifiable {
         reminderEndTime = dateFromComponents(hour: settings.endHour, minute: settings.endMinute)
         reminderPeriodMinutes = settings.periodMinutes
 
+        await checkPermissionStatus()
+
         isInitialLoad = false
     }
 
@@ -87,6 +100,7 @@ final class SettingsViewModel: Identifiable {
 
         if remindersEnabled {
             _ = await notificationService.requestPermission()
+            await checkPermissionStatus()
         }
 
         isLoading = true
@@ -151,6 +165,16 @@ final class SettingsViewModel: Identifiable {
         formatter.unitsStyle = .full
         formatter.zeroFormattingBehavior = .dropAll
         return formatter.string(from: TimeInterval(minutes * 60)) ?? "\(minutes) min"
+    }
+
+    func checkPermissionStatus() async {
+        permissionStatus = await notificationService.getAuthorizationStatus()
+    }
+
+    func openAppSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url)
+        }
     }
 }
 

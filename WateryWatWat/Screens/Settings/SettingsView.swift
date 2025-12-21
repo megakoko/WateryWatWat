@@ -78,6 +78,18 @@ struct SettingsView: View {
                     }
                 }
             }
+
+            if viewModel.shouldShowPermissionDenied {
+                Text("Notifications are disabled. Please enable them in Settings.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                Button("Open Settings", action: viewModel.openAppSettings)
+            }
+
+            if viewModel.shouldShowNotificationSettings {
+                Button("Notification Settings", action: viewModel.openAppSettings)
+            }
         } header: {
             Text("Drink Reminders")
         }
