@@ -12,7 +12,6 @@ struct DayCard: View {
             volumeText
         }
         .padding(.vertical, 8)
-        .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 

@@ -9,7 +9,6 @@ struct EntryCard: View {
             timeText
         }
         .padding(.vertical, 8)
-        .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
