@@ -19,6 +19,15 @@ final class MainViewModel {
         Double(todayTotal) / Double(dailyGoal)
     }
 
+    var streakText: String {
+        let formatter = DateComponentsFormatter()
+        formatter.unitsStyle = .full
+        formatter.allowedUnits = [.day]
+
+        let components = DateComponents(day: streak)
+        return formatter.string(from: components)!
+    }
+
     private let service: HydrationServiceProtocol
     private let settingsService: SettingsServiceProtocol
     private let notificationService: NotificationService
