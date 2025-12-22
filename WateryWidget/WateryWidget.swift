@@ -13,7 +13,7 @@ import CoreData
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> WidgetHydrationEntry {
-        WidgetHydrationEntry(date: Date(), progress: 0.75, formattedTotal: Int64(1500).formattedLiters())
+        WidgetHydrationEntry(date: Date(), progress: 0.75, current: 1500, goal: 2000)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (WidgetHydrationEntry) -> ()) {
@@ -48,9 +48,8 @@ struct Provider: TimelineProvider {
         }
 
         let progress = Double(todayTotal) / Double(dailyGoal)
-        let formattedTotal = todayTotal.formattedLiters()
 
-        return WidgetHydrationEntry(date: Date(), progress: progress, formattedTotal: formattedTotal)
+        return WidgetHydrationEntry(date: Date(), progress: progress, current: todayTotal, goal: dailyGoal)
     }
 }
 
@@ -59,45 +58,17 @@ struct Provider: TimelineProvider {
 struct WidgetHydrationEntry: TimelineEntry {
     let date: Date
     let progress: Double
-    let formattedTotal: String
+    let current: Int64
+    let goal: Int64
 }
 
 // MARK: - WateryWidgetEntryView
-
-struct VariableSizeCircularStyle: GaugeStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        GeometryReader { reader in
-            ZStack {
-                Circle()
-                    .stroke(.primary.opacity(0.3), lineWidth: reader.size.width * 0.1)
-                
-                Circle()
-                    .trim(to: configuration.value)
-                    .stroke(.primary, style: .init(lineWidth: reader.size.width * 0.1, lineCap: .round))
-                    .rotationEffect(.degrees(-90))
-                
-                if let label = configuration.currentValueLabel {
-                    label
-                        .font(.largeTitle)
-                        .bold()
-                        .foregroundStyle(.white)
-                        .minimumScaleFactor(0.5)
-                }
-            }
-        }
-        .padding(4)
-    }
-}
-
-extension GaugeStyle where Self == VariableSizeCircularStyle {
-    static var variableSizeCircular: VariableSizeCircularStyle { .init() }
-}
 
 struct WateryWidgetEntryView : View {
     @Environment(\.widgetFamily) var family
 
     var entry: Provider.Entry
-    
+
     private var homeScreenWidget: Bool {
         switch family {
         case .systemSmall:
@@ -109,19 +80,23 @@ struct WateryWidgetEntryView : View {
 
     var body: some View {
         if homeScreenWidget {
-            gauge(with: .variableSizeCircular)
-                .foregroundStyle(Color.aquaBlue)
+            homeScreenView
         } else {
-            gauge(with: .accessoryCircularCapacity)
+            lockScreenView
         }
     }
-    
-    private func gauge(with style: some GaugeStyle) -> some View {
+
+    private var homeScreenView: some View {
+        CircularProgressView(progress: entry.progress, current: entry.current, goal: entry.goal, font: .title.bold(), lineWidth: 14)
+            .padding(4)
+    }
+
+    private var lockScreenView: some View {
         Gauge(value: entry.progress, label: {}) {
-            Text(entry.formattedTotal)
+            Text(entry.current.formattedLiters())
                 .padding(.horizontal, 4)
         }
-        .gaugeStyle(style)
+        .gaugeStyle(.accessoryCircularCapacity)
     }
 }
 
@@ -152,15 +127,15 @@ struct WateryWidget: Widget {
 #Preview(as: .systemSmall) {
     WateryWidget()
 } timeline: {
-    WidgetHydrationEntry(date: .now, progress: 0.65, formattedTotal: "1,3L")
-    WidgetHydrationEntry(date: .now, progress: 0.9, formattedTotal: "1,8L")
-    WidgetHydrationEntry(date: .now, progress: 1.3, formattedTotal: "2,2L")
+    WidgetHydrationEntry(date: .now, progress: 0.65, current: 1300, goal: 2000)
+    WidgetHydrationEntry(date: .now, progress: 0.9, current: 1800, goal: 2000)
+    WidgetHydrationEntry(date: .now, progress: 1.3, current: 2600, goal: 2000)
 }
 
 #Preview(as: .accessoryCircular) {
     WateryWidget()
 } timeline: {
-    WidgetHydrationEntry(date: .now, progress: 0.65, formattedTotal: "1,3L")
-    WidgetHydrationEntry(date: .now, progress: 0.9, formattedTotal: "1,8L")
-    WidgetHydrationEntry(date: .now, progress: 1.3, formattedTotal: "2,2L")
+    WidgetHydrationEntry(date: .now, progress: 0.65, current: 1300, goal: 2000)
+    WidgetHydrationEntry(date: .now, progress: 0.9, current: 1800, goal: 2000)
+    WidgetHydrationEntry(date: .now, progress: 1.3, current: 2600, goal: 2000)
 }

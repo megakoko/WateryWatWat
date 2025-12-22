@@ -89,7 +89,9 @@ struct MainView: View {
             CircularProgressView(
                 progress: viewModel.progress,
                 current: viewModel.todayTotal,
-                goal: viewModel.dailyGoal
+                goal: viewModel.dailyGoal,
+                font: .system(size: 60, weight: .bold),
+                lineWidth: 25
             )
             .padding(20)
         }
@@ -106,7 +108,7 @@ struct MainView: View {
 
     private var streakCard: some View {
         CardPanel("Streak") {
-            Text("\(viewModel.streak) days")
+            Text(viewModel.streakText)
                 .lineLimit(1)
                 .font(.largeTitle)
         }

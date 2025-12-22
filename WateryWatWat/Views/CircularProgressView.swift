@@ -4,6 +4,8 @@ struct CircularProgressView: View {
     let progress: Double
     let current: Int64
     let goal: Int64
+    let font: Font
+    let lineWidth: CGFloat
 
     @State private var unitWidth: CGFloat = 0
 
@@ -12,7 +14,6 @@ struct CircularProgressView: View {
     }
 
     var body: some View {
-        let lineWidth: CGFloat = 25
 
         ZStack {
             Circle()
@@ -37,7 +38,7 @@ struct CircularProgressView: View {
                         }
                     )
             }
-            .font(.system(size: 60, weight: .bold))
+            .font(font)
             .onPreferenceChange(UnitWidthKey.self) { width in
                 unitWidth = width
             }
@@ -47,7 +48,7 @@ struct CircularProgressView: View {
 }
 
 #Preview {
-    CircularProgressView(progress: 0.65, current: 1300, goal: 2000)
+    CircularProgressView(progress: 0.65, current: 1300, goal: 2000, font: .system(size: 60, weight: .bold), lineWidth: 25)
         .frame(height: 300)
         .padding()
 }
