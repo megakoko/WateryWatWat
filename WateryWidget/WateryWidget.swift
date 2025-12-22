@@ -7,55 +7,125 @@
 
 import WidgetKit
 import SwiftUI
+import CoreData
+
+// MARK: - Provider
 
 struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), emoji: "😀")
+    func placeholder(in context: Context) -> WidgetHydrationEntry {
+        WidgetHydrationEntry(date: Date(), progress: 0.75, formattedTotal: Int64(1500).formattedLiters())
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), emoji: "😀")
+    func getSnapshot(in context: Context, completion: @escaping (WidgetHydrationEntry) -> ()) {
+        let entry = fetchCurrentData()
         completion(entry)
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, emoji: "😀")
-            entries.append(entry)
-        }
-
-        let timeline = Timeline(entries: entries, policy: .atEnd)
+        let entry = fetchCurrentData()
+        let timeline = Timeline(entries: [entry], policy: .never)
         completion(timeline)
     }
 
-//    func relevances() async -> WidgetRelevances<Void> {
-//        // Generate a list containing the contexts this widget is relevant in.
-//    }
+    private func fetchCurrentData() -> WidgetHydrationEntry {
+        let container = PersistenceController.shared.container
+        let context = container.viewContext
+
+        let dailyGoal = UserDefaults(suiteName: Constants.appGroupIdentifier)?.object(forKey: Constants.dailyGoalKey) as? Int64 ?? Constants.defaultDailyGoalML
+
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: Date())
+        let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+
+        let fetchRequest: NSFetchRequest<HydrationEntry> = HydrationEntry.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "date >= %@ AND date < %@", startOfDay as NSDate, endOfDay as NSDate)
+
+        let todayTotal: Int64
+        if let entries = try? context.fetch(fetchRequest) {
+            todayTotal = entries.reduce(0) { $0 + $1.volume }
+        } else {
+            todayTotal = 0
+        }
+
+        let progress = Double(todayTotal) / Double(dailyGoal)
+        let formattedTotal = todayTotal.formattedLiters()
+
+        return WidgetHydrationEntry(date: Date(), progress: progress, formattedTotal: formattedTotal)
+    }
 }
 
-struct SimpleEntry: TimelineEntry {
+// MARK: - WidgetHydrationEntry
+
+struct WidgetHydrationEntry: TimelineEntry {
     let date: Date
-    let emoji: String
+    let progress: Double
+    let formattedTotal: String
+}
+
+// MARK: - WateryWidgetEntryView
+
+struct VariableSizeCircularStyle: GaugeStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        GeometryReader { reader in
+            ZStack {
+                Circle()
+                    .stroke(.primary.opacity(0.3), lineWidth: reader.size.width * 0.1)
+                
+                Circle()
+                    .trim(to: configuration.value)
+                    .stroke(.primary, style: .init(lineWidth: reader.size.width * 0.1, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+                
+                if let label = configuration.currentValueLabel {
+                    label
+                        .font(.largeTitle)
+                        .bold()
+                        .foregroundStyle(.white)
+                        .minimumScaleFactor(0.5)
+                }
+            }
+        }
+        .padding(4)
+    }
+}
+
+extension GaugeStyle where Self == VariableSizeCircularStyle {
+    static var variableSizeCircular: VariableSizeCircularStyle { .init() }
 }
 
 struct WateryWidgetEntryView : View {
+    @Environment(\.widgetFamily) var family
+
     var entry: Provider.Entry
-
-    var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
-
-            Text("Emoji:")
-            Text(entry.emoji)
+    
+    private var homeScreenWidget: Bool {
+        switch family {
+        case .systemSmall:
+            return true
+        default:
+            return false
         }
     }
+
+    var body: some View {
+        if homeScreenWidget {
+            gauge(with: .variableSizeCircular)
+                .foregroundStyle(Color.aquaBlue)
+        } else {
+            gauge(with: .accessoryCircularCapacity)
+        }
+    }
+    
+    private func gauge(with style: some GaugeStyle) -> some View {
+        Gauge(value: entry.progress, label: {}) {
+            Text(entry.formattedTotal)
+                .padding(.horizontal, 4)
+        }
+        .gaugeStyle(style)
+    }
 }
+
+// MARK: - WateryWidget
 
 struct WateryWidget: Widget {
     let kind: String = "WateryWidget"
@@ -71,21 +141,26 @@ struct WateryWidget: Widget {
                     .background()
             }
         }
-        .configurationDisplayName("My Widget")
-        .description("This is an example widget.")
+        .supportedFamilies([.accessoryCircular, .systemSmall])
+        .configurationDisplayName("Hydration")
+        .description("Track your daily water intake")
     }
 }
+
+// MARK: - Preview
 
 #Preview(as: .systemSmall) {
     WateryWidget()
 } timeline: {
-    SimpleEntry(date: .now, emoji: "😀")
-    SimpleEntry(date: .now, emoji: "🤩")
+    WidgetHydrationEntry(date: .now, progress: 0.65, formattedTotal: "1,3L")
+    WidgetHydrationEntry(date: .now, progress: 0.9, formattedTotal: "1,8L")
+    WidgetHydrationEntry(date: .now, progress: 1.3, formattedTotal: "2,2L")
 }
 
 #Preview(as: .accessoryCircular) {
     WateryWidget()
 } timeline: {
-    SimpleEntry(date: .now, emoji: "🤩")
+    WidgetHydrationEntry(date: .now, progress: 0.65, formattedTotal: "1,3L")
+    WidgetHydrationEntry(date: .now, progress: 0.9, formattedTotal: "1,8L")
+    WidgetHydrationEntry(date: .now, progress: 1.3, formattedTotal: "2,2L")
 }
-

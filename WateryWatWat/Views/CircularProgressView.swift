@@ -28,7 +28,7 @@ struct CircularProgressView: View {
 
             HStack(alignment: .firstTextBaseline, spacing: 0) {
                 Text(current.formattedLiters())
-                    
+
                 Text(" L")
                     .foregroundStyle(.secondary)
                     .background(
@@ -36,7 +36,6 @@ struct CircularProgressView: View {
                             Color.clear.preference(key: UnitWidthKey.self, value: geo.size.width)
                         }
                     )
-                    
             }
             .font(.system(size: 60, weight: .bold))
             .onPreferenceChange(UnitWidthKey.self) { width in

@@ -41,6 +41,7 @@
 		DA1AF6CE2EF94574000AFB3A /* WateryWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WateryWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA1AF6D02EF94574000AFB3A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		DA1AF6D22EF94574000AFB3A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		DA1AF6E82EF94D67000AFB3A /* WateryWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WateryWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -58,6 +59,24 @@
 			);
 			target = DA1AF6CD2EF94574000AFB3A /* WateryWidgetExtension */;
 		};
+		DA1AF6E52EF947BA000AFB3A /* Exceptions for "WateryWatWat" folder in "WateryWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Constants.swift,
+				"Extensions/Color+.swift",
+				"Extensions/Int64+.swift",
+				Persistence.swift,
+				WateryWatWat.xcdatamodeld,
+			);
+			target = DA1AF6CD2EF94574000AFB3A /* WateryWidgetExtension */;
+		};
+		DA1AF6E72EF947D1000AFB3A /* Exceptions for "WateryWidget" folder in "WateryWatWat" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				WateryWidget.swift,
+			);
+			target = DA1AF2B82EF40EA0000AFB3A /* WateryWatWat */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -65,6 +84,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				DA1AF2C92EF40EA1000AFB3A /* Exceptions for "WateryWatWat" folder in "WateryWatWat" target */,
+				DA1AF6E52EF947BA000AFB3A /* Exceptions for "WateryWatWat" folder in "WateryWidgetExtension" target */,
 			);
 			path = WateryWatWat;
 			sourceTree = "<group>";
@@ -72,6 +92,7 @@
 		DA1AF6D42EF94574000AFB3A /* WateryWidget */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
+				DA1AF6E72EF947D1000AFB3A /* Exceptions for "WateryWidget" folder in "WateryWatWat" target */,
 				DA1AF6E32EF94576000AFB3A /* Exceptions for "WateryWidget" folder in "WateryWidgetExtension" target */,
 			);
 			path = WateryWidget;
@@ -102,6 +123,7 @@
 		DA1AF2B02EF40E9F000AFB3A = {
 			isa = PBXGroup;
 			children = (
+				DA1AF6E82EF94D67000AFB3A /* WateryWidgetExtension.entitlements */,
 				DA1AF2BB2EF40EA0000AFB3A /* WateryWatWat */,
 				DA1AF6D42EF94574000AFB3A /* WateryWidget */,
 				DA1AF6CF2EF94574000AFB3A /* Frameworks */,
@@ -470,6 +492,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WateryWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 82J963PT85;
@@ -502,6 +525,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = WateryWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 82J963PT85;

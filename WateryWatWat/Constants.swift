@@ -19,4 +19,7 @@ enum Constants {
     static let notificationCategoryId = "HYDRATION_REMINDER"
 
     static let standardVolumes: [Int64] = [200, 300, 500, 750, 1000, 1500]
+
+    static let appGroupIdentifier = "group.watery.db"
+    static let dailyGoalKey = "dailyGoalML"
 }
