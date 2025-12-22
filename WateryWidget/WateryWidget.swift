@@ -28,7 +28,7 @@ struct Provider: TimelineProvider {
     }
 
     private func fetchCurrentData() -> WidgetHydrationEntry {
-        let container = PersistenceController.shared.container
+        let container = PersistenceController.sharedWidget.container
         let context = container.viewContext
 
         let dailyGoal = UserDefaults(suiteName: Constants.appGroupIdentifier)?.object(forKey: Constants.dailyGoalKey) as? Int64 ?? Constants.defaultDailyGoalML

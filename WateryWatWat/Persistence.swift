@@ -8,11 +8,12 @@
 import CoreData
 
 struct PersistenceController {
-    static let shared = PersistenceController()
+    static let sharedApp = PersistenceController(useCloudKit: true)
+    static let sharedWidget = PersistenceController(useCloudKit: false)
 
     @MainActor
     static let preview: PersistenceController = {
-        let result = PersistenceController(inMemory: true)
+        let result = PersistenceController(inMemory: true, useCloudKit: false)
         let viewContext = result.container.viewContext
         for _ in 0..<7 {
             let entry = HydrationEntry(context: viewContext)
@@ -31,7 +32,7 @@ struct PersistenceController {
 
     let container: NSPersistentCloudKitContainer
 
-    init(inMemory: Bool = false) {
+    init(inMemory: Bool = false, useCloudKit: Bool) {
         container = NSPersistentCloudKitContainer(name: "WateryWatWat")
         if inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
@@ -44,7 +45,9 @@ struct PersistenceController {
                 description.url = groupURL.appendingPathComponent("WateryWatWat.sqlite")
             }
 
-            description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.chukavin.WateryWatWat")
+            if useCloudKit {
+                description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.chukavin.WateryWatWat")
+            }
             description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
             description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
         }

@@ -10,7 +10,7 @@ import CoreData
 
 @main
 struct WateryWatWatApp: App {
-    let persistenceController = PersistenceController.shared
+    let persistenceController = PersistenceController.sharedApp
     let settingsService = SettingsService()
 
     var body: some Scene {
