@@ -9,10 +9,10 @@ fi
 
 agvtool next-version -all
 
-VERSION=$(agvtool what-marketing-version -terse1)
+VERSION=$(grep -m 1 "MARKETING_VERSION = " WateryWatWat.xcodeproj/project.pbxproj | awk -F' = ' '{print $2}' | tr -d ';')
 BUILD=$(agvtool what-version -terse)
 
 git add WateryWatWat.xcodeproj
-git commit -m "Incremented version ${VERSION} (${BUILD})"
+git commit -m "Build ${VERSION} (${BUILD})"
 
 echo "Incremented to version ${VERSION} (${BUILD})"
