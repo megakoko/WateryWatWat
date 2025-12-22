@@ -113,6 +113,9 @@ final class SettingsViewModel: Identifiable {
 
         do {
             try await service.setReminderEnabled(remindersEnabled)
+
+            let settings = service.getReminderSettings()
+            try await notificationService.scheduleReminders(settings: settings)
         } catch {
         }
     }
