@@ -6,8 +6,41 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		DA1AF6D12EF94574000AFB3A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1AF6D02EF94574000AFB3A /* WidgetKit.framework */; };
+		DA1AF6D32EF94574000AFB3A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1AF6D22EF94574000AFB3A /* SwiftUI.framework */; };
+		DA1AF6DE2EF94576000AFB3A /* WateryWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DA1AF6CE2EF94574000AFB3A /* WateryWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DA1AF6DC2EF94576000AFB3A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DA1AF2B12EF40E9F000AFB3A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DA1AF6CD2EF94574000AFB3A;
+			remoteInfo = WateryWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DA1AF6DF2EF94576000AFB3A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DA1AF6DE2EF94576000AFB3A /* WateryWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		DA1AF2B92EF40EA0000AFB3A /* WateryWatWat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WateryWatWat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA1AF6CE2EF94574000AFB3A /* WateryWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WateryWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA1AF6D02EF94574000AFB3A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		DA1AF6D22EF94574000AFB3A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -17,6 +50,13 @@
 				Info.plist,
 			);
 			target = DA1AF2B82EF40EA0000AFB3A /* WateryWatWat */;
+		};
+		DA1AF6E32EF94576000AFB3A /* Exceptions for "WateryWidget" folder in "WateryWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = DA1AF6CD2EF94574000AFB3A /* WateryWidgetExtension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -29,6 +69,14 @@
 			path = WateryWatWat;
 			sourceTree = "<group>";
 		};
+		DA1AF6D42EF94574000AFB3A /* WateryWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				DA1AF6E32EF94576000AFB3A /* Exceptions for "WateryWidget" folder in "WateryWidgetExtension" target */,
+			);
+			path = WateryWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +87,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DA1AF6CB2EF94574000AFB3A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA1AF6D32EF94574000AFB3A /* SwiftUI.framework in Frameworks */,
+				DA1AF6D12EF94574000AFB3A /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -46,6 +103,8 @@
 			isa = PBXGroup;
 			children = (
 				DA1AF2BB2EF40EA0000AFB3A /* WateryWatWat */,
+				DA1AF6D42EF94574000AFB3A /* WateryWidget */,
+				DA1AF6CF2EF94574000AFB3A /* Frameworks */,
 				DA1AF2BA2EF40EA0000AFB3A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,8 +113,18 @@
 			isa = PBXGroup;
 			children = (
 				DA1AF2B92EF40EA0000AFB3A /* WateryWatWat.app */,
+				DA1AF6CE2EF94574000AFB3A /* WateryWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		DA1AF6CF2EF94574000AFB3A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DA1AF6D02EF94574000AFB3A /* WidgetKit.framework */,
+				DA1AF6D22EF94574000AFB3A /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -68,10 +137,12 @@
 				DA1AF2B52EF40EA0000AFB3A /* Sources */,
 				DA1AF2B62EF40EA0000AFB3A /* Frameworks */,
 				DA1AF2B72EF40EA0000AFB3A /* Resources */,
+				DA1AF6DF2EF94576000AFB3A /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				DA1AF6DD2EF94576000AFB3A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				DA1AF2BB2EF40EA0000AFB3A /* WateryWatWat */,
@@ -82,6 +153,28 @@
 			productName = WateryWatWat;
 			productReference = DA1AF2B92EF40EA0000AFB3A /* WateryWatWat.app */;
 			productType = "com.apple.product-type.application";
+		};
+		DA1AF6CD2EF94574000AFB3A /* WateryWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DA1AF6E22EF94576000AFB3A /* Build configuration list for PBXNativeTarget "WateryWidgetExtension" */;
+			buildPhases = (
+				DA1AF6CA2EF94574000AFB3A /* Sources */,
+				DA1AF6CB2EF94574000AFB3A /* Frameworks */,
+				DA1AF6CC2EF94574000AFB3A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				DA1AF6D42EF94574000AFB3A /* WateryWidget */,
+			);
+			name = WateryWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = WateryWidgetExtension;
+			productReference = DA1AF6CE2EF94574000AFB3A /* WateryWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -94,6 +187,9 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					DA1AF2B82EF40EA0000AFB3A = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					DA1AF6CD2EF94574000AFB3A = {
 						CreatedOnToolsVersion = 26.0;
 					};
 				};
@@ -113,12 +209,20 @@
 			projectRoot = "";
 			targets = (
 				DA1AF2B82EF40EA0000AFB3A /* WateryWatWat */,
+				DA1AF6CD2EF94574000AFB3A /* WateryWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		DA1AF2B72EF40EA0000AFB3A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA1AF6CC2EF94574000AFB3A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,7 +239,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DA1AF6CA2EF94574000AFB3A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DA1AF6DD2EF94576000AFB3A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DA1AF6CD2EF94574000AFB3A /* WateryWidgetExtension */;
+			targetProxy = DA1AF6DC2EF94576000AFB3A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		DA1AF2CB2EF40EA1000AFB3A /* Debug */ = {
@@ -346,6 +465,71 @@
 			};
 			name = Release;
 		};
+		DA1AF6E02EF94576000AFB3A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 82J963PT85;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WateryWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WateryWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chukavin.WateryWatWat.WateryWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DA1AF6E12EF94576000AFB3A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 82J963PT85;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WateryWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = WateryWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.chukavin.WateryWatWat.WateryWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -363,6 +547,15 @@
 			buildConfigurations = (
 				DA1AF2CB2EF40EA1000AFB3A /* Debug */,
 				DA1AF2CC2EF40EA1000AFB3A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DA1AF6E22EF94576000AFB3A /* Build configuration list for PBXNativeTarget "WateryWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA1AF6E02EF94576000AFB3A /* Debug */,
+				DA1AF6E12EF94576000AFB3A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
