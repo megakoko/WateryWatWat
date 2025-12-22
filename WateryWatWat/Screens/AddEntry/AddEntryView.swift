@@ -19,16 +19,12 @@ struct AddEntryView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button(action: viewModel.cancel) {
-                    Image(systemName: "xmark")
-                }
+                Button("Cancel", systemImage: "xmark", role: .cancel, action: viewModel.cancel)
             }
+            
             ToolbarItem(placement: .confirmationAction) {
-                Button(action: viewModel.confirmWithCustom) {
-                    Image(systemName: "checkmark")
-                        .foregroundStyle(.blue)
-                }
-                .disabled(!viewModel.canConfirm)
+                Button("Cancel", systemImage: "checkmark", role: .confirm, action: viewModel.confirmWithCustom)
+                    .disabled(!viewModel.canConfirm)
             }
         }
         .onAppear {
