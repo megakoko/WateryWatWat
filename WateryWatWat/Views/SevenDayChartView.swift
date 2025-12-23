@@ -22,7 +22,7 @@ struct SevenDayChartView: View {
 
             RuleMark(y: .value("Goal", dailyGoal))
                 .lineStyle(StrokeStyle(lineWidth: 2, dash: [10, 5]))
-                .foregroundStyle(Color.aquaBlue)
+                .foregroundStyle(Color.init(uiColor: .secondaryLabel))
         }
         .chartXAxis {
             if periodDays == 7 {
