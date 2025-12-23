@@ -23,7 +23,11 @@ struct Provider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
         let entry = fetchCurrentData()
-        let timeline = Timeline(entries: [entry], policy: .never)
+
+        let calendar = Calendar.current
+        let midnight = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: Date())!)
+
+        let timeline = Timeline(entries: [entry], policy: .after(midnight))
         completion(timeline)
     }
 

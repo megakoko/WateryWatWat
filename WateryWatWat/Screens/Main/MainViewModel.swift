@@ -2,6 +2,7 @@ import Foundation
 import CoreData
 import Combine
 import SwiftUI
+import WidgetKit
 
 @Observable
 final class MainViewModel {
@@ -48,6 +49,7 @@ final class MainViewModel {
         ) { [weak self] _ in
             Task {
                 await self?.loadData()
+                self?.reloadWidgets()
             }
         }
 
@@ -212,6 +214,7 @@ final class MainViewModel {
         await loadData()
         await updateReminders()
         scheduleMidnightRefresh()
+        reloadWidgets()
     }
 
     func handleScenePhaseChange(_ phase: ScenePhase) {
@@ -236,5 +239,9 @@ final class MainViewModel {
         } catch {
             nextReminderTime = nil
         }
+    }
+
+    private func reloadWidgets() {
+        WidgetCenter.shared.reloadAllTimelines()
     }
 }
