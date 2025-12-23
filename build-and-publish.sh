@@ -5,15 +5,15 @@ set -e
 cd "$(dirname "$0")"
 
 SCHEME="WateryWatWat"
-ARCHIVE_PATH="build/WateryWatWat.xcarchive"
-EXPORT_PATH="build/export"
+ARCHIVE_PATH="_build/WateryWatWat.xcarchive"
+EXPORT_PATH="_build/export"
 
 echo "Incrementing build number..."
 ./increment-build.sh
 
 echo "Cleaning build folder..."
-rm -rf build
-mkdir -p build
+rm -rf _build
+mkdir -p _build
 
 echo "Archiving..."
 xcodebuild archive \
