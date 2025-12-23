@@ -9,44 +9,34 @@ struct MainView: View {
         NavigationStack {
             ScrollView {
                 Grid {
-                    GridRow {
+                    WateryRow {
                         circularProgressCard
-                            .gridCellColumns(2)
                     }
 
-                    if shouldUseAccessibilityLayout {
-                        GridRow {
-                            todayVolumeCard
-                        }
-                        .gridCellColumns(2)
-                        
-                        GridRow {
-                            streakCard
-                        }
-                        .gridCellColumns(2)
-                        
-                        GridRow {
-                            nextReminderPanel
-                                .gridCellColumns(2)
-                        }
-                        
-                        GridRow {
-                            sevenDayChartCard
-                                .gridCellColumns(2)
-                        }
-                    } else {
-                        GridRow {
-                            todayVolumeCard
-                            streakCard
-                        }
-                        GridRow {
-                            nextReminderPanel
-                            sevenDayChartCard
-                        }
+                    WateryRow {
+                        remainingToGoalCard
+                    } trailing: {
+                        todayVolumeCard
                     }
-                    GridRow {
+
+                    WateryRow {
+                        streakCard
+                    } trailing: {
+                        nextReminderPanel
+                    }
+
+                    WateryRow {
+                        averageIntakeCard
+                    } trailing: {
+                        goalHitRateCard
+                    }
+
+                    WateryRow {
+                        sevenDayChartCard
+                    }
+
+                    WateryRow {
                         historyPanel
-                            .gridCellColumns(2)
                     }
                 }
                 .padding()
@@ -146,8 +136,16 @@ struct MainView: View {
     }
 
     private var sevenDayChartCard: some View {
-        CardPanel("7-Day History") {
-            SevenDayChartView(dailyTotals: viewModel.dailyTotals, dailyGoal: viewModel.dailyGoal)
+        CardPanel("\(viewModel.statsPeriodDays)-Day History") {
+            SevenDayChartView(
+                dailyTotals: viewModel.statsPeriodDays == 7 ? viewModel.dailyTotals : viewModel.thirtyDayTotals,
+                dailyGoal: viewModel.dailyGoal,
+                periodDays: viewModel.statsPeriodDays,
+                onTogglePeriod: viewModel.toggleStatsPeriod
+            )
+        } trailingButton: {
+            Button("\(viewModel.statsPeriodDays)d", action: viewModel.toggleStatsPeriod)
+                .font(.subheadline)
         }
     }
 
@@ -158,6 +156,26 @@ struct MainView: View {
                 onAddReminder: viewModel.showSettings
             )
         }
+    }
+
+    private var remainingToGoalCard: some View {
+        RemainingToGoalCard(remaining: viewModel.remainingToGoal)
+    }
+
+    private var averageIntakeCard: some View {
+        AverageIntakeCard(
+            average: viewModel.averageIntake,
+            periodDays: viewModel.statsPeriodDays,
+            onTogglePeriod: viewModel.toggleStatsPeriod
+        )
+    }
+
+    private var goalHitRateCard: some View {
+        GoalHitRateCard(
+            hitRate: viewModel.goalHitRate,
+            periodDays: viewModel.statsPeriodDays,
+            onTogglePeriod: viewModel.toggleStatsPeriod
+        )
     }
 
     private var addButton: some View {

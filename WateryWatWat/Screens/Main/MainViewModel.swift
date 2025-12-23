@@ -15,9 +15,53 @@ final class MainViewModel {
     var settingsViewModel: SettingsViewModel?
     var historyViewModel: HistoryViewModel?
     var nextReminderTime: Date?
+    var statsPeriodDays: Int = 7
+    var thirtyDayTotals: [Date: Int64] = [:]
 
     var progress: Double {
         Double(todayTotal) / Double(dailyGoal)
+    }
+
+    var remainingToGoal: Int64 {
+        max(0, dailyGoal - todayTotal)
+    }
+
+    var averageIntake: Int64 {
+        let totals = statsPeriodDays == 7 ? dailyTotals : thirtyDayTotals
+        let calendar = Calendar.current
+        let endDate = calendar.startOfDay(for: Date())
+        let startDate = calendar.date(byAdding: .day, value: -(statsPeriodDays - 1), to: endDate)!
+
+        var total: Int64 = 0
+        var currentDate = startDate
+        while currentDate <= endDate {
+            total += totals[currentDate] ?? 0
+            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+        }
+
+        return total / Int64(statsPeriodDays)
+    }
+
+    var goalHitRate: Int {
+        let totals = statsPeriodDays == 7 ? dailyTotals : thirtyDayTotals
+        let calendar = Calendar.current
+        let endDate = calendar.startOfDay(for: Date())
+        let startDate = calendar.date(byAdding: .day, value: -(statsPeriodDays - 1), to: endDate)!
+
+        var daysMetGoal = 0
+        var currentDate = startDate
+        while currentDate <= endDate {
+            if (totals[currentDate] ?? 0) >= dailyGoal {
+                daysMetGoal += 1
+            }
+            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+        }
+
+        return Int((Double(daysMetGoal) / Double(statsPeriodDays)) * 100)
+    }
+
+    func toggleStatsPeriod() {
+        statsPeriodDays = statsPeriodDays == 7 ? 30 : 7
     }
 
     var streakText: String {
@@ -127,11 +171,12 @@ final class MainViewModel {
     private func loadData() async {
         async let todayTask: Void = fetchTodayTotal()
         async let historyTask: Void = fetchSevenDayHistory()
+        async let thirtyDayTask: Void = fetchThirtyDayHistory()
         async let goalTask: Void = fetchDailyGoal()
         async let streakTask: Void = fetchStreak()
         async let recentTask: Void = fetchRecentEntries()
 
-        _ = await (todayTask, historyTask, goalTask, streakTask, recentTask)
+        _ = await (todayTask, historyTask, thirtyDayTask, goalTask, streakTask, recentTask)
     }
 
     private func fetchDailyGoal() async {
@@ -155,6 +200,18 @@ final class MainViewModel {
             dailyTotals = try await service.fetchDailyTotals(from: startDate, to: endDate)
         } catch {
             dailyTotals = [:]
+        }
+    }
+
+    private func fetchThirtyDayHistory() async {
+        do {
+            let calendar = Calendar.current
+            let endDate = calendar.startOfDay(for: Date())
+            let startDate = calendar.date(byAdding: .day, value: -29, to: endDate)!
+
+            thirtyDayTotals = try await service.fetchDailyTotals(from: startDate, to: endDate)
+        } catch {
+            thirtyDayTotals = [:]
         }
     }
 

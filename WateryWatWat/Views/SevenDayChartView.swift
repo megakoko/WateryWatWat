@@ -4,18 +4,20 @@ import Charts
 struct SevenDayChartView: View {
     let dailyTotals: [Date: Int64]
     let dailyGoal: Int64
+    let periodDays: Int
+    let onTogglePeriod: () -> Void
 
     private let calendar = Calendar.current
 
     var body: some View {
         Chart {
-            ForEach(lastSevenDays, id: \.self) { date in
+            ForEach(lastDays, id: \.self) { date in
                 BarMark(
                     x: .value("Day", date, unit: .day),
                     y: .value("Volume", dailyTotals[calendar.startOfDay(for: date)] ?? 0)
                 )
                 .foregroundStyle(Color.aquaBlue)
-                .cornerRadius(2)
+                .cornerRadius(periodDays == 7 ? 8 : 2)
             }
 
             RuleMark(y: .value("Goal", dailyGoal))
@@ -23,8 +25,14 @@ struct SevenDayChartView: View {
                 .foregroundStyle(Color.aquaBlue)
         }
         .chartXAxis {
-            AxisMarks(values: .stride(by: .day)) { value in
-                AxisValueLabel(format: .dateTime.weekday(.narrow), centered: true)
+            if periodDays == 7 {
+                AxisMarks(values: .stride(by: .day)) { value in
+                    AxisValueLabel(format: .dateTime.weekday(.narrow), centered: true)
+                }
+            } else {
+                AxisMarks {
+                    AxisGridLine()
+                }
             }
         }
         .chartYAxis {
@@ -35,9 +43,9 @@ struct SevenDayChartView: View {
         .frame(height: 100)
     }
 
-    private var lastSevenDays: [Date] {
+    private var lastDays: [Date] {
         let endDate = calendar.startOfDay(for: Date())
-        return (0..<7).compactMap { offset in
+        return (0..<periodDays).compactMap { offset in
             calendar.date(byAdding: .day, value: -offset, to: endDate)
         }.reversed()
     }
@@ -58,12 +66,8 @@ struct SevenDayChartView: View {
 
     return ScrollView {
         VStack(spacing: 20) {
-            SevenDayChartView(dailyTotals: dailyTotals, dailyGoal: 1000)
-            SevenDayChartView(dailyTotals: dailyTotals, dailyGoal: 2000)
-            SevenDayChartView(dailyTotals: dailyTotals, dailyGoal: 4000)
-            
-            SevenDayChartView(dailyTotals: [:], dailyGoal: 1000)
-            SevenDayChartView(dailyTotals: [:], dailyGoal: 2000)
+            SevenDayChartView(dailyTotals: dailyTotals, dailyGoal: 2000, periodDays: 7, onTogglePeriod: {})
+            SevenDayChartView(dailyTotals: dailyTotals, dailyGoal: 2000, periodDays: 30, onTogglePeriod: {})
         }
         .padding()
     }

@@ -27,6 +27,7 @@ struct CardPanel<Content: View, TrailingButton: View>: View {
                     Text(title)
                         .textCase(.uppercase)
                         .font(.callout)
+                        .lineLimit(1)
                     Spacer()
                     trailingButton
                 }
