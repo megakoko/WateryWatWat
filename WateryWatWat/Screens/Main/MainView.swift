@@ -8,7 +8,7 @@ struct MainView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                Grid(horizontalSpacing: 12, verticalSpacing: 20) {
+                Grid {
                     GridRow {
                         circularProgressCard
                             .gridCellColumns(2)
