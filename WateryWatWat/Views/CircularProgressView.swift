@@ -2,8 +2,8 @@ import SwiftUI
 
 struct CircularProgressView: View {
     let progress: Double
-    let current: Int64
-    let goal: Int64
+    let formattedValue: String
+    let symbol: String
     let font: Font
     let lineWidth: CGFloat
 
@@ -14,7 +14,6 @@ struct CircularProgressView: View {
     }
 
     var body: some View {
-
         ZStack {
             Circle()
                 .stroke(.gray.opacity(0.2), lineWidth: lineWidth)
@@ -28,9 +27,9 @@ struct CircularProgressView: View {
                 .shadow(color: .aquaBlue.opacity(0.3), radius: lineWidth * 0.8, x: 0, y: 0)
 
             HStack(alignment: .firstTextBaseline, spacing: 0) {
-                Text(current.formattedLiters())
+                Text(formattedValue)
 
-                Text(" L")
+                Text(symbol)
                     .foregroundStyle(.secondary)
                     .background(
                         GeometryReader { geo in
@@ -48,7 +47,7 @@ struct CircularProgressView: View {
 }
 
 #Preview {
-    CircularProgressView(progress: 0.65, current: 1300, goal: 2000, font: .system(size: 60, weight: .bold), lineWidth: 25)
+    CircularProgressView(progress: 0.65, formattedValue: "1.3", symbol: "L", font: .system(size: 60, weight: .bold), lineWidth: 25)
         .frame(height: 300)
         .padding()
 }

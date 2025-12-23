@@ -2,6 +2,7 @@ import SwiftUI
 
 struct EntryCard: View {
     let entry: HydrationEntry
+    let volumeFormatter = VolumeFormatter(unit: .liters)
 
     var body: some View {
         VStack(spacing: 8) {
@@ -13,7 +14,7 @@ struct EntryCard: View {
     }
 
     private var volumeText: some View {
-        Text("\(entry.volume.formattedLiters()) L")
+        Text(volumeFormatter.string(from: entry.volume))
             .font(.headline)
     }
 

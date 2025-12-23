@@ -26,6 +26,30 @@ final class MainViewModel {
         max(0, dailyGoal - todayTotal)
     }
 
+    var formattedRemainingToGoal: String {
+        volumeFormatter.string(from: remainingToGoal)
+    }
+
+    var formattedDailyGoal: String {
+        volumeFormatter.string(from: dailyGoal)
+    }
+
+    var formattedAverageIntake: String {
+        volumeFormatter.string(from: averageIntake)
+    }
+
+    var formattedTodayTotal: String {
+        volumeFormatter.string(from: todayTotal)
+    }
+
+    var formattedTodayValue: String {
+        volumeFormatter.formattedValue(from: todayTotal)
+    }
+
+    var volumeSymbol: String {
+        volumeFormatter.symbol
+    }
+
     var averageIntake: Int64 {
         let totals = statsPeriodDays == 7 ? dailyTotals : thirtyDayTotals
         let calendar = Calendar.current
@@ -77,6 +101,7 @@ final class MainViewModel {
     private let settingsService: SettingsServiceProtocol
     private let notificationService: NotificationService
     private let notificationDelegate = NotificationDelegate()
+    private let volumeFormatter = VolumeFormatter(unit: .liters)
     private var cancellables = Set<AnyCancellable>()
     private var midnightTimer: Timer?
     private var lastRefreshDate: Date = Date()

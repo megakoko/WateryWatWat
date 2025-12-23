@@ -12,8 +12,10 @@ import CoreData
 // MARK: - Provider
 
 struct Provider: TimelineProvider {
+    private let volumeFormatter = VolumeFormatter(unit: .liters)
+
     func placeholder(in context: Context) -> WidgetHydrationEntry {
-        WidgetHydrationEntry(date: Date(), progress: 0.75, current: 1500, goal: 2000)
+        return WidgetHydrationEntry(date: Date(), progress: 0.75, formattedValue: volumeFormatter.formattedValue(from: 1500), symbol: volumeFormatter.symbol)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (WidgetHydrationEntry) -> ()) {
@@ -53,7 +55,7 @@ struct Provider: TimelineProvider {
 
         let progress = Double(todayTotal) / Double(dailyGoal)
 
-        return WidgetHydrationEntry(date: Date(), progress: progress, current: todayTotal, goal: dailyGoal)
+        return WidgetHydrationEntry(date: Date(), progress: progress, formattedValue: volumeFormatter.formattedValue(from: todayTotal), symbol: volumeFormatter.symbol)
     }
 }
 
@@ -62,8 +64,8 @@ struct Provider: TimelineProvider {
 struct WidgetHydrationEntry: TimelineEntry {
     let date: Date
     let progress: Double
-    let current: Int64
-    let goal: Int64
+    let formattedValue: String
+    let symbol: String
 }
 
 // MARK: - WateryWidgetEntryView
@@ -91,13 +93,13 @@ struct WateryWidgetEntryView : View {
     }
 
     private var homeScreenView: some View {
-        CircularProgressView(progress: entry.progress, current: entry.current, goal: entry.goal, font: .title.bold(), lineWidth: 14)
+        CircularProgressView(progress: entry.progress, formattedValue: entry.formattedValue, symbol: entry.symbol, font: .title.bold(), lineWidth: 14)
             .padding(4)
     }
 
     private var lockScreenView: some View {
         Gauge(value: entry.progress, label: {}) {
-            Text(entry.current.formattedLiters())
+            Text(entry.formattedValue)
                 .padding(.horizontal, 4)
         }
         .gaugeStyle(.accessoryCircularCapacity)
@@ -131,15 +133,15 @@ struct WateryWidget: Widget {
 #Preview(as: .systemSmall) {
     WateryWidget()
 } timeline: {
-    WidgetHydrationEntry(date: .now, progress: 0.65, current: 1300, goal: 2000)
-    WidgetHydrationEntry(date: .now, progress: 0.9, current: 1800, goal: 2000)
-    WidgetHydrationEntry(date: .now, progress: 1.3, current: 2600, goal: 2000)
+    WidgetHydrationEntry(date: .now, progress: 0.65, formattedValue: "1.3", symbol: "L")
+    WidgetHydrationEntry(date: .now, progress: 0.9, formattedValue: "1.8", symbol: "L")
+    WidgetHydrationEntry(date: .now, progress: 1.3, formattedValue: "2.6", symbol: "L")
 }
 
 #Preview(as: .accessoryCircular) {
     WateryWidget()
 } timeline: {
-    WidgetHydrationEntry(date: .now, progress: 0.65, current: 1300, goal: 2000)
-    WidgetHydrationEntry(date: .now, progress: 0.9, current: 1800, goal: 2000)
-    WidgetHydrationEntry(date: .now, progress: 1.3, current: 2600, goal: 2000)
+    WidgetHydrationEntry(date: .now, progress: 0.65, formattedValue: "1.3", symbol: "L")
+    WidgetHydrationEntry(date: .now, progress: 0.9, formattedValue: "1.8", symbol: "L")
+    WidgetHydrationEntry(date: .now, progress: 1.3, formattedValue: "2.6", symbol: "L")
 }

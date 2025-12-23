@@ -2,7 +2,7 @@ import SwiftUI
 
 struct DayCard: View {
     let date: Date
-    let totalVolume: Int64
+    let formattedVolume: String
 
     var body: some View {
         VStack(spacing: 0) {
@@ -35,13 +35,13 @@ struct DayCard: View {
     }
 
     private var volumeText: some View {
-        Text("\(totalVolume.formattedLiters()) L")
+        Text(formattedVolume)
             .font(.caption)
             .fontWeight(.semibold)
     }
 }
 
 #Preview {
-    DayCard(date: Date(), totalVolume: 900)
+    DayCard(date: Date(), formattedVolume: "0.9 L")
         .padding()
 }

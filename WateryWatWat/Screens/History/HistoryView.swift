@@ -19,7 +19,7 @@ struct HistoryView: View {
                         deleteEntries(at: indexSet, in: group)
                     }
                 } header: {
-                    DateGroupHeader(date: group.date, totalVolume: group.totalVolume)
+                    DateGroupHeader(date: group.date, formattedVolume: group.formattedTotalVolume)
                 }
             }
         }

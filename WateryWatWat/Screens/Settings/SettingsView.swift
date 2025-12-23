@@ -31,7 +31,7 @@ struct SettingsView: View {
                 HStack {
                     Text("Daily Goal")
                     Spacer()
-                    Text("\(viewModel.dailyGoal.formattedLiters()) L")
+                    Text(viewModel.formattedDailyGoal)
                         .foregroundStyle(.secondary)
                         .monospacedDigit()
                 }
@@ -45,11 +45,11 @@ struct SettingsView: View {
                 ) {
                     Text("Daily Goal")
                 } minimumValueLabel: {
-                    Text("\(Constants.minGoalML.formattedLiters()) L")
+                    Text(viewModel.formattedMinGoal)
                         .font(.caption)
                         .monospacedDigit()
                 } maximumValueLabel: {
-                    Text("\(Constants.maxGoalML.formattedLiters()) L")
+                    Text(viewModel.formattedMaxGoal)
                         .font(.caption)
                         .monospacedDigit()
                 }

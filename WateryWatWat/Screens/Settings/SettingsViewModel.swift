@@ -59,8 +59,21 @@ final class SettingsViewModel: Identifiable {
         ))
     }
 
+    var formattedDailyGoal: String {
+        volumeFormatter.string(from: dailyGoal)
+    }
+
+    var formattedMinGoal: String {
+        volumeFormatter.string(from: Constants.minGoalML)
+    }
+
+    var formattedMaxGoal: String {
+        volumeFormatter.string(from: Constants.maxGoalML)
+    }
+
     private let service: SettingsServiceProtocol
     private let notificationService: NotificationService
+    private let volumeFormatter = VolumeFormatter(unit: .liters)
     private var isInitialLoad = true
 
     init(service: SettingsServiceProtocol, notificationService: NotificationService) {

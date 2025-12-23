@@ -78,8 +78,8 @@ struct MainView: View {
         CardPanel {
             CircularProgressView(
                 progress: viewModel.progress,
-                current: viewModel.todayTotal,
-                goal: viewModel.dailyGoal,
+                formattedValue: viewModel.formattedTodayValue,
+                symbol: viewModel.volumeSymbol,
                 font: .system(size: 60, weight: .bold),
                 lineWidth: 25
             )
@@ -90,7 +90,7 @@ struct MainView: View {
 
     private var todayVolumeCard: some View {
         CardPanel("Goal") {
-            Text("\(viewModel.dailyGoal.formattedLiters()) L")
+            Text(viewModel.formattedDailyGoal)
                 .lineLimit(1)
                 .font(.largeTitle)
         }
@@ -122,7 +122,7 @@ struct MainView: View {
                             ForEach(group.entries, id: \.objectID) { entry in
                                 EntryCard(entry: entry)
                             }
-                            DayCard(date: group.date, totalVolume: group.totalVolume)
+                            DayCard(date: group.date, formattedVolume: group.formattedTotalVolume)
                         }
                     }
                 }
@@ -159,12 +159,12 @@ struct MainView: View {
     }
 
     private var remainingToGoalCard: some View {
-        RemainingToGoalCard(remaining: viewModel.remainingToGoal)
+        RemainingToGoalCard(remaining: viewModel.formattedRemainingToGoal)
     }
 
     private var averageIntakeCard: some View {
         AverageIntakeCard(
-            average: viewModel.averageIntake,
+            average: viewModel.formattedAverageIntake,
             periodDays: viewModel.statsPeriodDays,
             onTogglePeriod: viewModel.toggleStatsPeriod
         )

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct EntryRow: View {
     let entry: HydrationEntry
+    let volumeFormatter = VolumeFormatter(unit: .liters)
 
     var body: some View {
         HStack {
@@ -17,7 +18,7 @@ struct EntryRow: View {
     }
 
     private var volumeText: some View {
-        Text("\(entry.volume.formattedLiters()) L")
+        Text(volumeFormatter.string(from: entry.volume))
             .font(.body)
             .foregroundStyle(.secondary)
     }

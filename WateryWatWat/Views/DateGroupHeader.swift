@@ -2,7 +2,7 @@ import SwiftUI
 
 struct DateGroupHeader: View {
     let date: Date
-    let totalVolume: Int64
+    let formattedVolume: String
 
     var body: some View {
         HStack {
@@ -18,13 +18,13 @@ struct DateGroupHeader: View {
     }
 
     private var volumeText: some View {
-        Text("\(totalVolume.formattedLiters()) L")
+        Text(formattedVolume)
             .font(.subheadline)
             .foregroundStyle(.secondary)
     }
 }
 
 #Preview {
-    DateGroupHeader(date: Date(), totalVolume: 2500)
+    DateGroupHeader(date: Date(), formattedVolume: "2.5 L")
         .padding()
 }

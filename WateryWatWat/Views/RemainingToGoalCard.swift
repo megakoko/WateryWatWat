@@ -1,17 +1,17 @@
 import SwiftUI
 
 struct RemainingToGoalCard: View {
-    let remaining: Int64
+    let remaining: String
 
     var body: some View {
         CardPanel("Remaining") {
-            Text(remaining.formattedLiters() + " L")
+            Text(remaining)
                 .font(.largeTitle)
         }
     }
 }
 
 #Preview {
-    RemainingToGoalCard(remaining: 500)
+    RemainingToGoalCard(remaining: "0,5 L")
         .padding()
 }

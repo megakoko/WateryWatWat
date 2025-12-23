@@ -1,13 +1,13 @@
 import SwiftUI
 
 struct AverageIntakeCard: View {
-    let average: Int64
+    let average: String
     let periodDays: Int
     let onTogglePeriod: () -> Void
 
     var body: some View {
         CardPanel("Average") {
-            Text(average.formattedLiters() + " L")
+            Text(average)
                 .font(.largeTitle)
         } trailingButton: {
             Button("\(periodDays)d", action: onTogglePeriod)
@@ -17,6 +17,6 @@ struct AverageIntakeCard: View {
 }
 
 #Preview {
-    AverageIntakeCard(average: 1800, periodDays: 7, onTogglePeriod: {})
+    AverageIntakeCard(average: "1,8 L", periodDays: 7, onTogglePeriod: {})
         .padding()
 }

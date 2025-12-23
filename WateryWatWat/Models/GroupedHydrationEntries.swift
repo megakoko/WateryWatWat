@@ -10,6 +10,10 @@ struct GroupedHydrationEntries: Identifiable, Equatable {
         entries.reduce(0) { $0 + $1.volume }
     }
 
+    var formattedTotalVolume: String {
+        VolumeFormatter(unit: .liters).string(from: totalVolume)
+    }
+
     static func == (lhs: GroupedHydrationEntries, rhs: GroupedHydrationEntries) -> Bool {
         lhs.date == rhs.date && lhs.entries == rhs.entries
     }
