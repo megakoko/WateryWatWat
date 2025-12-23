@@ -25,7 +25,8 @@ struct CardPanel<Content: View, TrailingButton: View>: View {
             if let title {
                 HStack {
                     Text(title)
-                        .font(.headline)
+                        .textCase(.uppercase)
+                        .font(.callout)
                     Spacer()
                     trailingButton
                 }
