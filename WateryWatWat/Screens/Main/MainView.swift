@@ -99,8 +99,8 @@ struct MainView: View {
     }
 
     private var todayVolumeCard: some View {
-        CardPanel("Today") {
-            Text("\(viewModel.todayTotal.formattedLiters()) L / \(viewModel.dailyGoal.formattedLiters()) L")
+        CardPanel("Goal") {
+            Text("\(viewModel.dailyGoal.formattedLiters()) L")
                 .lineLimit(1)
                 .font(.largeTitle)
         }
