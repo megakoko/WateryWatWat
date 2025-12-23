@@ -89,19 +89,11 @@ struct MainView: View {
     }
 
     private var todayVolumeCard: some View {
-        CardPanel("Goal") {
-            Text(viewModel.formattedDailyGoal)
-                .lineLimit(1)
-                .font(.largeTitle)
-        }
+        SimpleValueCard(title: "Goal", value: viewModel.formattedDailyGoal)
     }
 
     private var streakCard: some View {
-        CardPanel("Streak") {
-            Text(viewModel.streakText)
-                .lineLimit(1)
-                .font(.largeTitle)
-        }
+        SimpleValueCard(title: "Streak", value: viewModel.streakText)
     }
 
     private var historyPanel: some View {
@@ -160,20 +152,22 @@ struct MainView: View {
     }
 
     private var remainingToGoalCard: some View {
-        RemainingToGoalCard(remaining: viewModel.formattedRemainingToGoal)
+        SimpleValueCard(title: "Remaining", value: viewModel.formattedRemainingToGoal)
     }
 
     private var averageIntakeCard: some View {
-        AverageIntakeCard(
-            average: viewModel.formattedAverageIntake,
+        SimpleValueCard(
+            title: "Average",
+            value: viewModel.formattedAverageIntake,
             periodDays: viewModel.statsPeriodDays,
             onTogglePeriod: viewModel.toggleStatsPeriod
         )
     }
 
     private var goalHitRateCard: some View {
-        GoalHitRateCard(
-            hitRate: viewModel.goalHitRate,
+        SimpleValueCard(
+            title: "Goal Hit",
+            value: "\(viewModel.goalHitRate)%",
             periodDays: viewModel.statsPeriodDays,
             onTogglePeriod: viewModel.toggleStatsPeriod
         )
