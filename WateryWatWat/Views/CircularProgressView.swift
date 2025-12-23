@@ -24,8 +24,8 @@ struct CircularProgressView: View {
                 .stroke(Color.aquaBlue, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                 .rotationEffect(.degrees(-90))
                 .animation(.easeInOut, value: cappedProgress)
-                .shadow(color: .aquaBlue.opacity(0.6), radius: 10, x: 0, y: 0)
-                .shadow(color: .aquaBlue.opacity(0.3), radius: 20, x: 0, y: 0)
+                .shadow(color: .aquaBlue.opacity(0.6), radius: lineWidth * 0.2, x: 0, y: 0)
+                .shadow(color: .aquaBlue.opacity(0.3), radius: lineWidth * 0.8, x: 0, y: 0)
 
             HStack(alignment: .firstTextBaseline, spacing: 0) {
                 Text(current.formattedLiters())
