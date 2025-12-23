@@ -30,10 +30,11 @@ struct CardPanel<Content: View, TrailingButton: View>: View {
                         .lineLimit(1)
                     Spacer()
                     trailingButton
+                        .font(.subheadline)
                 }
                 .padding(.horizontal)
             }
-            
+
             if usePadding {
                 content
                     .padding(.horizontal)

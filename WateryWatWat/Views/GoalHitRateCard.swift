@@ -10,8 +10,10 @@ struct GoalHitRateCard: View {
             Text("\(hitRate)%")
                 .font(.largeTitle)
         } trailingButton: {
-            Button("\(periodDays)d", action: onTogglePeriod)
-                .font(.subheadline)
+            Button(action: onTogglePeriod) {
+                Text("\(periodDays)d")
+                    .animation(nil, value: periodDays)
+            }
         }
     }
 }

@@ -10,8 +10,10 @@ struct AverageIntakeCard: View {
             Text(average)
                 .font(.largeTitle)
         } trailingButton: {
-            Button("\(periodDays)d", action: onTogglePeriod)
-                .font(.subheadline)
+            Button(action: onTogglePeriod) {
+                Text("\(periodDays)d")
+                    .animation(nil, value: periodDays)
+            }
         }
     }
 }

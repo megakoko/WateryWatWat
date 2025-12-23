@@ -109,7 +109,6 @@ struct MainView: View {
             historyScrollView
         } trailingButton: {
             Button("See All", action: viewModel.showHistory)
-                .font(.subheadline)
         }
     }
 
@@ -144,8 +143,10 @@ struct MainView: View {
                 onTogglePeriod: viewModel.toggleStatsPeriod
             )
         } trailingButton: {
-            Button("\(viewModel.statsPeriodDays)d", action: viewModel.toggleStatsPeriod)
-                .font(.subheadline)
+            Button(action: viewModel.toggleStatsPeriod) {
+                Text("\(viewModel.statsPeriodDays)d")
+                    .animation(nil, value: viewModel.statsPeriodDays)
+            }
         }
     }
 
