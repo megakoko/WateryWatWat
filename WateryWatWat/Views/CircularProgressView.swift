@@ -31,6 +31,7 @@ struct CircularProgressView: View {
 
                 Text(symbol)
                     .foregroundStyle(.secondary)
+                    .textCase(.uppercase)
                     .background(
                         GeometryReader { geo in
                             Color.clear.preference(key: UnitWidthKey.self, value: geo.size.width)

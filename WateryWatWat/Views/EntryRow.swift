@@ -2,7 +2,7 @@ import SwiftUI
 
 struct EntryRow: View {
     let entry: HydrationEntry
-    let volumeFormatter = VolumeFormatter(unit: .liters)
+    let volumeFormatter = VolumeFormatter(unit: .milliliters)
 
     var body: some View {
         HStack {

@@ -38,6 +38,7 @@ struct DayCard: View {
         Text(formattedVolume)
             .font(.caption)
             .fontWeight(.semibold)
+            .textCase(.uppercase)
     }
 }
 

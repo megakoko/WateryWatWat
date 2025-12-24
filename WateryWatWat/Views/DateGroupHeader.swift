@@ -21,6 +21,7 @@ struct DateGroupHeader: View {
         Text(formattedVolume)
             .font(.subheadline)
             .foregroundStyle(.secondary)
+            .textCase(.uppercase)
     }
 }
 

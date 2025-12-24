@@ -44,6 +44,7 @@ struct SevenDayChartView: View {
             AxisMarks(values: [Double(dailyGoal)]) { _ in
                 AxisValueLabel {
                     Text(volumeFormatter.string(from: dailyGoal))
+                        .textCase(.uppercase)
                 }
             }
         }

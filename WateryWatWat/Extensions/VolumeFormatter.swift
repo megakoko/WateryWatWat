@@ -34,7 +34,7 @@ final class VolumeFormatter {
         }
 
         let measurement = Measurement(value: value, unit: unit)
-        return measurementFormatter.string(from: measurement).uppercased()
+        return measurementFormatter.string(from: measurement)
     }
 
     func formattedValue(from volumeML: Int64) -> String {

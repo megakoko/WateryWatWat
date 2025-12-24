@@ -35,6 +35,7 @@ struct SettingsView: View {
                     Text(viewModel.formattedDailyGoal)
                         .foregroundStyle(.secondary)
                         .monospacedDigit()
+                        .textCase(.uppercase)
                 }
                 Slider(
                     value: Binding(
@@ -49,10 +50,12 @@ struct SettingsView: View {
                     Text(viewModel.formattedMinGoal)
                         .font(.caption)
                         .monospacedDigit()
+                        .textCase(.uppercase)
                 } maximumValueLabel: {
                     Text(viewModel.formattedMaxGoal)
                         .font(.caption)
                         .monospacedDigit()
+                        .textCase(.uppercase)
                 }
             }
         }

@@ -4,7 +4,7 @@ struct EntryCard: View {
     let entry: HydrationEntry
     let onEdit: (() -> Void)?
     let onDelete: (() -> Void)?
-    let volumeFormatter = VolumeFormatter(unit: .liters)
+    let volumeFormatter = VolumeFormatter(unit: .milliliters)
 
     init(entry: HydrationEntry, onEdit: (() -> Void)? = nil, onDelete: (() -> Void)? = nil) {
         self.entry = entry
