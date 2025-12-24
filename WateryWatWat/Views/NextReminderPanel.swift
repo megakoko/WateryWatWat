@@ -7,11 +7,10 @@ struct NextReminderPanel: View {
     var body: some View {
         if let nextTime = nextReminderTime {
             Text(timeUntilReminder(nextTime))
-                .font(.title)
+                .font(.largeTitle)
                 .frame(maxHeight: .infinity)
         } else {
             Button("Add Reminder", action: onAddReminder)
-                .font(.title3)
                 .frame(maxHeight: .infinity)
         }
     }
@@ -47,6 +46,8 @@ struct NextReminderPanel: View {
             nextReminderTime: nil,
             onAddReminder: {}
         )
+        
+        Spacer()
     }
     .padding()
 }
