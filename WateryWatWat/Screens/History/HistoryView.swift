@@ -27,7 +27,7 @@ struct HistoryView: View {
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $viewModel.editEntryViewModel) { editEntryViewModel in
             NavigationStack {
-                AddEntryView(viewModel: editEntryViewModel)
+                EntryView(viewModel: editEntryViewModel)
             }
         }
         .task {

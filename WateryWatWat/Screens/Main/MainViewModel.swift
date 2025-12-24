@@ -12,7 +12,7 @@ final class MainViewModel {
     var dailyGoal: Int64 = Constants.defaultDailyGoalML
     var streak: Int = 0
     var recentEntries: [GroupedHydrationEntries] = []
-    var addEntryViewModel: AddEntryViewModel?
+    var entryViewModel: EntryViewModel?
     var settingsViewModel: SettingsViewModel?
     var historyViewModel: HistoryViewModel?
     var nextReminderTime: Date?
@@ -165,7 +165,7 @@ final class MainViewModel {
     }
 
     func showAddEntry() {
-        addEntryViewModel = AddEntryViewModel(service: service)
+        entryViewModel = EntryViewModel(service: service)
     }
 
     func quickAddEntry(volume: Int64) {
@@ -184,7 +184,7 @@ final class MainViewModel {
     }
 
     func onEntryAdded() {
-        addEntryViewModel = nil
+        entryViewModel = nil
         Task {
             await loadData()
         }
@@ -199,7 +199,7 @@ final class MainViewModel {
     }
 
     func editEntry(_ entry: HydrationEntry) {
-        addEntryViewModel = AddEntryViewModel(service: service, entry: entry)
+        entryViewModel = EntryViewModel(service: service, entry: entry)
     }
 
     func deleteEntry(_ entry: HydrationEntry) {

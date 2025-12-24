@@ -1,7 +1,7 @@
 import Foundation
 
 @Observable
-final class AddEntryViewModel: Identifiable {
+final class EntryViewModel: Identifiable {
     let id = UUID()
     var selectedVolume: Int64?
     var selectedDate = Date()
@@ -85,8 +85,8 @@ final class AddEntryViewModel: Identifiable {
     }
 }
 
-extension AddEntryViewModel: Hashable {
-    static func == (lhs: AddEntryViewModel, rhs: AddEntryViewModel) -> Bool {
+extension EntryViewModel: Hashable {
+    static func == (lhs: EntryViewModel, rhs: EntryViewModel) -> Bool {
         lhs.id == rhs.id
     }
 

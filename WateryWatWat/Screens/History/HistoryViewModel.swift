@@ -5,7 +5,7 @@ import CoreData
 final class HistoryViewModel: Identifiable {
     let id = UUID()
     var groupedEntries: [GroupedHydrationEntries] = []
-    var editEntryViewModel: AddEntryViewModel?
+    var editEntryViewModel: EntryViewModel?
     var error: Error?
 
     private let service: HydrationServiceProtocol
@@ -28,7 +28,7 @@ final class HistoryViewModel: Identifiable {
     }
 
     func onDidTap(_ entry: HydrationEntry) {
-        editEntryViewModel = AddEntryViewModel(service: service, entry: entry)
+        editEntryViewModel = EntryViewModel(service: service, entry: entry)
     }
 
     private func fetchEntries() async {

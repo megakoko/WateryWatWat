@@ -52,9 +52,9 @@ struct MainView: View {
                     addButton
                 }
             }
-            .sheet(item: $viewModel.addEntryViewModel) { addEntryViewModel in
+            .sheet(item: $viewModel.entryViewModel) { addEntryViewModel in
                 NavigationStack {
-                    AddEntryView(viewModel: addEntryViewModel)
+                    EntryView(viewModel: addEntryViewModel)
                 }
             }
             .sheet(item: $viewModel.settingsViewModel) { settingsViewModel in
@@ -142,7 +142,7 @@ struct MainView: View {
 
     private var sevenDayChartCard: some View {
         CardPanel("\(viewModel.statsPeriodDays)-Day History") {
-            SevenDayChartView(
+            HistoryChartView(
                 dailyTotals: viewModel.statsPeriodDays == 7 ? viewModel.weekTotals : viewModel.monthTotals,
                 dailyGoal: viewModel.dailyGoal,
                 periodDays: viewModel.statsPeriodDays,

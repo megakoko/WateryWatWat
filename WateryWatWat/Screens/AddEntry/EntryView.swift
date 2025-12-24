@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct AddEntryView: View {
-    @State var viewModel: AddEntryViewModel
+struct EntryView: View {
+    @State var viewModel: EntryViewModel
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -79,6 +79,6 @@ struct AddEntryView: View {
 
 #Preview {
     NavigationStack {
-        AddEntryView(viewModel: AddEntryViewModel(service: MockHydrationService()))
+        EntryView(viewModel: EntryViewModel(service: MockHydrationService()))
     }
 }

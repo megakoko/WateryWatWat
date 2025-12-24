@@ -1,7 +1,7 @@
 import SwiftUI
 import Charts
 
-struct SevenDayChartView: View {
+struct HistoryChartView: View {
     let dailyTotals: [DailyTotal]
     let dailyGoal: Int64
     let periodDays: Int
@@ -86,8 +86,8 @@ struct SevenDayChartView: View {
 
     return ScrollView {
         VStack(spacing: 20) {
-            SevenDayChartView(dailyTotals: dailyTotals, dailyGoal: 2000, periodDays: 7, onTogglePeriod: {})
-            SevenDayChartView(dailyTotals: dailyTotals, dailyGoal: 2000, periodDays: 30, onTogglePeriod: {})
+            HistoryChartView(dailyTotals: dailyTotals, dailyGoal: 2000, periodDays: 7, onTogglePeriod: {})
+            HistoryChartView(dailyTotals: dailyTotals, dailyGoal: 2000, periodDays: 30, onTogglePeriod: {})
         }
         .padding()
     }
