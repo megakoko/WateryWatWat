@@ -17,7 +17,7 @@ struct HistoryChartView: View {
                     x: .value("Day", total.date, unit: .day),
                     y: .value("Volume", total.volume)
                 )
-                .foregroundStyle(Color.aquaBlue)
+                .foregroundStyle(Color.accentColor)
                 .cornerRadius(periodDays == 7 ? 8 : 2)
             }
 

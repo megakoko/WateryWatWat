@@ -20,11 +20,11 @@ struct CircularProgressView: View {
 
             Circle()
                 .trim(from: 0, to: cappedProgress)
-                .stroke(Color.aquaBlue, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+                .stroke(Color.accentColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                 .rotationEffect(.degrees(-90))
                 .animation(.easeInOut, value: cappedProgress)
-                .shadow(color: .aquaBlue.opacity(0.6), radius: lineWidth * 0.2, x: 0, y: 0)
-                .shadow(color: .aquaBlue.opacity(0.3), radius: lineWidth * 0.8, x: 0, y: 0)
+                .shadow(color: .accentColor.opacity(0.6), radius: lineWidth * 0.2, x: 0, y: 0)
+                .shadow(color: .accentColor.opacity(0.3), radius: lineWidth * 0.8, x: 0, y: 0)
 
             HStack(alignment: .firstTextBaseline, spacing: 0) {
                 Text(formattedValue)
