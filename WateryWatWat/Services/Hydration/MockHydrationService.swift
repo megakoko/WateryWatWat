@@ -5,11 +5,40 @@ final class MockHydrationService: HydrationServiceProtocol {
     private let delay: TimeInterval
     private let fail: Bool
     private let context: NSManagedObjectContext
+    private let mockDailyTotals: [Date: Int64]
+    private let mockEntries: [HydrationEntry]
 
     init(delay: TimeInterval = 0, fail: Bool = false) {
         self.delay = delay
         self.fail = fail
         self.context = PersistenceController.preview.container.viewContext
+
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        var dailyTotals: [Date: Int64] = [:]
+        var entries: [HydrationEntry] = []
+
+        for dayOffset in 0..<30 {
+            guard let currentDate = calendar.date(byAdding: .day, value: -dayOffset, to: today) else { continue }
+            let dayStart = calendar.startOfDay(for: currentDate)
+
+            let entryCount = Int.random(in: 2...5)
+            var dayTotal: Int64 = 0
+
+            for i in 0..<entryCount {
+                let entry = HydrationEntry(context: context)
+                entry.date = calendar.date(byAdding: .hour, value: 8 + i * 3, to: dayStart)
+                entry.volume = [250, 500, 750, 1000].randomElement()!
+                entry.type = "water"
+                entries.append(entry)
+                dayTotal += entry.volume
+            }
+
+            dailyTotals[dayStart] = dayTotal
+        }
+
+        self.mockDailyTotals = dailyTotals
+        self.mockEntries = entries.sorted { ($0.date ?? Date()) > ($1.date ?? Date()) }
     }
 
     func addEntry(volume: Int64, type: String, date: Date) async throws {
@@ -26,16 +55,13 @@ final class MockHydrationService: HydrationServiceProtocol {
         }
 
         let calendar = Calendar.current
-        var totals: [DailyTotal] = []
+        let startDay = calendar.startOfDay(for: startDate)
+        let endDay = calendar.startOfDay(for: endDate)
 
-        var currentDate = startDate
-        while currentDate <= endDate {
-            let dayStart = calendar.startOfDay(for: currentDate)
-            totals.append(DailyTotal(date: dayStart, volume: Int64.random(in: 500...2500)))
-            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
-        }
-
-        return totals
+        return mockDailyTotals
+            .filter { date, _ in date >= startDay && date <= endDay }
+            .map { DailyTotal(date: $0.key, volume: $0.value) }
+            .sorted { $0.date < $1.date }
     }
 
     func fetchTodayTotal() async throws -> Int64 {
@@ -43,7 +69,9 @@ final class MockHydrationService: HydrationServiceProtocol {
         if fail {
             throw NSError(domain: "MockHydrationService", code: -1)
         }
-        return 1750
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        return mockDailyTotals[today] ?? 0
     }
 
     func calculateStreak(goal: Int64) async throws -> Int {
@@ -51,7 +79,23 @@ final class MockHydrationService: HydrationServiceProtocol {
         if fail {
             throw NSError(domain: "MockHydrationService", code: -1)
         }
-        return 5
+
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        var streak = 0
+
+        for dayOffset in 0..<30 {
+            guard let date = calendar.date(byAdding: .day, value: -dayOffset, to: today),
+                  let total = mockDailyTotals[date] else { break }
+
+            if total >= goal {
+                streak += 1
+            } else {
+                break
+            }
+        }
+
+        return streak
     }
 
     func fetchEntries(from startDate: Date, to endDate: Date) async throws -> [HydrationEntry] {
@@ -60,26 +104,15 @@ final class MockHydrationService: HydrationServiceProtocol {
             throw NSError(domain: "MockHydrationService", code: -1)
         }
 
-        var mockEntries: [HydrationEntry] = []
         let calendar = Calendar.current
-        var currentDate = calendar.startOfDay(for: endDate)
+        let startDay = calendar.startOfDay(for: startDate)
+        let endDay = calendar.startOfDay(for: endDate)
 
-        while currentDate >= startDate {
-            let entriesCount = Int.random(in: 2...5)
-
-            for i in 0..<entriesCount {
-                let entry = HydrationEntry(context: context)
-                entry.date = calendar.date(byAdding: .hour, value: 8 + i * 3, to: currentDate)
-                entry.volume = [250, 500, 750, 1000].randomElement()!
-                entry.type = "water"
-                mockEntries.append(entry)
-            }
-
-            guard let previousDay = calendar.date(byAdding: .day, value: -1, to: currentDate) else { break }
-            currentDate = previousDay
+        return mockEntries.filter { entry in
+            guard let date = entry.date else { return false }
+            let day = calendar.startOfDay(for: date)
+            return day >= startDay && day <= endDay
         }
-
-        return mockEntries.sorted { ($0.date ?? Date()) > ($1.date ?? Date()) }
     }
 
     func deleteEntry(_ entry: HydrationEntry) async throws {
