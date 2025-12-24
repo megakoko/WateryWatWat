@@ -8,6 +8,7 @@ struct SevenDayChartView: View {
     let onTogglePeriod: () -> Void
 
     private let calendar = Calendar.current
+    private let volumeFormatter = VolumeFormatter(unit: .liters)
 
     var body: some View {
         Chart {
@@ -41,7 +42,9 @@ struct SevenDayChartView: View {
         }
         .chartYAxis {
             AxisMarks(values: [Double(dailyGoal)]) { _ in
-                AxisValueLabel()
+                AxisValueLabel {
+                    Text(volumeFormatter.string(from: dailyGoal))
+                }
             }
         }
         .frame(height: 100)
