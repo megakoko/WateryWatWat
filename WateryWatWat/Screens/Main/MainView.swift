@@ -99,7 +99,7 @@ struct MainView: View {
     }
 
     private var todayVolumeCard: some View {
-        SimpleValueCard(title: "Goal", value: viewModel.formattedDailyGoal)
+        SimpleValueCard(title: "Goal", value: viewModel.formattedDailyGoal.uppercased())
     }
 
     private var streakCard: some View {
@@ -166,13 +166,13 @@ struct MainView: View {
     }
 
     private var remainingToGoalCard: some View {
-        SimpleValueCard(title: "Remaining", value: viewModel.formattedRemainingToGoal)
+        SimpleValueCard(title: "Remaining", value: viewModel.formattedRemainingToGoal.uppercased())
     }
 
     private var averageIntakeCard: some View {
         SimpleValueCard(
             title: "Average",
-            value: viewModel.formattedAverageIntake,
+            value: viewModel.formattedAverageIntake.uppercased(),
             periodDays: viewModel.statsPeriodDays,
             onTogglePeriod: viewModel.toggleStatsPeriod
         )

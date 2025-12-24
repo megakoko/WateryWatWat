@@ -30,7 +30,6 @@ struct SimpleValueCard: View {
         Text(value)
             .lineLimit(1)
             .font(.largeTitle)
-            .textCase(.uppercase)
     }
 }
 
