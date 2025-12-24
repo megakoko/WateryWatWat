@@ -93,12 +93,12 @@ struct SettingsView: View {
 
                 Button("Open Settings", action: viewModel.openAppSettings)
             }
-
+        } header: {
+            Text("Drink Reminders")
+        } footer: {
             if viewModel.shouldShowNotificationSettings {
                 Button("Notification Settings", action: viewModel.openAppSettings)
             }
-        } header: {
-            Text("Drink Reminders")
         }
     }
 }
