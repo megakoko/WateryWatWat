@@ -6,6 +6,7 @@ final class HistoryViewModel: Identifiable {
     let id = UUID()
     var groupedEntries: [GroupedHydrationEntries] = []
     var editEntryViewModel: AddEntryViewModel?
+    var error: Error?
 
     private let service: HydrationServiceProtocol
 
@@ -22,6 +23,7 @@ final class HistoryViewModel: Identifiable {
             try await service.deleteEntry(entry)
             await fetchEntries()
         } catch {
+            self.error = error
         }
     }
 
@@ -47,6 +49,7 @@ final class HistoryViewModel: Identifiable {
                 GroupedHydrationEntries(date: date, entries: entries)
             }.sorted { $0.date > $1.date }
         } catch {
+            self.error = error
             groupedEntries = []
         }
     }

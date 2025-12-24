@@ -19,6 +19,7 @@ final class MainViewModel {
     var statsPeriodDays: Int = 7
     var entryToDelete: HydrationEntry?
     var showDeleteConfirmation = false
+    var error: Error?
 
     var progress: Double {
         Double(todayTotal) / Double(dailyGoal)
@@ -178,6 +179,7 @@ final class MainViewModel {
             try await service.addEntry(volume: volume, type: "water", date: Date())
             await loadData()
         } catch {
+            self.error = error
         }
     }
 
@@ -218,6 +220,7 @@ final class MainViewModel {
             try await service.deleteEntry(entry)
             await loadData()
         } catch {
+            self.error = error
         }
     }
 

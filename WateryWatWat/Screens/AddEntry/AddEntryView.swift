@@ -32,6 +32,7 @@ struct AddEntryView: View {
                 dismiss()
             }
         }
+        .errorAlert($viewModel.error)
     }
 
     private var datePicker: some View {

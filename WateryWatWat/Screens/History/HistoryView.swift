@@ -33,6 +33,7 @@ struct HistoryView: View {
         .task {
             await viewModel.onAppear()
         }
+        .errorAlert($viewModel.error)
     }
 
     private func deleteEntries(at offsets: IndexSet, in group: GroupedHydrationEntries) {

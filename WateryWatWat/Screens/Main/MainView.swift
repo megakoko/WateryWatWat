@@ -68,6 +68,7 @@ struct MainView: View {
             .task {
                 await viewModel.onAppear()
             }
+            .errorAlert($viewModel.error)
             .confirmationDialog(
                 "Delete Entry",
                 isPresented: $viewModel.showDeleteConfirmation,

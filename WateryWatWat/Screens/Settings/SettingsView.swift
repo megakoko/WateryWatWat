@@ -23,6 +23,7 @@ struct SettingsView: View {
         .task {
             await viewModel.onAppear()
         }
+        .errorAlert($viewModel.error)
     }
 
     private var dailyGoalSection: some View {

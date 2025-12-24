@@ -42,6 +42,7 @@ final class SettingsViewModel: Identifiable {
     }
     var isLoading = false
     var permissionStatus: UNAuthorizationStatus = .notDetermined
+    var error: Error?
 
     var shouldShowPermissionDenied: Bool {
         remindersEnabled && permissionStatus == .denied
@@ -105,6 +106,7 @@ final class SettingsViewModel: Identifiable {
         do {
             try await service.setDailyGoal(dailyGoal)
         } catch {
+            self.error = error
         }
     }
 
@@ -130,6 +132,7 @@ final class SettingsViewModel: Identifiable {
             let settings = service.getReminderSettings()
             try await notificationService.scheduleReminders(settings: settings)
         } catch {
+            self.error = error
         }
     }
 
@@ -144,6 +147,7 @@ final class SettingsViewModel: Identifiable {
         do {
             try await service.setReminderStartTime(hour: components.hour ?? 8, minute: components.minute ?? 0)
         } catch {
+            self.error = error
         }
     }
 
@@ -158,6 +162,7 @@ final class SettingsViewModel: Identifiable {
         do {
             try await service.setReminderEndTime(hour: components.hour ?? 22, minute: components.minute ?? 0)
         } catch {
+            self.error = error
         }
     }
 
@@ -169,6 +174,7 @@ final class SettingsViewModel: Identifiable {
         do {
             try await service.setReminderPeriod(reminderPeriodMinutes)
         } catch {
+            self.error = error
         }
     }
 

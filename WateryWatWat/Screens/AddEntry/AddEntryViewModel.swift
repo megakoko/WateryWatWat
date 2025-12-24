@@ -6,6 +6,7 @@ final class AddEntryViewModel: Identifiable {
     var selectedVolume: Int64?
     var selectedDate = Date()
     var isLoading = false
+    var error: Error?
 
     private let service: HydrationServiceProtocol
     private let entry: HydrationEntry?
@@ -72,6 +73,9 @@ final class AddEntryViewModel: Identifiable {
             }
             onEntryAdded?()
         } catch {
+            self.error = error
+            isLoading = false
+            return
         }
         isLoading = false
     }
