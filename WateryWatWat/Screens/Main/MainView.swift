@@ -41,6 +41,7 @@ struct MainView: View {
                 }
                 .padding()
             }
+            .scrollIndicators(.hidden)
             .navigationTitle("Hydration")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
