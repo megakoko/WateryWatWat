@@ -30,13 +30,17 @@ struct SevenDayChartView: View {
                     AxisValueLabel(format: .dateTime.weekday(.narrow), centered: true)
                 }
             } else {
-                AxisMarks {
-                    AxisGridLine()
+                AxisMarks(values: xAxisValues) { value in
+                    if let date = value.as(Date.self) {
+                        AxisValueLabel {
+                            Text(labelForDate(date))
+                        }
+                    }
                 }
             }
         }
         .chartYAxis {
-            AxisMarks { _ in
+            AxisMarks(values: [Double(dailyGoal)]) { _ in
                 AxisValueLabel()
             }
         }
@@ -48,6 +52,25 @@ struct SevenDayChartView: View {
         return (0..<periodDays).compactMap { offset in
             calendar.date(byAdding: .day, value: -offset, to: endDate)
         }.reversed()
+    }
+
+    private var xAxisValues: [Date] {
+        let today = calendar.startOfDay(for: Date())
+        return [
+            calendar.date(byAdding: .day, value: -21, to: today)!,
+            calendar.date(byAdding: .day, value: -14, to: today)!,
+            calendar.date(byAdding: .day, value: -7, to: today)!,
+            today,
+        ]
+    }
+
+    private func labelForDate(_ date: Date) -> String {
+        let today = calendar.startOfDay(for: Date())
+        if calendar.isDate(date, inSameDayAs: today) {
+            return "0"
+        }
+        let weeksAgo = calendar.dateComponents([.weekOfYear], from: date, to: today).weekOfYear ?? 0
+        return "\(weeksAgo)w"
     }
 }
 
