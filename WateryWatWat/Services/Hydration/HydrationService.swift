@@ -3,7 +3,7 @@ import CoreData
 
 protocol HydrationServiceProtocol {
     func addEntry(volume: Int64, type: String, date: Date) async throws
-    func fetchDailyTotals(from startDate: Date, to endDate: Date) async throws -> [Date: Int64]
+    func fetchDailyTotals(from startDate: Date, to endDate: Date) async throws -> [DailyTotal]
     func fetchTodayTotal() async throws -> Int64
     func calculateStreak(goal: Int64) async throws -> Int
     func fetchEntries(from startDate: Date, to endDate: Date) async throws -> [HydrationEntry]
@@ -28,7 +28,7 @@ final class HydrationService: HydrationServiceProtocol {
         }
     }
 
-    func fetchDailyTotals(from startDate: Date, to endDate: Date) async throws -> [Date: Int64] {
+    func fetchDailyTotals(from startDate: Date, to endDate: Date) async throws -> [DailyTotal] {
         try await context.perform {
             let calendar = Calendar.current
             let normalizedStart = calendar.startOfDay(for: startDate)
@@ -40,14 +40,20 @@ final class HydrationService: HydrationServiceProtocol {
 
             let entries = try self.context.fetch(request)
 
-            var dailyTotals: [Date: Int64] = [:]
-
+            var totalsDict: [Date: Int64] = [:]
             for entry in entries {
                 let dayStart = calendar.startOfDay(for: entry.date!)
-                dailyTotals[dayStart, default: 0] += entry.volume
+                totalsDict[dayStart, default: 0] += entry.volume
             }
 
-            return dailyTotals
+            var allDates: [DailyTotal] = []
+            var currentDate = normalizedStart
+            while currentDate <= calendar.startOfDay(for: endDate) {
+                allDates.append(DailyTotal(date: currentDate, volume: totalsDict[currentDate] ?? 0))
+                currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+            }
+
+            return allDates
         }
     }
 

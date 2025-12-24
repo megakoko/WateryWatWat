@@ -129,7 +129,7 @@ struct MainView: View {
     private var sevenDayChartCard: some View {
         CardPanel("\(viewModel.statsPeriodDays)-Day History") {
             SevenDayChartView(
-                dailyTotals: viewModel.statsPeriodDays == 7 ? viewModel.dailyTotals : viewModel.thirtyDayTotals,
+                dailyTotals: viewModel.statsPeriodDays == 7 ? viewModel.weekTotals : viewModel.monthTotals,
                 dailyGoal: viewModel.dailyGoal,
                 periodDays: viewModel.statsPeriodDays,
                 onTogglePeriod: viewModel.toggleStatsPeriod

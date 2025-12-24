@@ -19,19 +19,19 @@ final class MockHydrationService: HydrationServiceProtocol {
         }
     }
 
-    func fetchDailyTotals(from startDate: Date, to endDate: Date) async throws -> [Date: Int64] {
+    func fetchDailyTotals(from startDate: Date, to endDate: Date) async throws -> [DailyTotal] {
         try await Task.sleep(for: .seconds(delay))
         if fail {
             throw NSError(domain: "MockHydrationService", code: -1)
         }
 
         let calendar = Calendar.current
-        var totals: [Date: Int64] = [:]
+        var totals: [DailyTotal] = []
 
         var currentDate = startDate
         while currentDate <= endDate {
             let dayStart = calendar.startOfDay(for: currentDate)
-            totals[dayStart] = Int64.random(in: 500...2500)
+            totals.append(DailyTotal(date: dayStart, volume: Int64.random(in: 500...2500)))
             currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
         }
 

@@ -2,7 +2,7 @@ import SwiftUI
 import Charts
 
 struct SevenDayChartView: View {
-    let dailyTotals: [Date: Int64]
+    let dailyTotals: [DailyTotal]
     let dailyGoal: Int64
     let periodDays: Int
     let onTogglePeriod: () -> Void
@@ -11,10 +11,10 @@ struct SevenDayChartView: View {
 
     var body: some View {
         Chart {
-            ForEach(lastDays, id: \.self) { date in
+            ForEach(dailyTotals, id: \.date) { total in
                 BarMark(
-                    x: .value("Day", date, unit: .day),
-                    y: .value("Volume", dailyTotals[calendar.startOfDay(for: date)] ?? 0)
+                    x: .value("Day", total.date, unit: .day),
+                    y: .value("Volume", total.volume)
                 )
                 .foregroundStyle(Color.aquaBlue)
                 .cornerRadius(periodDays == 7 ? 8 : 2)
@@ -47,13 +47,6 @@ struct SevenDayChartView: View {
         .frame(height: 100)
     }
 
-    private var lastDays: [Date] {
-        let endDate = calendar.startOfDay(for: Date())
-        return (0..<periodDays).compactMap { offset in
-            calendar.date(byAdding: .day, value: -offset, to: endDate)
-        }.reversed()
-    }
-
     private var xAxisValues: [Date] {
         let today = calendar.startOfDay(for: Date())
         return [
@@ -77,14 +70,14 @@ struct SevenDayChartView: View {
 #Preview {
     let calendar = Calendar.current
     let today = calendar.startOfDay(for: Date())
-    let dailyTotals: [Date: Int64] = [
-        calendar.date(byAdding: .day, value: -6, to: today)!: 800,
-        calendar.date(byAdding: .day, value: -5, to: today)!: 1200,
-        calendar.date(byAdding: .day, value: -4, to: today)!: 1500,
-        calendar.date(byAdding: .day, value: -3, to: today)!: 2000,
-        calendar.date(byAdding: .day, value: -2, to: today)!: 1800,
-        calendar.date(byAdding: .day, value: -1, to: today)!: 2200,
-        today: 1750
+    let dailyTotals: [DailyTotal] = [
+        DailyTotal(date: calendar.date(byAdding: .day, value: -6, to: today)!, volume: 800),
+        DailyTotal(date: calendar.date(byAdding: .day, value: -5, to: today)!, volume: 1200),
+        DailyTotal(date: calendar.date(byAdding: .day, value: -4, to: today)!, volume: 1500),
+        DailyTotal(date: calendar.date(byAdding: .day, value: -3, to: today)!, volume: 2000),
+        DailyTotal(date: calendar.date(byAdding: .day, value: -2, to: today)!, volume: 1800),
+        DailyTotal(date: calendar.date(byAdding: .day, value: -1, to: today)!, volume: 2200),
+        DailyTotal(date: today, volume: 1750)
     ]
 
     return ScrollView {

@@ -7,7 +7,8 @@ import WidgetKit
 @Observable
 final class MainViewModel {
     var todayTotal: Int64 = 0
-    var dailyTotals: [Date: Int64] = [:]
+    var weekTotals: [DailyTotal] = []
+    var monthTotals: [DailyTotal] = []
     var dailyGoal: Int64 = Constants.defaultDailyGoalML
     var streak: Int = 0
     var recentEntries: [GroupedHydrationEntries] = []
@@ -16,7 +17,6 @@ final class MainViewModel {
     var historyViewModel: HistoryViewModel?
     var nextReminderTime: Date?
     var statsPeriodDays: Int = 7
-    var thirtyDayTotals: [Date: Int64] = [:]
 
     var progress: Double {
         Double(todayTotal) / Double(dailyGoal)
@@ -50,38 +50,39 @@ final class MainViewModel {
         volumeFormatter.symbol
     }
 
-    var averageIntake: Int64 {
-        let totals = statsPeriodDays == 7 ? dailyTotals : thirtyDayTotals
+    private var averageCalculationDays: [DailyTotal] {
+        let totals = statsPeriodDays == 7 ? weekTotals : monthTotals
         let calendar = Calendar.current
-        let endDate = calendar.startOfDay(for: Date())
-        let startDate = calendar.date(byAdding: .day, value: -(statsPeriodDays - 1), to: endDate)!
+        let today = calendar.startOfDay(for: Date())
 
-        var total: Int64 = 0
-        var currentDate = startDate
-        while currentDate <= endDate {
-            total += totals[currentDate] ?? 0
-            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+        let datesWithData = totals.drop(while: { $0.volume == 0 })
+
+        return datesWithData.filter { dailyTotal in
+            !calendar.isDate(dailyTotal.date, inSameDayAs: today) || dailyTotal.volume >= dailyGoal
+        }
+    }
+
+    var averageIntake: Int64 {
+        let days = averageCalculationDays
+
+        guard !days.isEmpty else {
+            return 0
         }
 
-        return total / Int64(statsPeriodDays)
+        let total = days.reduce(Int64(0)) { $0 + $1.volume }
+        return total / Int64(days.count)
     }
 
     var goalHitRate: Int {
-        let totals = statsPeriodDays == 7 ? dailyTotals : thirtyDayTotals
-        let calendar = Calendar.current
-        let endDate = calendar.startOfDay(for: Date())
-        let startDate = calendar.date(byAdding: .day, value: -(statsPeriodDays - 1), to: endDate)!
+        let days = averageCalculationDays
 
-        var daysMetGoal = 0
-        var currentDate = startDate
-        while currentDate <= endDate {
-            if (totals[currentDate] ?? 0) >= dailyGoal {
-                daysMetGoal += 1
-            }
-            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
+        guard !days.isEmpty else {
+            return 0
         }
 
-        return Int((Double(daysMetGoal) / Double(statsPeriodDays)) * 100)
+        let daysMetGoal = days.count(where: { $0.volume >= dailyGoal })
+
+        return Int((Double(daysMetGoal) / Double(days.count)) * 100)
     }
 
     func toggleStatsPeriod() {
@@ -195,13 +196,12 @@ final class MainViewModel {
 
     private func loadData() async {
         async let todayTask: Void = fetchTodayTotal()
-        async let historyTask: Void = fetchSevenDayHistory()
-        async let thirtyDayTask: Void = fetchThirtyDayHistory()
+        async let historyTask: Void = fetchHistory()
         async let goalTask: Void = fetchDailyGoal()
         async let streakTask: Void = fetchStreak()
         async let recentTask: Void = fetchRecentEntries()
 
-        _ = await (todayTask, historyTask, thirtyDayTask, goalTask, streakTask, recentTask)
+        _ = await (todayTask, historyTask, goalTask, streakTask, recentTask)
     }
 
     private func fetchDailyGoal() async {
@@ -216,27 +216,17 @@ final class MainViewModel {
         }
     }
 
-    private func fetchSevenDayHistory() async {
-        do {
-            let calendar = Calendar.current
-            let endDate = calendar.startOfDay(for: Date())
-            let startDate = calendar.date(byAdding: .day, value: -6, to: endDate)!
-
-            dailyTotals = try await service.fetchDailyTotals(from: startDate, to: endDate)
-        } catch {
-            dailyTotals = [:]
-        }
-    }
-
-    private func fetchThirtyDayHistory() async {
+    private func fetchHistory() async {
         do {
             let calendar = Calendar.current
             let endDate = calendar.startOfDay(for: Date())
             let startDate = calendar.date(byAdding: .day, value: -29, to: endDate)!
 
-            thirtyDayTotals = try await service.fetchDailyTotals(from: startDate, to: endDate)
+            monthTotals = try await service.fetchDailyTotals(from: startDate, to: endDate)
+            weekTotals = Array(monthTotals.suffix(7))
         } catch {
-            thirtyDayTotals = [:]
+            monthTotals = []
+            weekTotals = []
         }
     }
 
