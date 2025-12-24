@@ -58,7 +58,6 @@ struct SevenDayChartView: View {
             calendar.date(byAdding: .day, value: -21, to: today)!,
             calendar.date(byAdding: .day, value: -14, to: today)!,
             calendar.date(byAdding: .day, value: -7, to: today)!,
-            today,
         ]
     }
 
