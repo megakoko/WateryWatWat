@@ -17,6 +17,8 @@ final class MainViewModel {
     var historyViewModel: HistoryViewModel?
     var nextReminderTime: Date?
     var statsPeriodDays: Int = 7
+    var entryToDelete: HydrationEntry?
+    var showDeleteConfirmation = false
 
     var progress: Double {
         Double(todayTotal) / Double(dailyGoal)
@@ -192,6 +194,31 @@ final class MainViewModel {
 
     func showHistory() {
         historyViewModel = HistoryViewModel(service: service)
+    }
+
+    func editEntry(_ entry: HydrationEntry) {
+        addEntryViewModel = AddEntryViewModel(service: service, entry: entry)
+    }
+
+    func deleteEntry(_ entry: HydrationEntry) {
+        entryToDelete = entry
+        showDeleteConfirmation = true
+    }
+
+    func confirmDelete() {
+        guard let entry = entryToDelete else { return }
+        Task {
+            await performDelete(entry: entry)
+        }
+        entryToDelete = nil
+    }
+
+    private func performDelete(entry: HydrationEntry) async {
+        do {
+            try await service.deleteEntry(entry)
+            await loadData()
+        } catch {
+        }
     }
 
     private func loadData() async {

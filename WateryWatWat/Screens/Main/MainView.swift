@@ -68,6 +68,15 @@ struct MainView: View {
             .task {
                 await viewModel.onAppear()
             }
+            .confirmationDialog(
+                "Delete Entry",
+                isPresented: $viewModel.showDeleteConfirmation,
+                presenting: viewModel.entryToDelete
+            ) { _ in
+                Button("Delete", role: .destructive, action: viewModel.confirmDelete)
+            } message: { _ in
+                Text("Delete entry?")
+            }
         }
         .onChange(of: scenePhase) { _, newPhase in
             viewModel.handleScenePhaseChange(newPhase)
@@ -111,7 +120,11 @@ struct MainView: View {
                     ForEach(viewModel.recentEntries) { group in
                         HStack(alignment: .bottom, spacing: 20) {
                             ForEach(group.entries, id: \.objectID) { entry in
-                                EntryCard(entry: entry)
+                                EntryCard(
+                                    entry: entry,
+                                    onEdit: { viewModel.editEntry(entry) },
+                                    onDelete: { viewModel.deleteEntry(entry) }
+                                )
                             }
                             DayCard(date: group.date, formattedVolume: group.formattedTotalVolume)
                         }
