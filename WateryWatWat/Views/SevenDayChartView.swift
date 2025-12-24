@@ -54,6 +54,7 @@ struct SevenDayChartView: View {
     private var xAxisValues: [Date] {
         let today = calendar.startOfDay(for: Date())
         return [
+            calendar.date(byAdding: .day, value: -28, to: today)!,
             calendar.date(byAdding: .day, value: -21, to: today)!,
             calendar.date(byAdding: .day, value: -14, to: today)!,
             calendar.date(byAdding: .day, value: -7, to: today)!,
