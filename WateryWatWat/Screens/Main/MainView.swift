@@ -47,15 +47,6 @@ struct MainView: View {
             await viewModel.onAppear()
         }
         .errorAlert($viewModel.error)
-        .confirmationDialog(
-            "Delete Entry",
-            isPresented: $viewModel.showDeleteConfirmation,
-            presenting: viewModel.entryToDelete
-        ) { _ in
-            Button("Delete", role: .destructive, action: viewModel.confirmDelete)
-        } message: { _ in
-            Text("Delete entry?")
-        }
         .onChange(of: scenePhase) { _, newPhase in
             viewModel.handleScenePhaseChange(newPhase)
         }
@@ -149,6 +140,15 @@ struct MainView: View {
                 }
             }
             .padding(.horizontal)
+        }
+        .confirmationDialog(
+            "Delete Entry",
+            isPresented: $viewModel.showDeleteConfirmation,
+            presenting: viewModel.entryToDelete
+        ) { _ in
+            Button("Delete", role: .destructive, action: viewModel.confirmDelete)
+        } message: { _ in
+            Text("Delete entry?")
         }
     }
 
