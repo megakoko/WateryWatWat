@@ -22,7 +22,6 @@ struct CircularProgressView: View {
                 .trim(from: 0, to: cappedProgress)
                 .stroke(Color.accentColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                 .rotationEffect(.degrees(-90))
-                .animation(.easeInOut, value: cappedProgress)
                 .shadow(color: .accentColor.opacity(0.6), radius: lineWidth * 0.2, x: 0, y: 0)
                 .shadow(color: .accentColor.opacity(0.3), radius: lineWidth * 0.8, x: 0, y: 0)
 

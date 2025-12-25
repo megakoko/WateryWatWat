@@ -121,7 +121,7 @@ final class MainViewModel {
             queue: .main
         ) { [weak self] _ in
             Task {
-                await self?.loadData()
+                await self?.loadData(initialLoad: false)
                 self?.reloadWidgets()
             }
         }
@@ -129,8 +129,16 @@ final class MainViewModel {
         UserDefaults.standard.publisher(for: \.dailyGoalML)
             .sink { [weak self] _ in
                 Task {
-                    await self?.fetchDailyGoal()
-                    await self?.fetchStreak()
+                    do {
+                        let dailyGoal = try await self?.fetchDailyGoal()
+                        let streak = try await self?.fetchStreak()
+                        if let dailyGoal, let streak {
+                            self?.dailyGoal = dailyGoal
+                            self?.streak = streak
+                        }
+                    } catch {
+                        self?.error = error
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -147,7 +155,7 @@ final class MainViewModel {
     }
 
     func onAppear() async {
-        await loadData()
+        await loadData(initialLoad: true)
         await updateReminders()
         scheduleMidnightRefresh()
         setupNotificationDelegate()
@@ -177,7 +185,7 @@ final class MainViewModel {
     private func addQuickEntry(volume: Int64) async {
         do {
             try await service.addEntry(volume: volume, type: "water", date: Date())
-            await loadData()
+            await loadData(initialLoad: false)
         } catch {
             self.error = error
         }
@@ -186,7 +194,7 @@ final class MainViewModel {
     func onEntryAdded() {
         entryViewModel = nil
         Task {
-            await loadData()
+            await loadData(initialLoad: false)
         }
     }
 
@@ -218,76 +226,74 @@ final class MainViewModel {
     private func performDelete(entry: HydrationEntry) async {
         do {
             try await service.deleteEntry(entry)
-            await loadData()
+            await loadData(initialLoad: false)
         } catch {
             self.error = error
         }
     }
 
-    private func loadData() async {
-        async let todayTask: Void = fetchTodayTotal()
-        async let historyTask: Void = fetchHistory()
-        async let goalTask: Void = fetchDailyGoal()
-        async let streakTask: Void = fetchStreak()
-        async let recentTask: Void = fetchRecentEntries()
-
-        _ = await (todayTask, historyTask, goalTask, streakTask, recentTask)
-    }
-
-    private func fetchDailyGoal() async {
-        dailyGoal = settingsService.getDailyGoal()
-    }
-
-    private func fetchTodayTotal() async {
+    private func loadData(initialLoad: Bool) async {
         do {
-            todayTotal = try await service.fetchTodayTotal()
-        } catch {
-            todayTotal = 0
-        }
-    }
+            async let todayTask = fetchTodayTotal()
+            async let historyTask = fetchHistory()
+            async let goalTask = fetchDailyGoal()
+            async let streakTask = fetchStreak()
+            async let recentTask = fetchRecentEntries()
 
-    private func fetchHistory() async {
-        do {
-            let calendar = Calendar.current
-            let endDate = calendar.startOfDay(for: Date())
-            let startDate = calendar.date(byAdding: .day, value: -29, to: endDate)!
+            let (todayTotal, (monthTotals, weekTotals), dailyGoal, streak, recentEntries) = try await (todayTask, historyTask, goalTask, streakTask, recentTask)
 
-            monthTotals = try await service.fetchDailyTotals(from: startDate, to: endDate)
-            weekTotals = Array(monthTotals.suffix(7))
-        } catch {
-            monthTotals = []
-            weekTotals = []
-        }
-    }
-
-    private func fetchStreak() async {
-        do {
-            streak = try await service.calculateStreak(goal: dailyGoal)
-        } catch {
-            streak = 0
-        }
-    }
-
-    private func fetchRecentEntries() async {
-        do {
-            let calendar = Calendar.current
-            let endDate = calendar.startOfDay(for: Date())
-            let startDate = calendar.date(byAdding: .day, value: -6, to: endDate)!
-
-            let entries = try await service.fetchEntries(from: startDate, to: endDate)
-
-            var grouped: [Date: [HydrationEntry]] = [:]
-            for entry in entries {
-                let dayStart = calendar.startOfDay(for: entry.date!)
-                grouped[dayStart, default: []].append(entry)
+            let animation = initialLoad ? nil : Animation.default
+            withAnimation(animation) {
+                self.todayTotal = todayTotal
+                self.monthTotals = monthTotals
+                self.weekTotals = weekTotals
+                self.dailyGoal = dailyGoal
+                self.streak = streak
+                self.recentEntries = recentEntries
             }
-
-            recentEntries = grouped.map { date, entries in
-                GroupedHydrationEntries(date: date, entries: entries.reversed())
-            }.sorted { $0.date < $1.date }
         } catch {
-            recentEntries = []
+            self.error = error
         }
+    }
+
+    private func fetchDailyGoal() async throws -> Int64 {
+        settingsService.getDailyGoal()
+    }
+
+    private func fetchTodayTotal() async throws -> Int64 {
+        try await service.fetchTodayTotal()
+    }
+
+    private func fetchHistory() async throws -> ([DailyTotal], [DailyTotal]) {
+        let calendar = Calendar.current
+        let endDate = calendar.startOfDay(for: Date())
+        let startDate = calendar.date(byAdding: .day, value: -29, to: endDate)!
+
+        let monthTotals = try await service.fetchDailyTotals(from: startDate, to: endDate)
+        let weekTotals = Array(monthTotals.suffix(7))
+        return (monthTotals, weekTotals)
+    }
+
+    private func fetchStreak() async throws -> Int {
+        try await service.calculateStreak(goal: dailyGoal)
+    }
+
+    private func fetchRecentEntries() async throws -> [GroupedHydrationEntries] {
+        let calendar = Calendar.current
+        let endDate = calendar.startOfDay(for: Date())
+        let startDate = calendar.date(byAdding: .day, value: -6, to: endDate)!
+
+        let entries = try await service.fetchEntries(from: startDate, to: endDate)
+
+        var grouped: [Date: [HydrationEntry]] = [:]
+        for entry in entries {
+            let dayStart = calendar.startOfDay(for: entry.date!)
+            grouped[dayStart, default: []].append(entry)
+        }
+
+        return grouped.map { date, entries in
+            GroupedHydrationEntries(date: date, entries: entries.reversed())
+        }.sorted { $0.date < $1.date }
     }
 
     func scheduleMidnightRefresh() {
@@ -313,7 +319,7 @@ final class MainViewModel {
         guard currentDay > lastRefreshDay else { return }
 
         lastRefreshDate = Date()
-        await loadData()
+        await loadData(initialLoad: false)
         await updateReminders()
         scheduleMidnightRefresh()
         reloadWidgets()

@@ -94,7 +94,6 @@ struct MainView: View {
                 font: .system(size: 60, weight: .bold),
                 lineWidth: 25
             )
-            .animation(.default, value: viewModel.formattedTodayValue)
             .contentTransition(.numericText())
             .padding(20)
         }
@@ -152,8 +151,6 @@ struct MainView: View {
                 periodDays: viewModel.statsPeriodDays,
                 onTogglePeriod: viewModel.toggleStatsPeriod
             )
-            .animation(.default, value: viewModel.weekTotals)
-            .animation(.default, value: viewModel.monthTotals)
         } trailingButton: {
             Button(action: viewModel.toggleStatsPeriod) {
                 Text("\(viewModel.statsPeriodDays)d")
@@ -173,7 +170,6 @@ struct MainView: View {
 
     private var remainingToGoalCard: some View {
         SimpleValueCard(title: "Remaining", value: viewModel.formattedRemainingToGoal.uppercased())
-            .animation(.default, value: viewModel.formattedRemainingToGoal)
             .contentTransition(.numericText())
     }
 
@@ -184,7 +180,6 @@ struct MainView: View {
             periodDays: viewModel.statsPeriodDays,
             onTogglePeriod: viewModel.toggleStatsPeriod
         )
-        .animation(.default, value: viewModel.formattedAverageIntake)
         .contentTransition(.numericText())
     }
 
@@ -195,7 +190,6 @@ struct MainView: View {
             periodDays: viewModel.statsPeriodDays,
             onTogglePeriod: viewModel.toggleStatsPeriod
         )
-        .animation(.default, value: viewModel.goalHitRate)
         .contentTransition(.numericText())
     }
 
