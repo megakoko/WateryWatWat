@@ -28,7 +28,13 @@ final class MockHydrationService: HydrationServiceProtocol {
             for i in 0..<entryCount {
                 let entry = HydrationEntry(context: context)
                 entry.date = calendar.date(byAdding: .hour, value: 8 + i * 3, to: dayStart)
-                entry.volume = [250, 500, 750, 1000].randomElement()!
+
+                if dayOffset == 0 {
+                    entry.volume = [200, 250, 300].randomElement()!
+                } else {
+                    entry.volume = [250, 500, 750, 1000].randomElement()!
+                }
+
                 entry.type = "water"
                 entries.append(entry)
                 dayTotal += entry.volume

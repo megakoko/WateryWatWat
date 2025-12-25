@@ -94,6 +94,8 @@ struct MainView: View {
                 font: .system(size: 60, weight: .bold),
                 lineWidth: 25
             )
+            .animation(.default, value: viewModel.formattedTodayValue)
+            .contentTransition(.numericText())
             .padding(20)
         }
         .aspectRatio(1, contentMode: .fit)
@@ -105,6 +107,7 @@ struct MainView: View {
 
     private var streakCard: some View {
         SimpleValueCard(title: "Streak", value: viewModel.streakText)
+            .contentTransition(.numericText())
     }
 
     private var historyPanel: some View {
@@ -149,6 +152,8 @@ struct MainView: View {
                 periodDays: viewModel.statsPeriodDays,
                 onTogglePeriod: viewModel.toggleStatsPeriod
             )
+            .animation(.default, value: viewModel.weekTotals)
+            .animation(.default, value: viewModel.monthTotals)
         } trailingButton: {
             Button(action: viewModel.toggleStatsPeriod) {
                 Text("\(viewModel.statsPeriodDays)d")
@@ -168,6 +173,8 @@ struct MainView: View {
 
     private var remainingToGoalCard: some View {
         SimpleValueCard(title: "Remaining", value: viewModel.formattedRemainingToGoal.uppercased())
+            .animation(.default, value: viewModel.formattedRemainingToGoal)
+            .contentTransition(.numericText())
     }
 
     private var averageIntakeCard: some View {
@@ -177,6 +184,8 @@ struct MainView: View {
             periodDays: viewModel.statsPeriodDays,
             onTogglePeriod: viewModel.toggleStatsPeriod
         )
+        .animation(.default, value: viewModel.formattedAverageIntake)
+        .contentTransition(.numericText())
     }
 
     private var goalHitRateCard: some View {
@@ -186,6 +195,8 @@ struct MainView: View {
             periodDays: viewModel.statsPeriodDays,
             onTogglePeriod: viewModel.toggleStatsPeriod
         )
+        .animation(.default, value: viewModel.goalHitRate)
+        .contentTransition(.numericText())
     }
 
     private var addButton: some View {
