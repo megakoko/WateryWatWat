@@ -23,19 +23,20 @@ final class HydrationService: HydrationServiceProtocol {
     }
 
     func addEntry(volume: Int64, type: String = "water", date: Date = Date()) async throws {
-        var healthKitUUID: String?
-
-        if settingsService.getHealthSyncEnabled() {
-            healthKitUUID = try? await healthKitService.saveDietaryWater(volume: volume, date: date)
-        }
+        var objectIDString: String?
 
         try await context.perform {
             let entry = HydrationEntry(context: self.context)
             entry.date = date
             entry.volume = volume
             entry.type = type
-            entry.healthKitUUID = healthKitUUID
             try self.context.save()
+
+            objectIDString = entry.objectID.uriRepresentation().absoluteString
+        }
+
+        if let objectID = objectIDString, settingsService.getHealthSyncEnabled() {
+            try? await healthKitService.saveDietaryWater(volume: volume, date: date, coreDataID: objectID)
         }
     }
 
@@ -126,34 +127,33 @@ final class HydrationService: HydrationServiceProtocol {
     }
 
     func deleteEntry(_ entry: HydrationEntry) async throws {
-        let healthKitUUID = entry.healthKitUUID
+        let objectIDString = entry.objectID.uriRepresentation().absoluteString
 
         try await context.perform {
             self.context.delete(entry)
             try self.context.save()
         }
 
-        if let uuid = healthKitUUID, settingsService.getHealthSyncEnabled() {
-            try? await healthKitService.deleteDietaryWater(uuid: uuid)
+        if settingsService.getHealthSyncEnabled() {
+            try? await healthKitService.deleteDietaryWater(coreDataID: objectIDString)
         }
     }
 
     func updateEntry(_ entry: HydrationEntry, volume: Int64, date: Date) async throws {
-        let oldHealthKitUUID = entry.healthKitUUID
-        var newHealthKitUUID: String?
+        let objectIDString = entry.objectID.uriRepresentation().absoluteString
 
         if settingsService.getHealthSyncEnabled() {
-            if let oldUUID = oldHealthKitUUID {
-                try? await healthKitService.deleteDietaryWater(uuid: oldUUID)
-            }
-            newHealthKitUUID = try? await healthKitService.saveDietaryWater(volume: volume, date: date)
+            try? await healthKitService.deleteDietaryWater(coreDataID: objectIDString)
         }
 
         try await context.perform {
             entry.volume = volume
             entry.date = date
-            entry.healthKitUUID = newHealthKitUUID
             try self.context.save()
+        }
+
+        if settingsService.getHealthSyncEnabled() {
+            try? await healthKitService.saveDietaryWater(volume: volume, date: date, coreDataID: objectIDString)
         }
     }
 }

@@ -6,7 +6,7 @@ final class MockHealthKitService: HealthKitServiceProtocol {
     private let fail: Bool
 
     private(set) var isAuthorizationRequested = false
-    private(set) var savedEntries: [(volume: Int64, date: Date, uuid: String)] = []
+    private(set) var savedEntries: [(volume: Int64, date: Date, coreDataID: String)] = []
     private(set) var deleteCallCount = 0
 
     init(delay: TimeInterval, fail: Bool) {
@@ -27,14 +27,12 @@ final class MockHealthKitService: HealthKitServiceProtocol {
         return isAuthorizationRequested && !fail
     }
 
-    func saveDietaryWater(volume: Int64, date: Date) async throws -> String {
+    func saveDietaryWater(volume: Int64, date: Date, coreDataID: String) async throws {
         try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
         if fail {
             throw HealthKitError.saveFailed
         }
-        let uuid = UUID().uuidString
-        savedEntries.append((volume: volume, date: date, uuid: uuid))
-        return uuid
+        savedEntries.append((volume: volume, date: date, coreDataID: coreDataID))
     }
 
     func deleteAllRecords() async throws -> Int {
@@ -48,12 +46,12 @@ final class MockHealthKitService: HealthKitServiceProtocol {
         return count
     }
 
-    func deleteDietaryWater(uuid: String) async throws {
+    func deleteDietaryWater(coreDataID: String) async throws {
         try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
         if fail {
             throw HealthKitError.deleteFailed
         }
-        savedEntries.removeAll { $0.uuid == uuid }
+        savedEntries.removeAll { $0.coreDataID == coreDataID }
     }
 }
 
