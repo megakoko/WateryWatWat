@@ -5,9 +5,10 @@ import CoreData
 
 struct AddWaterIntent: AppIntent {
     static var title: LocalizedStringResource = "Add Water"
-    static var description = IntentDescription("Log water intake to WateryWatWat")
+    static var description = IntentDescription("Log water intake")
 
     static var openAppWhenRun: Bool = false
+    static var isDiscoverable: Bool = true
 
     @Parameter(title: "Volume")
     var volume: Measurement<UnitVolume>

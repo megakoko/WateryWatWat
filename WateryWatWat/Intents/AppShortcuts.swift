@@ -5,8 +5,8 @@ struct WateryWatWatShortcuts: AppShortcutsProvider {
         AppShortcut(
             intent: AddWaterIntent(),
             phrases: [
-                "Add water in \(.applicationName)",
-                "Log water in \(.applicationName)"
+                "Add water using \(.applicationName)",
+                "Log water using \(.applicationName)"
             ],
             shortTitle: "Add Water",
             systemImageName: "drop.fill"

@@ -1,7 +1,5 @@
 "Add Water" = "添加水";
-"Log water intake to WateryWatWat" = "在 WateryWatWat 中记录饮水";
+"Log water intake" = "记录饮水";
 "Volume" = "容量";
-"Show Confirmation" = "显示确认";
 "Add %@" = "添加 %@";
-"Log %lld mL of water?" = "记录 %lld 毫升水吗？";
 "Added %lld mL. Today's total: %lld mL" = "已添加 %lld 毫升。今日总计：%lld 毫升";

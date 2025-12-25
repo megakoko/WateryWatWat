@@ -1,7 +1,5 @@
 "Add Water" = "إضافة ماء";
-"Log water intake to WateryWatWat" = "تسجيل استهلاك الماء في WateryWatWat";
+"Log water intake" = "تسجيل استهلاك الماء";
 "Volume" = "الحجم";
-"Show Confirmation" = "إظهار التأكيد";
 "Add %@" = "إضافة %@";
-"Log %lld mL of water?" = "تسجيل %lld مل من الماء؟";
 "Added %lld mL. Today's total: %lld mL" = "تمت الإضافة %lld مل. إجمالي اليوم: %lld مل";

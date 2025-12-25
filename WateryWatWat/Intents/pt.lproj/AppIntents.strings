@@ -1,7 +1,5 @@
 "Add Water" = "Adicionar água";
-"Log water intake to WateryWatWat" = "Registrar consumo de água no WateryWatWat";
+"Log water intake" = "Registrar consumo de água";
 "Volume" = "Volume";
-"Show Confirmation" = "Mostrar confirmação";
 "Add %@" = "Adicionar %@";
-"Log %lld mL of water?" = "Registrar %lld ml de água?";
 "Added %lld mL. Today's total: %lld mL" = "Adicionado %lld ml. Total de hoje: %lld ml";
