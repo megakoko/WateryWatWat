@@ -93,7 +93,7 @@ struct WateryWidgetEntryView : View {
     }
 
     private var homeScreenView: some View {
-        CircularProgressView(progress: entry.progress, formattedValue: entry.formattedValue, symbol: entry.symbol, font: .title.bold(), lineWidth: 14)
+        CircularProgressView(progress: entry.progress, formattedValue: entry.formattedValue, symbol: entry.symbol, font: .title.bold(), lineWidth: 14, color: .accent)
             .padding(4)
     }
 

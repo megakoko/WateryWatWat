@@ -6,6 +6,7 @@ struct CircularProgressView: View {
     let symbol: String
     let font: Font
     let lineWidth: CGFloat
+    let color: Color
 
     @State private var unitWidth: CGFloat = 0
 
@@ -20,10 +21,10 @@ struct CircularProgressView: View {
 
             Circle()
                 .trim(from: 0, to: cappedProgress)
-                .stroke(Color.accentColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+                .stroke(color, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                 .rotationEffect(.degrees(-90))
-                .shadow(color: .accentColor.opacity(0.6), radius: lineWidth * 0.2, x: 0, y: 0)
-                .shadow(color: .accentColor.opacity(0.3), radius: lineWidth * 0.8, x: 0, y: 0)
+                .shadow(color: color.opacity(0.6), radius: lineWidth * 0.2, x: 0, y: 0)
+                .shadow(color: color.opacity(0.3), radius: lineWidth * 0.8, x: 0, y: 0)
 
             HStack(alignment: .firstTextBaseline, spacing: 0) {
                 Text(formattedValue)
@@ -47,7 +48,7 @@ struct CircularProgressView: View {
 }
 
 #Preview {
-    CircularProgressView(progress: 0.65, formattedValue: "1.3", symbol: "L", font: .system(size: 60, weight: .bold), lineWidth: 25)
+    CircularProgressView(progress: 0.65, formattedValue: "1.3", symbol: "L", font: .system(size: 60, weight: .bold), lineWidth: 25, color: .accentColor)
         .frame(height: 300)
         .padding()
 }

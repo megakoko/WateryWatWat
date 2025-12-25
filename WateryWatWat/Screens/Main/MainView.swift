@@ -97,7 +97,8 @@ struct MainView: View {
                 formattedValue: viewModel.formattedTodayValue,
                 symbol: viewModel.volumeSymbol,
                 font: .system(size: 60, weight: .bold),
-                lineWidth: 25
+                lineWidth: 25,
+                color: .accentColor
             )
             .contentTransition(.numericText())
             .padding(20)
