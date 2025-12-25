@@ -197,8 +197,6 @@ struct MainView: View {
         SimpleValueCard(
             title: "Goal Hit",
             value: "\(viewModel.goalHitRate)%",
-        GoalHitRateCard(
-            hitRate: viewModel.goalHitRate,
             periodDays: viewModel.statsPeriodDays,
             onTogglePeriod: viewModel.toggleStatsPeriod
         )

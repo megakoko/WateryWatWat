@@ -24,7 +24,7 @@ final class HealthKitService: HealthKitServiceProtocol, @unchecked Sendable {
         return status == .sharingAuthorized
     }
 
-    func saveDietaryWater(volume: Int64, date: Date) async throws {
+    func saveDietaryWater(volume: Int64, date: Date) async throws -> String {
         guard HKHealthStore.isHealthDataAvailable() else {
             throw HealthKitError.notAvailable
         }
@@ -33,6 +33,8 @@ final class HealthKitService: HealthKitServiceProtocol, @unchecked Sendable {
         let sample = HKQuantitySample(type: waterType, quantity: quantity, start: date, end: date)
 
         try await healthStore.save(sample)
+
+        return sample.uuid.uuidString
     }
 
     func deleteAllRecords() async throws -> Int {
@@ -85,6 +87,57 @@ final class HealthKitService: HealthKitServiceProtocol, @unchecked Sendable {
 
                     if success {
                         continuation.resume(returning: deletedCount)
+                    } else {
+                        continuation.resume(throwing: HealthKitError.deleteFailed)
+                    }
+                }
+            }
+
+            healthStore.execute(query)
+        }
+    }
+
+    func deleteDietaryWater(uuid: String) async throws {
+        guard HKHealthStore.isHealthDataAvailable() else {
+            throw HealthKitError.notAvailable
+        }
+
+        guard let sampleUUID = UUID(uuidString: uuid) else {
+            throw HealthKitError.deleteFailed
+        }
+
+        let predicate = HKQuery.predicateForObject(with: sampleUUID)
+
+        return try await withCheckedThrowingContinuation { continuation in
+            let query = HKSampleQuery(
+                sampleType: waterType,
+                predicate: predicate,
+                limit: 1,
+                sortDescriptors: nil
+            ) { [weak self] _, samples, error in
+                guard let self = self else {
+                    continuation.resume(throwing: HealthKitError.deleteFailed)
+                    return
+                }
+
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+
+                guard let sample = samples?.first else {
+                    continuation.resume(returning: ())
+                    return
+                }
+
+                self.healthStore.delete(sample) { success, error in
+                    if let error = error {
+                        continuation.resume(throwing: error)
+                        return
+                    }
+
+                    if success {
+                        continuation.resume(returning: ())
                     } else {
                         continuation.resume(throwing: HealthKitError.deleteFailed)
                     }
