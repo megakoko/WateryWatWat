@@ -10,6 +10,7 @@
 		DA1AF6D12EF94574000AFB3A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1AF6D02EF94574000AFB3A /* WidgetKit.framework */; };
 		DA1AF6D32EF94574000AFB3A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1AF6D22EF94574000AFB3A /* SwiftUI.framework */; };
 		DA1AF6DE2EF94576000AFB3A /* WateryWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = DA1AF6CE2EF94574000AFB3A /* WateryWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DA8611502EFD2FB0007AF765 /* Confetti3D in Frameworks */ = {isa = PBXBuildFile; productRef = DA86114F2EFD2FB0007AF765 /* Confetti3D */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA8611502EFD2FB0007AF765 /* Confetti3D in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,6 +174,7 @@
 			);
 			name = WateryWatWat;
 			packageProductDependencies = (
+				DA86114F2EFD2FB0007AF765 /* Confetti3D */,
 			);
 			productName = WateryWatWat;
 			productReference = DA1AF2B92EF40EA0000AFB3A /* WateryWatWat.app */;
@@ -231,6 +234,9 @@
 			);
 			mainGroup = DA1AF2B02EF40E9F000AFB3A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				DA86114E2EFD2FB0007AF765 /* XCRemoteSwiftPackageReference "Confetti3D" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = DA1AF2BA2EF40EA0000AFB3A /* Products */;
 			projectDirPath = "";
@@ -601,6 +607,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		DA86114E2EFD2FB0007AF765 /* XCRemoteSwiftPackageReference "Confetti3D" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/maxime-day/Confetti3D.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DA86114F2EFD2FB0007AF765 /* Confetti3D */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DA86114E2EFD2FB0007AF765 /* XCRemoteSwiftPackageReference "Confetti3D" */;
+			productName = Confetti3D;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = DA1AF2B12EF40E9F000AFB3A /* Project object */;
 }

@@ -21,6 +21,10 @@ final class MainViewModel {
     var showDeleteConfirmation = false
     var error: Error?
     var initialized = false
+    
+    var confettiPublisher: AnyPublisher<Void, Never> {
+        _confettiPublisher.eraseToAnyPublisher()
+    }
 
     var progress: Double {
         Double(todayTotal) / Double(dailyGoal)
@@ -110,6 +114,7 @@ final class MainViewModel {
     private var cancellables = Set<AnyCancellable>()
     private var midnightTimer: Timer?
     private var lastRefreshDate: Date = Date()
+    private var _confettiPublisher = PassthroughSubject<Void, Never>()
 
     init(service: HydrationServiceProtocol, settingsService: SettingsServiceProtocol, notificationService: NotificationService) {
         self.service = service
@@ -234,6 +239,9 @@ final class MainViewModel {
     }
 
     private func loadData(initialLoad: Bool) async {
+        let previousTotal = self.todayTotal
+        let previousGoal = self.dailyGoal
+        
         do {
             async let todayTask = fetchTodayTotal()
             async let historyTask = fetchHistory()
@@ -252,6 +260,13 @@ final class MainViewModel {
                 self.streak = streak
                 self.recentEntries = recentEntries
                 self.initialized = true
+            }
+            
+            if dailyGoal == previousGoal &&
+                previousTotal > 0 &&
+                previousTotal < dailyGoal &&
+                todayTotal >= dailyGoal {
+                _confettiPublisher.send(())
             }
         } catch {
             self.error = error

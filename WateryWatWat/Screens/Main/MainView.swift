@@ -1,59 +1,69 @@
 import SwiftUI
+import Confetti3D
 
 struct MainView: View {
     @State var viewModel: MainViewModel
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.sizeCategory) private var sizeCategory
-
+    
+    private let confettiView = C3DView()
+    
     var body: some View {
         ScrollView {
             if viewModel.initialized {
                 content
             }
         }
+        .overlay {
+            confettiView
+                .ignoresSafeArea()
+        }
         .scrollIndicators(.hidden)
         .navigationTitle("Hydration")
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: viewModel.showSettings) {
-                        Image(systemName: "gearshape")
-                    }
-                }
-                ToolbarItem(placement: .primaryAction) {
-                    addButton
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: viewModel.showSettings) {
+                    Image(systemName: "gearshape")
                 }
             }
-            .sheet(item: $viewModel.entryViewModel) { addEntryViewModel in
-                NavigationStack {
-                    EntryView(viewModel: addEntryViewModel)
-                }
+            ToolbarItem(placement: .primaryAction) {
+                addButton
             }
-            .sheet(item: $viewModel.settingsViewModel) { settingsViewModel in
-                NavigationStack {
-                    SettingsView(viewModel: settingsViewModel)
-                }
+        }
+        .sheet(item: $viewModel.entryViewModel) { addEntryViewModel in
+            NavigationStack {
+                EntryView(viewModel: addEntryViewModel)
             }
-            .navigationDestination(item: $viewModel.historyViewModel) { historyViewModel in
-                HistoryView(viewModel: historyViewModel)
+        }
+        .sheet(item: $viewModel.settingsViewModel) { settingsViewModel in
+            NavigationStack {
+                SettingsView(viewModel: settingsViewModel)
             }
-            .task {
-                await viewModel.onAppear()
-            }
-            .errorAlert($viewModel.error)
-            .confirmationDialog(
-                "Delete Entry",
-                isPresented: $viewModel.showDeleteConfirmation,
-                presenting: viewModel.entryToDelete
-            ) { _ in
-                Button("Delete", role: .destructive, action: viewModel.confirmDelete)
-            } message: { _ in
-                Text("Delete entry?")
-            }
-            .onChange(of: scenePhase) { _, newPhase in
-                viewModel.handleScenePhaseChange(newPhase)
-            }
+        }
+        .navigationDestination(item: $viewModel.historyViewModel) { historyViewModel in
+            HistoryView(viewModel: historyViewModel)
+        }
+        .task {
+            await viewModel.onAppear()
+        }
+        .errorAlert($viewModel.error)
+        .confirmationDialog(
+            "Delete Entry",
+            isPresented: $viewModel.showDeleteConfirmation,
+            presenting: viewModel.entryToDelete
+        ) { _ in
+            Button("Delete", role: .destructive, action: viewModel.confirmDelete)
+        } message: { _ in
+            Text("Delete entry?")
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            viewModel.handleScenePhaseChange(newPhase)
+        }
+        .onReceive(viewModel.confettiPublisher) {
+            confettiView.throwConfetti()
+        }
     }
-
+    
     private var content: some View {
         Grid {
             WateryRow {
