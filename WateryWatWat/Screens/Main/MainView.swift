@@ -197,6 +197,8 @@ struct MainView: View {
         SimpleValueCard(
             title: "Goal Hit",
             value: "\(viewModel.goalHitRate)%",
+        GoalHitRateCard(
+            hitRate: viewModel.goalHitRate,
             periodDays: viewModel.statsPeriodDays,
             onTogglePeriod: viewModel.toggleStatsPeriod
         )
@@ -226,7 +228,8 @@ struct MainView: View {
             viewModel: MainViewModel(
                 service: MockHydrationService(),
                 settingsService: MockSettingsService(),
-                notificationService: MockNotificationService()
+                notificationService: MockNotificationService(),
+                healthKitService: MockHealthKitService(delay: 0, fail: false)
             )
         )
     }

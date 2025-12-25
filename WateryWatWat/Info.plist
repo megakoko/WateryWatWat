@@ -10,5 +10,9 @@
 	<false/>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Track your water intake in Apple Health</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Save your hydration data to Apple Health</string>
 </dict>
 </plist>

@@ -13,9 +13,13 @@ protocol HydrationServiceProtocol {
 
 final class HydrationService: HydrationServiceProtocol {
     private let context: NSManagedObjectContext
+    private let healthKitService: HealthKitServiceProtocol
+    private let settingsService: SettingsServiceProtocol
 
-    init(context: NSManagedObjectContext) {
+    init(context: NSManagedObjectContext, healthKitService: HealthKitServiceProtocol, settingsService: SettingsServiceProtocol) {
         self.context = context
+        self.healthKitService = healthKitService
+        self.settingsService = settingsService
     }
 
     func addEntry(volume: Int64, type: String = "water", date: Date = Date()) async throws {
@@ -25,6 +29,10 @@ final class HydrationService: HydrationServiceProtocol {
             entry.volume = volume
             entry.type = type
             try self.context.save()
+        }
+
+        if settingsService.getHealthSyncEnabled() {
+            try? await healthKitService.saveDietaryWater(volume: volume, date: date)
         }
     }
 

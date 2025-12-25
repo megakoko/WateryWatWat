@@ -8,6 +8,7 @@ struct SettingsView: View {
         Form {
             dailyGoalSection
             reminderSection
+            healthSection
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
@@ -24,6 +25,23 @@ struct SettingsView: View {
             await viewModel.onAppear()
         }
         .errorAlert($viewModel.error)
+        .alert("Delete Health Data", isPresented: $viewModel.showDeleteConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {
+                Task {
+                    await viewModel.confirmDeleteHealthData()
+                }
+            }
+        } message: {
+            Text("This will remove all water intake records created by this app from Apple Health. This action cannot be undone.")
+        }
+        .alert("Result", isPresented: $viewModel.showDeleteResult) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            if let message = viewModel.deleteResultMessage {
+                Text(message)
+            }
+        }
     }
 
     private var dailyGoalSection: some View {
@@ -101,6 +119,18 @@ struct SettingsView: View {
             }
         }
     }
+
+    private var healthSection: some View {
+        Section {
+            Toggle("Sync to Apple Health", isOn: $viewModel.healthSyncEnabled)
+
+            if viewModel.healthSyncEnabled {
+                Button("Delete Health Data", role: .destructive, action: viewModel.deleteHealthData)
+            }
+        } header: {
+            Text("Health")
+        }
+    }
 }
 
 #Preview {
@@ -108,7 +138,8 @@ struct SettingsView: View {
         SettingsView(
             viewModel: SettingsViewModel(
                 service: MockSettingsService(),
-                notificationService: MockNotificationService()
+                notificationService: MockNotificationService(),
+                healthKitService: MockHealthKitService(delay: 0, fail: false)
             )
         )
     }

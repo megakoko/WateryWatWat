@@ -109,6 +109,7 @@ final class MainViewModel {
     private let service: HydrationServiceProtocol
     private let settingsService: SettingsServiceProtocol
     private let notificationService: NotificationService
+    private let healthKitService: HealthKitServiceProtocol
     private let notificationDelegate = NotificationDelegate()
     private let volumeFormatter = VolumeFormatter(unit: .liters)
     private var cancellables = Set<AnyCancellable>()
@@ -116,10 +117,11 @@ final class MainViewModel {
     private var lastRefreshDate: Date = Date()
     private var _confettiPublisher = PassthroughSubject<Void, Never>()
 
-    init(service: HydrationServiceProtocol, settingsService: SettingsServiceProtocol, notificationService: NotificationService) {
+    init(service: HydrationServiceProtocol, settingsService: SettingsServiceProtocol, notificationService: NotificationService, healthKitService: HealthKitServiceProtocol) {
         self.service = service
         self.settingsService = settingsService
         self.notificationService = notificationService
+        self.healthKitService = healthKitService
 
         NotificationCenter.default.addObserver(
             forName: NSNotification.Name.NSPersistentStoreRemoteChange,
@@ -205,7 +207,7 @@ final class MainViewModel {
     }
 
     func showSettings() {
-        settingsViewModel = SettingsViewModel(service: settingsService, notificationService: notificationService)
+        settingsViewModel = SettingsViewModel(service: settingsService, notificationService: notificationService, healthKitService: healthKitService)
     }
 
     func showHistory() {

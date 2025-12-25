@@ -12,6 +12,7 @@ import CoreData
 struct WateryWatWatApp: App {
     let persistenceController = PersistenceController.sharedApp
     let settingsService = SettingsService()
+    let healthKitService = HealthKitService()
 
     var body: some Scene {
         WindowGroup {
@@ -20,7 +21,8 @@ struct WateryWatWatApp: App {
                     viewModel: MainViewModel(
                         service: HydrationService(context: persistenceController.container.viewContext),
                         settingsService: settingsService,
-                        notificationService: DefaultNotificationService(settingsService: settingsService)
+                        notificationService: DefaultNotificationService(settingsService: settingsService),
+                        healthKitService: healthKitService
                     )
                 )
             }

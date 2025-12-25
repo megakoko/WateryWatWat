@@ -14,6 +14,7 @@ final class MockSettingsService: SettingsServiceProtocol {
         periodMinutes: Constants.defaultReminderPeriodMinutes
     )
     private let reminderSettingsSubject = PassthroughSubject<Void, Never>()
+    private var healthSyncEnabled = false
 
     var reminderSettingsPublisher: AnyPublisher<Void, Never> {
         reminderSettingsSubject.eraseToAnyPublisher()
@@ -146,5 +147,13 @@ final class MockSettingsService: SettingsServiceProtocol {
 
         let tomorrow = calendar.date(byAdding: .day, value: 1, to: now)!
         return settings.startTime(for: tomorrow)
+    }
+
+    func getHealthSyncEnabled() -> Bool {
+        healthSyncEnabled
+    }
+
+    func setHealthSyncEnabled(_ enabled: Bool) async {
+        healthSyncEnabled = enabled
     }
 }
