@@ -1,7 +1,7 @@
 import Foundation
 import CoreData
 
-final class MockHydrationService: HydrationServiceProtocol {
+final class MockHydrationService: HydrationService {
     private let delay: TimeInterval
     private let fail: Bool
     private let context: NSManagedObjectContext

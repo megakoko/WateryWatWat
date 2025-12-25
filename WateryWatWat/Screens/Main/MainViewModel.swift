@@ -107,10 +107,10 @@ final class MainViewModel {
         return formatter.string(from: components)!
     }
 
-    private let service: HydrationServiceProtocol
-    private let settingsService: SettingsServiceProtocol
+    private let service: HydrationService
+    private let settingsService: SettingsService
     private let notificationService: NotificationService
-    private let healthKitService: HealthKitServiceProtocol
+    private let healthKitService: HealthKitService
     private let notificationDelegate = NotificationDelegate()
     private let volumeFormatter = VolumeFormatter(unit: .liters)
     private var cancellables = Set<AnyCancellable>()
@@ -118,7 +118,7 @@ final class MainViewModel {
     private var lastRefreshDate: Date = Date()
     private var _confettiPublisher = PassthroughSubject<Void, Never>()
 
-    init(service: HydrationServiceProtocol, settingsService: SettingsServiceProtocol, notificationService: NotificationService, healthKitService: HealthKitServiceProtocol) {
+    init(service: HydrationService, settingsService: SettingsService, notificationService: NotificationService, healthKitService: HealthKitService) {
         self.service = service
         self.settingsService = settingsService
         self.notificationService = notificationService

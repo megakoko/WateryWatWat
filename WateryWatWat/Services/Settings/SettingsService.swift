@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-protocol SettingsServiceProtocol {
+protocol SettingsService {
     func getDailyGoal() -> Int64
     func setDailyGoal(_ value: Int64)
     func getReminderSettings() -> ReminderSettings
@@ -17,7 +17,7 @@ protocol SettingsServiceProtocol {
     var reminderSettingsPublisher: AnyPublisher<Void, Never> { get }
 }
 
-final class SettingsService: SettingsServiceProtocol {
+final class DefaultSettingsService: SettingsService {
     private let defaults = UserDefaults.standard
     private let dailyGoalKey = "dailyGoalML"
     private let reminderEnabledKey = "remindersEnabled"

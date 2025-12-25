@@ -4,7 +4,7 @@ import Combine
 
 final class DefaultNotificationService {
     private let notificationCenter = UNUserNotificationCenter.current()
-    private let settingsService: SettingsServiceProtocol
+    private let settingsService: SettingsService
     private var cancellables = Set<AnyCancellable>()
     private let nextReminderSubject = CurrentValueSubject<Date?, Never>(nil)
 
@@ -12,7 +12,7 @@ final class DefaultNotificationService {
         nextReminderSubject.eraseToAnyPublisher()
     }
 
-    init(settingsService: SettingsServiceProtocol) {
+    init(settingsService: SettingsService) {
         self.settingsService = settingsService
 
         settingsService.reminderSettingsPublisher

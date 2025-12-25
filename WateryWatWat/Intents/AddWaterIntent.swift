@@ -21,9 +21,9 @@ struct AddWaterIntent: AppIntent {
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
         let volumeInML = Int64(volume.converted(to: .milliliters).value)
 
-        let healthKitService = HealthKitService()
-        let settingsService = SettingsService()
-        let service = HydrationService(
+        let healthKitService = DefaultHealthKitService()
+        let settingsService = DefaultSettingsService()
+        let service = DefaultHydrationService(
             context: PersistenceController.sharedApp.container.viewContext,
             healthKitService: healthKitService,
             settingsService: settingsService

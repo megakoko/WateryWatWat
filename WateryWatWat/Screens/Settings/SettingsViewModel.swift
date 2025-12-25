@@ -82,13 +82,13 @@ final class SettingsViewModel: Identifiable {
         volumeFormatter.string(from: Constants.maxGoalML)
     }
 
-    private let service: SettingsServiceProtocol
+    private let service: SettingsService
     private let notificationService: NotificationService
     private let volumeFormatter = VolumeFormatter(unit: .liters)
-    private let healthKitService: HealthKitServiceProtocol
+    private let healthKitService: HealthKitService
     private var isInitialLoad = true
 
-    init(service: SettingsServiceProtocol, notificationService: NotificationService, healthKitService: HealthKitServiceProtocol) {
+    init(service: SettingsService, notificationService: NotificationService, healthKitService: HealthKitService) {
         self.service = service
         self.notificationService = notificationService
         self.healthKitService = healthKitService

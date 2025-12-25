@@ -1,7 +1,7 @@
 import Foundation
 
 @Observable
-final class MockHealthKitService: HealthKitServiceProtocol {
+final class MockHealthKitService: HealthKitService {
     private let delay: TimeInterval
     private let fail: Bool
 

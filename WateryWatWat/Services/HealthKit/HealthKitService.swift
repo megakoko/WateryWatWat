@@ -1,7 +1,7 @@
 import Foundation
 import HealthKit
 
-final class HealthKitService: HealthKitServiceProtocol, @unchecked Sendable {
+final class DefaultHealthKitService: HealthKitService, @unchecked Sendable {
     private let healthStore = HKHealthStore()
     private let waterType = HKQuantityType(.dietaryWater)
 

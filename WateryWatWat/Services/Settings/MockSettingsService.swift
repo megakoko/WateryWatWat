@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-final class MockSettingsService: SettingsServiceProtocol {
+final class MockSettingsService: SettingsService {
     private let delay: TimeInterval
     private let fail: Bool
     private var storedGoal: Int64 = Constants.defaultDailyGoalML

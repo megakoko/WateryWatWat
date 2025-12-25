@@ -1,19 +1,19 @@
 import Foundation
 import CoreData
 
-final class HydrationService {
+final class DefaultHydrationService {
     private let context: NSManagedObjectContext
-    private let healthKitService: HealthKitServiceProtocol
-    private let settingsService: SettingsServiceProtocol
-    
-    init(context: NSManagedObjectContext, healthKitService: HealthKitServiceProtocol, settingsService: SettingsServiceProtocol) {
+    private let healthKitService: HealthKitService
+    private let settingsService: SettingsService
+
+    init(context: NSManagedObjectContext, healthKitService: HealthKitService, settingsService: SettingsService) {
         self.context = context
         self.healthKitService = healthKitService
         self.settingsService = settingsService
     }
 }
 
-extension HydrationService: HydrationServiceProtocol {
+extension DefaultHydrationService: HydrationService {
     func addEntry(volume: Int64, type: String = "water", date: Date = Date()) async throws {
         var objectIDString: String?
 

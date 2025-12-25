@@ -1,6 +1,6 @@
 import Foundation
 
-protocol HydrationServiceProtocol {
+protocol HydrationService {
     func addEntry(volume: Int64, type: String, date: Date) async throws
     func fetchDailyTotals(from startDate: Date, to endDate: Date) async throws -> [DailyTotal]
     func fetchTodayTotal() async throws -> Int64

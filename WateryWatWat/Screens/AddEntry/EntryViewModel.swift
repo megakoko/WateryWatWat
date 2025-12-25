@@ -8,7 +8,7 @@ final class EntryViewModel: Identifiable {
     var isLoading = false
     var error: Error?
 
-    private let service: HydrationServiceProtocol
+    private let service: HydrationService
     private let entry: HydrationEntry?
     var onEntryAdded: (() -> Void)?
 
@@ -20,7 +20,7 @@ final class EntryViewModel: Identifiable {
         entry != nil
     }
 
-    init(service: HydrationServiceProtocol, entry: HydrationEntry? = nil) {
+    init(service: HydrationService, entry: HydrationEntry? = nil) {
         self.service = service
         self.entry = entry
         if let entry {

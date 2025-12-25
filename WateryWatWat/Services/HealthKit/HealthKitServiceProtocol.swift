@@ -1,6 +1,6 @@
 import Foundation
 
-protocol HealthKitServiceProtocol: Sendable {
+protocol HealthKitService: Sendable {
     func requestAuthorization() async throws
     func isAuthorized() async -> Bool
     func saveDietaryWater(volume: Int64, date: Date, coreDataID: String) async throws

@@ -8,9 +8,9 @@ final class HistoryViewModel: Identifiable {
     var editEntryViewModel: EntryViewModel?
     var error: Error?
 
-    private let service: HydrationServiceProtocol
+    private let service: HydrationService
 
-    init(service: HydrationServiceProtocol) {
+    init(service: HydrationService) {
         self.service = service
     }
 
