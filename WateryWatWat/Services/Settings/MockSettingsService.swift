@@ -30,15 +30,7 @@ final class MockSettingsService: SettingsServiceProtocol {
         return storedGoal
     }
 
-    func setDailyGoal(_ value: Int64) async throws {
-        if delay > 0 {
-            try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
-        }
-
-        if fail {
-            throw NSError(domain: "MockSettingsService", code: -1)
-        }
-
+    func setDailyGoal(_ value: Int64) {
         storedGoal = value
     }
 
@@ -46,15 +38,7 @@ final class MockSettingsService: SettingsServiceProtocol {
         return storedReminderSettings
     }
 
-    func setReminderEnabled(_ enabled: Bool) async throws {
-        if delay > 0 {
-            try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
-        }
-
-        if fail {
-            throw NSError(domain: "MockSettingsService", code: -1)
-        }
-
+    func setReminderEnabled(_ enabled: Bool) {
         storedReminderSettings = ReminderSettings(
             enabled: enabled,
             startHour: storedReminderSettings.startHour,
@@ -66,15 +50,7 @@ final class MockSettingsService: SettingsServiceProtocol {
         reminderSettingsSubject.send()
     }
 
-    func setReminderStartTime(hour: Int, minute: Int) async throws {
-        if delay > 0 {
-            try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
-        }
-
-        if fail {
-            throw NSError(domain: "MockSettingsService", code: -1)
-        }
-
+    func setReminderStartTime(hour: Int, minute: Int) {
         storedReminderSettings = ReminderSettings(
             enabled: storedReminderSettings.enabled,
             startHour: hour,
@@ -86,15 +62,7 @@ final class MockSettingsService: SettingsServiceProtocol {
         reminderSettingsSubject.send()
     }
 
-    func setReminderEndTime(hour: Int, minute: Int) async throws {
-        if delay > 0 {
-            try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
-        }
-
-        if fail {
-            throw NSError(domain: "MockSettingsService", code: -1)
-        }
-
+    func setReminderEndTime(hour: Int, minute: Int) {
         storedReminderSettings = ReminderSettings(
             enabled: storedReminderSettings.enabled,
             startHour: storedReminderSettings.startHour,
@@ -106,15 +74,7 @@ final class MockSettingsService: SettingsServiceProtocol {
         reminderSettingsSubject.send()
     }
 
-    func setReminderPeriod(_ minutes: Int) async throws {
-        if delay > 0 {
-            try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
-        }
-
-        if fail {
-            throw NSError(domain: "MockSettingsService", code: -1)
-        }
-
+    func setReminderPeriod(_ minutes: Int) {
         storedReminderSettings = ReminderSettings(
             enabled: storedReminderSettings.enabled,
             startHour: storedReminderSettings.startHour,
@@ -154,7 +114,7 @@ final class MockSettingsService: SettingsServiceProtocol {
         healthSyncEnabled
     }
 
-    func setHealthSyncEnabled(_ enabled: Bool) async {
+    func setHealthSyncEnabled(_ enabled: Bool) {
         healthSyncEnabled = enabled
     }
 
@@ -162,7 +122,7 @@ final class MockSettingsService: SettingsServiceProtocol {
         statsPeriod
     }
 
-    func setStatsPeriod(_ period: StatsPeriod) async {
+    func setStatsPeriod(_ period: StatsPeriod) {
         statsPeriod = period
     }
 }

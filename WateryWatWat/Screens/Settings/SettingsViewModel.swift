@@ -117,11 +117,7 @@ final class SettingsViewModel: Identifiable {
         isLoading = true
         defer { isLoading = false }
 
-        do {
-            try await service.setDailyGoal(dailyGoal)
-        } catch {
-            self.error = error
-        }
+        service.setDailyGoal(dailyGoal)
     }
 
     private func saveReminderEnabled() async {
@@ -140,10 +136,10 @@ final class SettingsViewModel: Identifiable {
         isLoading = true
         defer { isLoading = false }
 
-        do {
-            try await service.setReminderEnabled(remindersEnabled)
+        service.setReminderEnabled(remindersEnabled)
 
-            let settings = service.getReminderSettings()
+        let settings = service.getReminderSettings()
+        do {
             try await notificationService.scheduleReminders(settings: settings)
         } catch {
             self.error = error
@@ -158,11 +154,7 @@ final class SettingsViewModel: Identifiable {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.hour, .minute], from: reminderStartTime)
 
-        do {
-            try await service.setReminderStartTime(hour: components.hour ?? 8, minute: components.minute ?? 0)
-        } catch {
-            self.error = error
-        }
+        service.setReminderStartTime(hour: components.hour ?? 8, minute: components.minute ?? 0)
     }
 
     private func saveReminderEndTime() async {
@@ -173,11 +165,7 @@ final class SettingsViewModel: Identifiable {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.hour, .minute], from: reminderEndTime)
 
-        do {
-            try await service.setReminderEndTime(hour: components.hour ?? 22, minute: components.minute ?? 0)
-        } catch {
-            self.error = error
-        }
+        service.setReminderEndTime(hour: components.hour ?? 22, minute: components.minute ?? 0)
     }
 
     private func saveReminderPeriod() async {
@@ -185,11 +173,7 @@ final class SettingsViewModel: Identifiable {
         isLoading = true
         defer { isLoading = false }
 
-        do {
-            try await service.setReminderPeriod(reminderPeriodMinutes)
-        } catch {
-            self.error = error
-        }
+        service.setReminderPeriod(reminderPeriodMinutes)
     }
 
     private func dateFromComponents(hour: Int, minute: Int) -> Date {
@@ -231,12 +215,12 @@ final class SettingsViewModel: Identifiable {
                     return
                 }
 
-                await service.setHealthSyncEnabled(true)
+                service.setHealthSyncEnabled(true)
             } catch {
                 healthSyncEnabled = false
             }
         } else {
-            await service.setHealthSyncEnabled(false)
+            service.setHealthSyncEnabled(false)
         }
     }
 

@@ -3,17 +3,17 @@ import Combine
 
 protocol SettingsServiceProtocol {
     func getDailyGoal() -> Int64
-    func setDailyGoal(_ value: Int64) async throws
+    func setDailyGoal(_ value: Int64)
     func getReminderSettings() -> ReminderSettings
-    func setReminderEnabled(_ enabled: Bool) async throws
-    func setReminderStartTime(hour: Int, minute: Int) async throws
-    func setReminderEndTime(hour: Int, minute: Int) async throws
-    func setReminderPeriod(_ minutes: Int) async throws
+    func setReminderEnabled(_ enabled: Bool)
+    func setReminderStartTime(hour: Int, minute: Int)
+    func setReminderEndTime(hour: Int, minute: Int)
+    func setReminderPeriod(_ minutes: Int)
     func getNextReminderTime() -> Date?
     func getHealthSyncEnabled() -> Bool
-    func setHealthSyncEnabled(_ enabled: Bool) async
+    func setHealthSyncEnabled(_ enabled: Bool)
     func getStatsPeriod() -> StatsPeriod
-    func setStatsPeriod(_ period: StatsPeriod) async
+    func setStatsPeriod(_ period: StatsPeriod)
     var reminderSettingsPublisher: AnyPublisher<Void, Never> { get }
 }
 
@@ -46,7 +46,7 @@ final class SettingsService: SettingsServiceProtocol {
         return goal > 0 ? Int64(goal) : Constants.defaultDailyGoalML
     }
 
-    func setDailyGoal(_ value: Int64) async throws {
+    func setDailyGoal(_ value: Int64) {
         defaults.set(Int(value), forKey: dailyGoalKey)
     }
 
@@ -61,21 +61,21 @@ final class SettingsService: SettingsServiceProtocol {
         )
     }
 
-    func setReminderEnabled(_ enabled: Bool) async throws {
+    func setReminderEnabled(_ enabled: Bool) {
         defaults.set(enabled, forKey: reminderEnabledKey)
     }
 
-    func setReminderStartTime(hour: Int, minute: Int) async throws {
+    func setReminderStartTime(hour: Int, minute: Int) {
         defaults.set(hour, forKey: reminderStartHourKey)
         defaults.set(minute, forKey: reminderStartMinuteKey)
     }
 
-    func setReminderEndTime(hour: Int, minute: Int) async throws {
+    func setReminderEndTime(hour: Int, minute: Int) {
         defaults.set(hour, forKey: reminderEndHourKey)
         defaults.set(minute, forKey: reminderEndMinuteKey)
     }
 
-    func setReminderPeriod(_ minutes: Int) async throws {
+    func setReminderPeriod(_ minutes: Int) {
         defaults.set(minutes, forKey: reminderPeriodMinutesKey)
     }
 
@@ -107,7 +107,7 @@ final class SettingsService: SettingsServiceProtocol {
         defaults.bool(forKey: healthSyncEnabledKey)
     }
 
-    func setHealthSyncEnabled(_ enabled: Bool) async {
+    func setHealthSyncEnabled(_ enabled: Bool) {
         defaults.set(enabled, forKey: healthSyncEnabledKey)
     }
 
@@ -116,7 +116,7 @@ final class SettingsService: SettingsServiceProtocol {
         return StatsPeriod(rawValue: days) ?? .week
     }
 
-    func setStatsPeriod(_ period: StatsPeriod) async {
+    func setStatsPeriod(_ period: StatsPeriod) {
         defaults.set(period.days, forKey: statsPeriodDaysKey)
     }
 }

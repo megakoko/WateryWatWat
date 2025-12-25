@@ -95,9 +95,7 @@ final class MainViewModel {
 
     func toggleStatsPeriod() {
         statsPeriod = statsPeriod.toggled()
-        Task {
-            await settingsService.setStatsPeriod(statsPeriod)
-        }
+        settingsService.setStatsPeriod(statsPeriod)
     }
 
     var streakText: String {

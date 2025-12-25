@@ -1,27 +1,19 @@
 import Foundation
 import CoreData
 
-protocol HydrationServiceProtocol {
-    func addEntry(volume: Int64, type: String, date: Date) async throws
-    func fetchDailyTotals(from startDate: Date, to endDate: Date) async throws -> [DailyTotal]
-    func fetchTodayTotal() async throws -> Int64
-    func calculateStreak(goal: Int64) async throws -> Int
-    func fetchEntries(from startDate: Date, to endDate: Date) async throws -> [HydrationEntry]
-    func deleteEntry(_ entry: HydrationEntry) async throws
-    func updateEntry(_ entry: HydrationEntry, volume: Int64, date: Date) async throws
-}
-
-final class HydrationService: HydrationServiceProtocol {
+final class HydrationService {
     private let context: NSManagedObjectContext
     private let healthKitService: HealthKitServiceProtocol
     private let settingsService: SettingsServiceProtocol
-
+    
     init(context: NSManagedObjectContext, healthKitService: HealthKitServiceProtocol, settingsService: SettingsServiceProtocol) {
         self.context = context
         self.healthKitService = healthKitService
         self.settingsService = settingsService
     }
+}
 
+extension HydrationService: HydrationServiceProtocol {
     func addEntry(volume: Int64, type: String = "water", date: Date = Date()) async throws {
         var objectIDString: String?
 
