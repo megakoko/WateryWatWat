@@ -122,28 +122,23 @@ struct MainView: View {
     }
 
     private var historyScrollView: some View {
-        ScrollViewReader { proxy in
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
-                    ForEach(viewModel.recentEntries) { group in
-                        HStack(alignment: .bottom, spacing: 20) {
-                            ForEach(group.entries, id: \.objectID) { entry in
-                                EntryCard(
-                                    entry: entry,
-                                    onEdit: { viewModel.editEntry(entry) },
-                                    onDelete: { viewModel.deleteEntry(entry) }
-                                )
-                            }
-                            DayCard(date: group.date, formattedVolume: group.formattedTotalVolume)
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 12) {
+                ForEach(viewModel.recentEntries) { group in
+                    HStack(alignment: .bottom, spacing: 20) {
+                        DayCard(date: group.date, formattedVolume: group.formattedTotalVolume)
+
+                        ForEach(group.entries, id: \.objectID) { entry in
+                            EntryCard(
+                                entry: entry,
+                                onEdit: { viewModel.editEntry(entry) },
+                                onDelete: { viewModel.deleteEntry(entry) }
+                            )
                         }
                     }
                 }
-                .padding(.horizontal)
-                .id("history-scroll-content")
             }
-            .onChange(of: viewModel.recentEntries) { _, newEntries in
-                proxy.scrollTo("history-scroll-content", anchor: .trailing)
-            }
+            .padding(.horizontal)
         }
     }
 

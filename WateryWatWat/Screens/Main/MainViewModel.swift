@@ -294,8 +294,8 @@ final class MainViewModel {
         }
 
         return grouped.map { date, entries in
-            GroupedHydrationEntries(date: date, entries: entries.reversed())
-        }.sorted { $0.date < $1.date }
+            GroupedHydrationEntries(date: date, entries: entries)
+        }.sorted { $0.date > $1.date }
     }
 
     func scheduleMidnightRefresh() {
