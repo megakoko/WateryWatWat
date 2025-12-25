@@ -26,8 +26,18 @@ struct MainView: View {
                     Image(systemName: "gearshape")
                 }
             }
-            ToolbarItem(placement: .primaryAction) {
-                addButton
+            
+            if #available(iOS 26, *) {
+                ToolbarItem(placement: .bottomBar) {
+                    Spacer()
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    addButton
+                }
+            } else {
+                ToolbarItem(placement: .primaryAction) {
+                    addButton
+                }
             }
         }
         .sheet(item: $viewModel.entryViewModel) { addEntryViewModel in
