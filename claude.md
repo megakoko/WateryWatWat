@@ -24,6 +24,7 @@
 - conformance to protocols must be separate extensions
 - use async let whenever possible then await multiple tasks at the same time
 - if you make dummy service it must have parameters -- delay TimeInterval, and fail Bool that would just return error
+- service namings: 'Default' for real service, 'Mock' for mock, no preffix/suffix for protocol
 - if there are any auxiliary types put them after the main one of the file
 
 ## SwiftUI
