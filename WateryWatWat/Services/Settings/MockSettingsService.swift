@@ -15,6 +15,7 @@ final class MockSettingsService: SettingsServiceProtocol {
     )
     private let reminderSettingsSubject = PassthroughSubject<Void, Never>()
     private var healthSyncEnabled = false
+    private var statsPeriod: StatsPeriod = .week
 
     var reminderSettingsPublisher: AnyPublisher<Void, Never> {
         reminderSettingsSubject.eraseToAnyPublisher()
@@ -155,5 +156,13 @@ final class MockSettingsService: SettingsServiceProtocol {
 
     func setHealthSyncEnabled(_ enabled: Bool) async {
         healthSyncEnabled = enabled
+    }
+
+    func getStatsPeriod() -> StatsPeriod {
+        statsPeriod
+    }
+
+    func setStatsPeriod(_ period: StatsPeriod) async {
+        statsPeriod = period
     }
 }

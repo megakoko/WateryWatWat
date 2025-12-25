@@ -12,6 +12,8 @@ protocol SettingsServiceProtocol {
     func getNextReminderTime() -> Date?
     func getHealthSyncEnabled() -> Bool
     func setHealthSyncEnabled(_ enabled: Bool) async
+    func getStatsPeriod() -> StatsPeriod
+    func setStatsPeriod(_ period: StatsPeriod) async
     var reminderSettingsPublisher: AnyPublisher<Void, Never> { get }
 }
 
@@ -25,6 +27,7 @@ final class SettingsService: SettingsServiceProtocol {
     private let reminderEndMinuteKey = "reminderEndMinute"
     private let reminderPeriodMinutesKey = "reminderPeriodMinutes"
     private let healthSyncEnabledKey = "healthSyncEnabled"
+    private let statsPeriodDaysKey = "statsPeriodDays"
 
     var reminderSettingsPublisher: AnyPublisher<Void, Never> {
         Publishers.Merge6(
@@ -106,5 +109,14 @@ final class SettingsService: SettingsServiceProtocol {
 
     func setHealthSyncEnabled(_ enabled: Bool) async {
         defaults.set(enabled, forKey: healthSyncEnabledKey)
+    }
+
+    func getStatsPeriod() -> StatsPeriod {
+        let days = defaults.integer(forKey: statsPeriodDaysKey)
+        return StatsPeriod(rawValue: days) ?? .week
+    }
+
+    func setStatsPeriod(_ period: StatsPeriod) async {
+        defaults.set(period.days, forKey: statsPeriodDaysKey)
     }
 }

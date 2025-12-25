@@ -164,17 +164,17 @@ struct MainView: View {
     }
 
     private var sevenDayChartCard: some View {
-        CardPanel("\(viewModel.statsPeriodDays)-Day History") {
+        CardPanel("\(viewModel.statsPeriod.days)-Day History") {
             HistoryChartView(
-                dailyTotals: viewModel.statsPeriodDays == 7 ? viewModel.weekTotals : viewModel.monthTotals,
+                dailyTotals: viewModel.statsPeriod == .week ? viewModel.weekTotals : viewModel.monthTotals,
                 dailyGoal: viewModel.dailyGoal,
-                periodDays: viewModel.statsPeriodDays,
+                periodDays: viewModel.statsPeriod.days,
                 onTogglePeriod: viewModel.toggleStatsPeriod
             )
         } trailingButton: {
             Button(action: viewModel.toggleStatsPeriod) {
-                Text("\(viewModel.statsPeriodDays)d")
-                    .animation(nil, value: viewModel.statsPeriodDays)
+                Text("\(viewModel.statsPeriod.days)d")
+                    .animation(nil, value: viewModel.statsPeriod)
             }
         }
     }
@@ -197,7 +197,7 @@ struct MainView: View {
         SimpleValueCard(
             title: "Average",
             value: viewModel.formattedAverageIntake.uppercased(),
-            periodDays: viewModel.statsPeriodDays,
+            periodDays: viewModel.statsPeriod.days,
             onTogglePeriod: viewModel.toggleStatsPeriod
         )
         .contentTransition(.numericText())
@@ -207,7 +207,7 @@ struct MainView: View {
         SimpleValueCard(
             title: "Goal Hit",
             value: "\(viewModel.goalHitRate)%",
-            periodDays: viewModel.statsPeriodDays,
+            periodDays: viewModel.statsPeriod.days,
             onTogglePeriod: viewModel.toggleStatsPeriod
         )
         .contentTransition(.numericText())

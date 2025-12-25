@@ -16,7 +16,7 @@ final class MainViewModel {
     var settingsViewModel: SettingsViewModel?
     var historyViewModel: HistoryViewModel?
     var nextReminderTime: Date?
-    var statsPeriodDays: Int = 7
+    var statsPeriod: StatsPeriod = .week
     var entryToDelete: HydrationEntry?
     var showDeleteConfirmation = false
     var error: Error?
@@ -59,7 +59,7 @@ final class MainViewModel {
     }
 
     private var averageCalculationDays: [DailyTotal] {
-        let totals = statsPeriodDays == 7 ? weekTotals : monthTotals
+        let totals = statsPeriod == .week ? weekTotals : monthTotals
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
 
@@ -94,7 +94,10 @@ final class MainViewModel {
     }
 
     func toggleStatsPeriod() {
-        statsPeriodDays = statsPeriodDays == 7 ? 30 : 7
+        statsPeriod = statsPeriod.toggled()
+        Task {
+            await settingsService.setStatsPeriod(statsPeriod)
+        }
     }
 
     var streakText: String {
@@ -163,6 +166,7 @@ final class MainViewModel {
     }
 
     func onAppear() async {
+        statsPeriod = settingsService.getStatsPeriod()
         await loadData(initialLoad: true)
         await updateReminders()
         scheduleMidnightRefresh()
