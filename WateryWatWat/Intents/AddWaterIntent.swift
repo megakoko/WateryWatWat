@@ -21,7 +21,13 @@ struct AddWaterIntent: AppIntent {
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
         let volumeInML = Int64(volume.converted(to: .milliliters).value)
 
-        let service = HydrationService(context: PersistenceController.sharedApp.container.viewContext)
+        let healthKitService = HealthKitService()
+        let settingsService = SettingsService()
+        let service = HydrationService(
+            context: PersistenceController.sharedApp.container.viewContext,
+            healthKitService: healthKitService,
+            settingsService: settingsService
+        )
         try await service.addEntry(volume: volumeInML, type: "water", date: Date())
 
         let todayTotal = try await service.fetchTodayTotal()

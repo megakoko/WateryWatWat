@@ -40,9 +40,19 @@ final class SettingsViewModel: Identifiable {
             }
         }
     }
+    var healthSyncEnabled = false {
+        didSet {
+            Task {
+                await toggleHealthSync()
+            }
+        }
+    }
     var isLoading = false
     var permissionStatus: UNAuthorizationStatus = .notDetermined
     var error: Error?
+    var showDeleteConfirmation = false
+    var deleteResultMessage: String?
+    var showDeleteResult = false
 
     var shouldShowPermissionDenied: Bool {
         remindersEnabled && permissionStatus == .denied
@@ -75,11 +85,13 @@ final class SettingsViewModel: Identifiable {
     private let service: SettingsServiceProtocol
     private let notificationService: NotificationService
     private let volumeFormatter = VolumeFormatter(unit: .liters)
+    private let healthKitService: HealthKitServiceProtocol
     private var isInitialLoad = true
 
-    init(service: SettingsServiceProtocol, notificationService: NotificationService) {
+    init(service: SettingsServiceProtocol, notificationService: NotificationService, healthKitService: HealthKitServiceProtocol) {
         self.service = service
         self.notificationService = notificationService
+        self.healthKitService = healthKitService
     }
 
     func onAppear() async {
@@ -92,6 +104,8 @@ final class SettingsViewModel: Identifiable {
         reminderStartTime = dateFromComponents(hour: settings.startHour, minute: settings.startMinute)
         reminderEndTime = dateFromComponents(hour: settings.endHour, minute: settings.endMinute)
         reminderPeriodMinutes = settings.periodMinutes
+
+        healthSyncEnabled = service.getHealthSyncEnabled()
 
         await checkPermissionStatus()
 
@@ -201,6 +215,46 @@ final class SettingsViewModel: Identifiable {
     func openAppSettings() {
         if let url = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(url)
+        }
+    }
+
+    private func toggleHealthSync() async {
+        guard !isInitialLoad else { return }
+
+        if healthSyncEnabled {
+            do {
+                try await healthKitService.requestAuthorization()
+                let authorized = await healthKitService.isAuthorized()
+
+                if !authorized {
+                    healthSyncEnabled = false
+                    return
+                }
+
+                await service.setHealthSyncEnabled(true)
+            } catch {
+                healthSyncEnabled = false
+            }
+        } else {
+            await service.setHealthSyncEnabled(false)
+        }
+    }
+
+    func deleteHealthData() {
+        showDeleteConfirmation = true
+    }
+
+    func confirmDeleteHealthData() async {
+        isLoading = true
+        defer { isLoading = false }
+
+        do {
+            let count = try await healthKitService.deleteAllRecords()
+            deleteResultMessage = "Deleted \(count) records from Apple Health"
+            showDeleteResult = true
+        } catch {
+            deleteResultMessage = error.localizedDescription
+            showDeleteResult = true
         }
     }
 }

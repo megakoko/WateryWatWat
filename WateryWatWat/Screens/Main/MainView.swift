@@ -226,7 +226,8 @@ struct MainView: View {
             viewModel: MainViewModel(
                 service: MockHydrationService(),
                 settingsService: MockSettingsService(),
-                notificationService: MockNotificationService()
+                notificationService: MockNotificationService(),
+                healthKitService: MockHealthKitService(delay: 0, fail: false)
             )
         )
     }

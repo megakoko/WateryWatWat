@@ -22,4 +22,6 @@ enum Constants {
 
     static let appGroupIdentifier = "group.watery.db"
     static let dailyGoalKey = "dailyGoalML"
+
+    static let healthKitMetadataKey = "WateryWatWatObjectID"
 }
