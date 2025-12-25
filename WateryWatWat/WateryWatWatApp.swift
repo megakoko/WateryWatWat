@@ -15,13 +15,15 @@ struct WateryWatWatApp: App {
 
     var body: some Scene {
         WindowGroup {
-            MainView(
-                viewModel: MainViewModel(
-                    service: HydrationService(context: persistenceController.container.viewContext),
-                    settingsService: settingsService,
-                    notificationService: DefaultNotificationService(settingsService: settingsService)
+            NavigationStack {
+                MainView(
+                    viewModel: MainViewModel(
+                        service: HydrationService(context: persistenceController.container.viewContext),
+                        settingsService: settingsService,
+                        notificationService: DefaultNotificationService(settingsService: settingsService)
+                    )
                 )
-            )
+            }
         }
     }
 }

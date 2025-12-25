@@ -6,43 +6,13 @@ struct MainView: View {
     @Environment(\.sizeCategory) private var sizeCategory
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                Grid {
-                    WateryRow {
-                        circularProgressCard
-                    }
-
-                    WateryRow {
-                        remainingToGoalCard
-                    } trailing: {
-                        todayVolumeCard
-                    }
-
-                    WateryRow {
-                        streakCard
-                    } trailing: {
-                        nextReminderPanel
-                    }
-
-                    WateryRow {
-                        averageIntakeCard
-                    } trailing: {
-                        goalHitRateCard
-                    }
-
-                    WateryRow {
-                        sevenDayChartCard
-                    }
-
-                    WateryRow {
-                        historyPanel
-                    }
-                }
-                .padding()
+        ScrollView {
+            if viewModel.initialized {
+                content
             }
-            .scrollIndicators(.hidden)
-            .navigationTitle("Hydration")
+        }
+        .scrollIndicators(.hidden)
+        .navigationTitle("Hydration")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: viewModel.showSettings) {
@@ -79,10 +49,44 @@ struct MainView: View {
             } message: { _ in
                 Text("Delete entry?")
             }
+            .onChange(of: scenePhase) { _, newPhase in
+                viewModel.handleScenePhaseChange(newPhase)
+            }
+    }
+
+    private var content: some View {
+        Grid {
+            WateryRow {
+                circularProgressCard
+            }
+
+            WateryRow {
+                remainingToGoalCard
+            } trailing: {
+                todayVolumeCard
+            }
+
+            WateryRow {
+                streakCard
+            } trailing: {
+                nextReminderPanel
+            }
+
+            WateryRow {
+                averageIntakeCard
+            } trailing: {
+                goalHitRateCard
+            }
+
+            WateryRow {
+                sevenDayChartCard
+            }
+
+            WateryRow {
+                historyPanel
+            }
         }
-        .onChange(of: scenePhase) { _, newPhase in
-            viewModel.handleScenePhaseChange(newPhase)
-        }
+        .padding()
     }
 
     private var circularProgressCard: some View {
@@ -211,11 +215,13 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView(
-        viewModel: MainViewModel(
-            service: MockHydrationService(),
-            settingsService: MockSettingsService(),
-            notificationService: MockNotificationService()
+    NavigationStack {
+        MainView(
+            viewModel: MainViewModel(
+                service: MockHydrationService(),
+                settingsService: MockSettingsService(),
+                notificationService: MockNotificationService()
+            )
         )
-    )
+    }
 }

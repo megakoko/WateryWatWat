@@ -20,6 +20,7 @@ final class MainViewModel {
     var entryToDelete: HydrationEntry?
     var showDeleteConfirmation = false
     var error: Error?
+    var initialized = false
 
     var progress: Double {
         Double(todayTotal) / Double(dailyGoal)
@@ -250,6 +251,7 @@ final class MainViewModel {
                 self.dailyGoal = dailyGoal
                 self.streak = streak
                 self.recentEntries = recentEntries
+                self.initialized = true
             }
         } catch {
             self.error = error
