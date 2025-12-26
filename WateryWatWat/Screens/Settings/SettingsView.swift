@@ -55,26 +55,12 @@ struct SettingsView: View {
                         .monospacedDigit()
                         .textCase(.uppercase)
                 }
-                Slider(
-                    value: Binding(
-                        get: { Double(viewModel.dailyGoal) },
-                        set: { viewModel.dailyGoal = Int64($0) }
-                    ),
-                    in: Double(Constants.minGoalML)...Double(Constants.maxGoalML),
-                    step: Double(Constants.stepGoalML)
-                ) {
-                    Text("Daily Goal")
-                } minimumValueLabel: {
-                    Text(viewModel.formattedMinGoal)
-                        .font(.caption)
-                        .monospacedDigit()
-                        .textCase(.uppercase)
-                } maximumValueLabel: {
-                    Text(viewModel.formattedMaxGoal)
-                        .font(.caption)
-                        .monospacedDigit()
-                        .textCase(.uppercase)
-                }
+                GoalSlider(
+                    goal: $viewModel.dailyGoal,
+                    minGoal: Constants.minGoalML,
+                    maxGoal: Constants.maxGoalML,
+                    step: Constants.stepGoalML
+                )
             }
         }
     }
