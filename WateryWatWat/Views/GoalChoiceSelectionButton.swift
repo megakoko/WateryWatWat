@@ -1,12 +1,20 @@
 import SwiftUI
 
+struct IconWidthPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
 struct GoalChoiceSelectionButton<Value: Equatable>: View {
-    let icon: String?
+    let icon: String
     let title: String
     let description: String?
     let value: Value
     @Binding var selection: Value?
     var layout: Layout = .horizontal
+    var iconWidth: CGFloat? = nil
 
     var body: some View {
         Button {
@@ -33,10 +41,13 @@ struct GoalChoiceSelectionButton<Value: Equatable>: View {
         switch layout {
         case .horizontal:
             HStack(spacing: 12) {
-                if let icon {
-                    Image(systemName: icon)
-                        .font(.title)
-                }
+                Image(systemName: icon)
+                    .font(.title)
+                    .frame(minWidth: iconWidth, alignment: .center)
+                    .background(GeometryReader { geo in
+                        Color.clear.preference(key: IconWidthPreferenceKey.self, value: geo.size.width)
+                    })
+
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -49,10 +60,8 @@ struct GoalChoiceSelectionButton<Value: Equatable>: View {
             }
         case .vertical:
             VStack(spacing: 12) {
-                if let icon {
-                    Image(systemName: icon)
-                        .font(.largeTitle)
-                }
+                Image(systemName: icon)
+                    .font(.largeTitle)
                 Text(title)
             }
             .frame(height: 140)

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AdditionalFactorsPage: View {
     @Binding var factors: AdditionalFactors
+    @State private var maxIconWidth: CGFloat = 0
 
     var body: some View {
         VStack(spacing: 24) {
@@ -20,7 +21,8 @@ struct AdditionalFactorsPage: View {
                     selection: Binding(
                         get: { factors.coffee ? true : nil },
                         set: { factors.coffee = $0 ?? false }
-                    )
+                    ),
+                    iconWidth: maxIconWidth
                 )
 
                 GoalChoiceSelectionButton(
@@ -31,8 +33,12 @@ struct AdditionalFactorsPage: View {
                     selection: Binding(
                         get: { factors.exercise ? true : nil },
                         set: { factors.exercise = $0 ?? false }
-                    )
+                    ),
+                    iconWidth: maxIconWidth
                 )
+            }
+            .onPreferenceChange(IconWidthPreferenceKey.self) { width in
+                maxIconWidth = width
             }
 
             Spacer()

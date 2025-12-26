@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ClimatePage: View {
     @Binding var climate: Climate?
+    @State private var maxIconWidth: CGFloat = 0
 
     var body: some View {
         VStack(spacing: 24) {
@@ -18,9 +19,13 @@ struct ClimatePage: View {
                         title: value.name,
                         description: value.description,
                         value: value,
-                        selection: $climate
+                        selection: $climate,
+                        iconWidth: maxIconWidth
                     )
                 }
+            }
+            .onPreferenceChange(IconWidthPreferenceKey.self) { width in
+                maxIconWidth = width
             }
 
             Spacer()
