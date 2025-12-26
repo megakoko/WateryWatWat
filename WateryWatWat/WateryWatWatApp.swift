@@ -16,16 +16,13 @@ struct WateryWatWatApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                MainView(
-                    viewModel: MainViewModel(
-                        service: DefaultHydrationService(context: persistenceController.container.viewContext, healthKitService: healthKitService, settingsService: settingsService),
-                        settingsService: settingsService,
-                        notificationService: DefaultNotificationService(settingsService: settingsService),
-                        healthKitService: healthKitService
-                    )
+            ContentView(
+                viewModel: ContentViewModel(
+                    settingsService: settingsService,
+                    persistenceController: persistenceController,
+                    healthKitService: healthKitService
                 )
-            }
+            )
         }
     }
 }

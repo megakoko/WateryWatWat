@@ -15,6 +15,7 @@ struct AdditionalFactorsPage: View {
                 GoalChoiceSelectionButton(
                     icon: AdditionalFactor.coffee.icon,
                     title: AdditionalFactor.coffee.name,
+                    description: AdditionalFactor.coffee.description,
                     value: true,
                     selection: Binding(
                         get: { factors.coffee ? true : nil },
@@ -25,6 +26,7 @@ struct AdditionalFactorsPage: View {
                 GoalChoiceSelectionButton(
                     icon: AdditionalFactor.exercise.icon,
                     title: AdditionalFactor.exercise.name,
+                    description: AdditionalFactor.exercise.description,
                     value: true,
                     selection: Binding(
                         get: { factors.exercise ? true : nil },

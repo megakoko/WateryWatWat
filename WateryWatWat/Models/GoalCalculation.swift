@@ -38,8 +38,8 @@ struct GoalCalculationData {
 extension Gender {
     var icon: String {
         switch self {
-        case .male: return "figure.arms.open"
-        case .female: return "figure.dress.line.vertical.figure"
+        case .male: return "figure.stand"
+        case .female: return "figure.stand.dress"
         }
     }
 
@@ -74,9 +74,9 @@ extension ActivityLevel {
 
     var description: String? {
         switch self {
-        case .low: return "Mostly sedentary"
-        case .moderate: return "Light exercise"
-        case .high: return "Active lifestyle"
+        case .low: return "Sedentary"
+        case .moderate: return "Active"
+        case .high: return "Intense exercise"
         }
     }
 }
@@ -92,14 +92,18 @@ extension Climate {
 
     var name: String {
         switch self {
-        case .cold: return "Cold"
+        case .cold: return "Cold/Temperate"
         case .warm: return "Warm"
         case .hot: return "Hot/Humid"
         }
     }
 
     var description: String? {
-        nil
+        switch self {
+        case .cold: return "< 20°C"
+        case .warm: return "20-30°C"
+        case .hot: return "30°C+"
+        }
     }
 }
 
@@ -119,6 +123,9 @@ extension AdditionalFactor {
     }
 
     var description: String? {
-        nil
+        switch self {
+        case .coffee: return "Diuretic effect"
+        case .exercise: return "Requires more hydration"
+        }
     }
 }

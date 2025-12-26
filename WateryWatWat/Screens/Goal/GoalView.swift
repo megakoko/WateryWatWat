@@ -13,6 +13,7 @@ struct GoalView: View {
         }
         .navigationTitle("Daily Goal")
         .navigationBarTitleDisplayMode(.inline)
+        .animation(.easeInOut, value: viewModel.currentPage)
     }
 
     @ViewBuilder
@@ -40,16 +41,20 @@ struct GoalView: View {
             if viewModel.currentPage != .intro {
                 Button(action: viewModel.previousPage) {
                     Image(systemName: "chevron.left")
+                        .padding(.vertical, 6)
                 }
                 .buttonStyle(.bordered)
+                .bold()
             }
 
             Button(action: viewModel.nextPage) {
                 Text(viewModel.currentPage == .result ? "Done" : "Next")
                     .frame(maxWidth: .infinity)
+                    .padding(.vertical, 6)
             }
             .buttonStyle(.borderedProminent)
             .disabled(!viewModel.canGoNext)
+            .bold()
         }
         .padding()
     }
@@ -57,6 +62,6 @@ struct GoalView: View {
 
 #Preview {
     NavigationStack {
-        GoalView(viewModel: GoalViewModel())
+        GoalView(viewModel: GoalViewModel(settingsService: MockSettingsService()))
     }
 }

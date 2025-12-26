@@ -16,6 +16,7 @@ struct ClimatePage: View {
                     GoalChoiceSelectionButton(
                         icon: value.icon,
                         title: value.name,
+                        description: value.description,
                         value: value,
                         selection: $climate
                     )

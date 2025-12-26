@@ -4,6 +4,7 @@ import Combine
 protocol SettingsService {
     func getDailyGoal() -> Int64
     func setDailyGoal(_ value: Int64)
+    func isGoalSet() -> Bool
     func getReminderSettings() -> ReminderSettings
     func setReminderEnabled(_ enabled: Bool)
     func setReminderStartTime(hour: Int, minute: Int)
@@ -48,6 +49,10 @@ final class DefaultSettingsService: SettingsService {
 
     func setDailyGoal(_ value: Int64) {
         defaults.set(Int(value), forKey: dailyGoalKey)
+    }
+
+    func isGoalSet() -> Bool {
+        defaults.object(forKey: dailyGoalKey) != nil
     }
 
     func getReminderSettings() -> ReminderSettings {

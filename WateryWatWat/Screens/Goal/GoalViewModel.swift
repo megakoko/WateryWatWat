@@ -16,9 +16,15 @@ final class GoalViewModel: Identifiable {
     var currentPage: GoalPage = .intro
     var data = GoalCalculationData()
     var adjustedGoal: Int64 = 2000
+    var onComplete: (() -> Void)?
 
+    private let settingsService: SettingsService
     private let volumeFormatter = VolumeFormatter(unit: .liters)
 
+    init(settingsService: SettingsService) {
+        self.settingsService = settingsService
+    }
+    
     var canGoNext: Bool {
         switch currentPage {
         case .intro:
@@ -34,12 +40,26 @@ final class GoalViewModel: Identifiable {
         case .factors:
             return true
         case .result:
-            return false
+            return true
         }
     }
 
     var calculatedGoal: Int64 {
-        2000
+        guard let weight = data.weight,
+              let gender = data.gender,
+              let activity = data.activityLevel,
+              let climate = data.climate else {
+            return Constants.defaultDailyGoalML
+        }
+
+        return HydrationGoalCalculator.calculate(
+            weightKg: Double(weight),
+            gender: gender,
+            activity: activity,
+            climate: climate,
+            caffeine: data.additionalFactors.coffee,
+            longExercise: data.additionalFactors.exercise
+        )
     }
 
     var formattedGoal: String {
@@ -64,8 +84,13 @@ final class GoalViewModel: Identifiable {
             adjustedGoal = calculatedGoal
             currentPage = .result
         case .result:
-            break
+            completeGoalSetup()
         }
+    }
+
+    func completeGoalSetup() {
+        settingsService.setDailyGoal(adjustedGoal)
+        onComplete?()
     }
 
     func previousPage() {

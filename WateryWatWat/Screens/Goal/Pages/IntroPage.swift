@@ -7,7 +7,7 @@ struct IntroPage: View {
 
             Image(systemName: "drop.fill")
                 .font(.system(size: 80))
-                .foregroundStyle(.blue)
+                .foregroundStyle(Color.accent)
 
             Text("Set Your Daily Goal")
                 .font(.title)

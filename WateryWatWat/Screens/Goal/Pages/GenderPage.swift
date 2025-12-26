@@ -11,10 +11,11 @@ struct GenderPage: View {
                 .font(.title)
 
             HStack(spacing: 16) {
-                ForEach([Gender.female, Gender.male], id: \.self) { value in
+                ForEach([Gender.male, Gender.female], id: \.self) { value in
                     GoalChoiceSelectionButton(
                         icon: value.icon,
                         title: value.name,
+                        description: value.description,
                         value: value,
                         selection: $gender,
                         layout: .vertical

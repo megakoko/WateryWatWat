@@ -11,11 +11,12 @@ struct WeightPage: View {
             Text("What is your weight?")
                 .font(.title)
 
-            TextField("Weight (kg)", value: $weight, format: .number)
-                .textFieldStyle(.roundedBorder)
+            TextField("0", value: $weight, format: .number)
+                .font(.system(size: 60))
+                .textFieldStyle(.plain)
                 .keyboardType(.numberPad)
                 .multilineTextAlignment(.center)
-                .frame(maxWidth: 200)
+                .frame(maxWidth: .infinity)
                 .focused($isWeightFocused)
 
             Spacer()
@@ -28,6 +29,6 @@ struct WeightPage: View {
 }
 
 #Preview {
-    @Previewable @State var weight: Int? = 70
+    @Previewable @State var weight: Int? = nil
     WeightPage(weight: $weight)
 }
