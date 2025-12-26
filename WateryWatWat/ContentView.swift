@@ -2,18 +2,22 @@ import SwiftUI
 
 struct ContentView: View {
     @State var viewModel: ContentViewModel
-
+    
     var body: some View {
-        NavigationStack {
+        VStack {
             if viewModel.isGoalSet {
-                MainView(viewModel: viewModel.mainViewModel)
-                    .transition(.opacity)
+                NavigationStack {
+                    MainView(viewModel: viewModel.mainViewModel)
+                }
+                .transition(.move(edge: .top))
             } else {
-                GoalView(viewModel: viewModel.goalViewModel)
-                    .transition(.opacity)
+                NavigationStack {
+                    GoalView(viewModel: viewModel.goalViewModel)
+                }
+                .transition(.opacity)
             }
         }
-        .animation(.easeInOut(duration: 0.3), value: viewModel.isGoalSet)
+        .animation(.default, value: viewModel.isGoalSet)
     }
 }
 

@@ -14,6 +14,7 @@ struct ResultPage: View {
             Text(formattedGoal)
                 .font(.system(size: 60, weight: .bold))
                 .foregroundStyle(Color.accentColor)
+                .textCase(.uppercase)
 
             Text("Based on your profile, this is your recommended daily water intake")
                 .multilineTextAlignment(.center)
