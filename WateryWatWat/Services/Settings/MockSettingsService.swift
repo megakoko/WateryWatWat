@@ -34,6 +34,10 @@ final class MockSettingsService: SettingsService {
         storedGoal = value
     }
 
+    func isGoalSet() -> Bool {
+        storedGoal != Constants.defaultDailyGoalML
+    }
+
     func getReminderSettings() -> ReminderSettings {
         return storedReminderSettings
     }

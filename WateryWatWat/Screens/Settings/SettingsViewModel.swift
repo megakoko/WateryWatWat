@@ -74,14 +74,6 @@ final class SettingsViewModel: Identifiable {
         volumeFormatter.string(from: dailyGoal)
     }
 
-    var formattedMinGoal: String {
-        volumeFormatter.string(from: Constants.minGoalML)
-    }
-
-    var formattedMaxGoal: String {
-        volumeFormatter.string(from: Constants.maxGoalML)
-    }
-
     private let service: SettingsService
     private let notificationService: NotificationService
     private let volumeFormatter = VolumeFormatter(unit: .liters)
