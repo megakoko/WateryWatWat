@@ -18,7 +18,7 @@ struct MainView: View {
         }
         .scrollIndicators(.hidden)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("WateryWatWat")
+        .navigationTitle("Watery Wat Wat")
         .toolbar {
             if !viewModel.showCongratulations {
                 ToolbarItem(placement: .topBarLeading) {
