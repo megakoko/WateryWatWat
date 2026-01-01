@@ -7,7 +7,7 @@ struct VolumeButton: View {
 
     var body: some View {
         Button(action: action) {
-            VStack(spacing: 8) {
+            VStack(spacing: 0) {
                 Text("\(volume)")
                     .font(.title)
                 Text("ml")
@@ -15,7 +15,7 @@ struct VolumeButton: View {
             }
             .frame(maxWidth: .infinity)
             .frame(height: 100)
-            .background(isSelected ? Color.accentColor : Color(.systemGray5))
+            .background(isSelected ? Color.accentColor : Color.secondary.opacity(0.2))
             .foregroundStyle(isSelected ? .white : .primary)
             .clipShape(RoundedRectangle(cornerRadius: 12))
         }

@@ -3,6 +3,8 @@ import SwiftUI
 struct EntryView: View {
     @State var viewModel: EntryViewModel
     @Environment(\.dismiss) private var dismiss
+    
+    private let gridSpacing: Double = 8
 
     var body: some View {
         VStack(spacing: 24) {
@@ -41,7 +43,7 @@ struct EntryView: View {
     }
 
     private var volumeGrid: some View {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
+        LazyVGrid(columns: [GridItem(.flexible(), spacing: gridSpacing), GridItem(.flexible(), spacing: gridSpacing), GridItem(.flexible(), spacing: gridSpacing)], spacing: gridSpacing) {
             ForEach(viewModel.availableVolumes, id: \.self) { volume in
                 VolumeButton(
                     volume: volume,
@@ -72,9 +74,8 @@ struct EntryView: View {
             }
         }
         .pickerStyle(.wheel)
-        .frame(height: 150)
+        .frame(height: 200)
     }
-
 }
 
 #Preview {
