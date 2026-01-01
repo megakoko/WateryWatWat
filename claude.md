@@ -26,6 +26,7 @@
 - if you make dummy service it must have parameters -- delay TimeInterval, and fail Bool that would just return error
 - service namings: 'Default' for real service, 'Mock' for mock, no preffix/suffix for protocol
 - if there are any auxiliary types put them after the main one of the file
+- don't make any whitespace changes
 
 ## SwiftUI
 - No styling unless I specify
