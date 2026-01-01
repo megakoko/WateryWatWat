@@ -137,11 +137,16 @@ struct MainView: View {
                         DayCard(date: group.date, formattedVolume: group.formattedTotalVolume)
 
                         ForEach(group.entries, id: \.objectID) { entry in
-                            EntryCard(
-                                entry: entry,
-                                onEdit: { viewModel.editEntry(entry) },
-                                onDelete: { viewModel.deleteEntry(entry) }
-                            )
+                            Menu {
+                                Button("Delete", systemImage: "trash", role: .destructive) {
+                                    viewModel.deleteEntry(entry)
+                                }
+                            } label: {
+                                EntryCard(entry: entry)
+                            } primaryAction: {
+                                viewModel.editEntry(entry)
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
                 }
