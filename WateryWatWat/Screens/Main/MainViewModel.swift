@@ -19,6 +19,7 @@ final class MainViewModel {
     var statsPeriod: StatsPeriod = .week
     var entryToDelete: HydrationEntry?
     var showDeleteConfirmation = false
+    var showCongratulations = false
     var error: Error?
     var initialized = false
     
@@ -270,7 +271,7 @@ final class MainViewModel {
                 previousTotal > 0 &&
                 previousTotal < dailyGoal &&
                 todayTotal >= dailyGoal {
-                _confettiPublisher.send(())
+                onGoalReached()
             }
         } catch {
             self.error = error
@@ -372,5 +373,21 @@ final class MainViewModel {
 
     private func reloadWidgets() {
         WidgetCenter.shared.reloadAllTimelines()
+    }
+    
+    private func onGoalReached() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self._confettiPublisher.send(())
+            
+            withAnimation(.easeOut(duration: 0.2)) {
+                self.showCongratulations = true
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                withAnimation(.easeInOut(duration: 1)) {
+                    self.showCongratulations = false
+                }
+            }
+        }
     }
 }

@@ -16,23 +16,31 @@ struct MainView: View {
                     .padding(.bottom, extraAddButtonSpacing)
             }
         }
-        .overlay {
-            confettiView
-                .ignoresSafeArea()
-        }
         .scrollIndicators(.hidden)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("WateryWatWat")
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: viewModel.showSettings) {
-                    Image(systemName: "gearshape")
+            if !viewModel.showCongratulations {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: viewModel.showSettings) {
+                        Image(systemName: "gearshape")
+                    }
                 }
             }
         }
         .overlay(alignment: .bottom) {
             if viewModel.initialized {
                 addButton
+                    .ignoresSafeArea()
+            }
+        }
+        .overlay {
+            ZStack {
+                if viewModel.showCongratulations {
+                    congratulationsView
+                }
+                
+                confettiView
                     .ignoresSafeArea()
             }
         }
@@ -94,6 +102,22 @@ struct MainView: View {
             }
         }
         .padding()
+    }
+    
+    private var congratulationsView: some View {
+        Color.clear
+            .background(.ultraThinMaterial, in: Rectangle())
+            .ignoresSafeArea()
+            .overlay {
+                VStack {
+                    Text("Congratulations!")
+                        .font(.title.bold())
+                    
+                    Text("Daily goal reached")
+                        .foregroundStyle(.gray)
+                }
+                .offset(y: 50)
+            }
     }
 
     private var circularProgressCard: some View {
