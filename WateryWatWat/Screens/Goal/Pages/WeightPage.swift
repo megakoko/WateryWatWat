@@ -8,7 +8,7 @@ struct WeightPage: View {
         VStack(spacing: 24) {
             Spacer()
 
-            Text("What is your weight?")
+            Text("goal.weight.question".localized)
                 .font(.title)
 
             TextField("0", value: $weight, format: .number)

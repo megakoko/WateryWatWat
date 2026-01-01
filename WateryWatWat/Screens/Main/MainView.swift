@@ -5,7 +5,7 @@ struct MainView: View {
     @State var viewModel: MainViewModel
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.sizeCategory) private var sizeCategory
-    
+
     private let confettiView = C3DView()
     private let extraAddButtonSpacing = 100.0
     
@@ -18,7 +18,7 @@ struct MainView: View {
         }
         .scrollIndicators(.hidden)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle("Watery Wat Wat")
+        .navigationTitle("app.title".localized)
         .toolbar {
             if !viewModel.showCongratulations {
                 ToolbarItem(placement: .topBarLeading) {
@@ -110,10 +110,10 @@ struct MainView: View {
             .ignoresSafeArea()
             .overlay {
                 VStack {
-                    Text("Congratulations!")
+                    Text("congratulations.title".localized)
                         .font(.title.bold())
-                    
-                    Text("Daily goal reached")
+
+                    Text("congratulations.message".localized)
                         .foregroundStyle(.gray)
                 }
                 .offset(y: 50)
@@ -137,19 +137,19 @@ struct MainView: View {
     }
 
     private var todayVolumeCard: some View {
-        SimpleValueCard(title: "Goal", value: viewModel.formattedDailyGoal.uppercased())
+        SimpleValueCard(title: "card.goal".localized, value: viewModel.formattedDailyGoal.uppercased())
     }
 
     private var streakCard: some View {
-        SimpleValueCard(title: "Streak", value: viewModel.streakText)
+        SimpleValueCard(title: "card.streak".localized, value: viewModel.streakText)
             .contentTransition(.numericText())
     }
 
     private var historyPanel: some View {
-        CardPanel("History", usePadding: false) {
+        CardPanel("card.history".localized, usePadding: false) {
             historyScrollView
         } trailingButton: {
-            Button("See All", action: viewModel.showHistory)
+            Button("button.seeAll".localized, action: viewModel.showHistory)
         }
     }
 
@@ -162,7 +162,7 @@ struct MainView: View {
 
                         ForEach(group.entries, id: \.objectID) { entry in
                             Menu {
-                                Button("Delete", systemImage: "trash", role: .destructive) {
+                                Button("button.delete".localized, systemImage: "trash", role: .destructive) {
                                     viewModel.deleteEntry(entry)
                                 }
                             } label: {
@@ -178,18 +178,18 @@ struct MainView: View {
             .padding(.horizontal)
         }
         .confirmationDialog(
-            "Delete Entry",
+            "confirmation.deleteEntry.title".localized,
             isPresented: $viewModel.showDeleteConfirmation,
             presenting: viewModel.entryToDelete
         ) { _ in
-            Button("Delete", role: .destructive, action: viewModel.confirmDelete)
-        } message: { _ in
-            Text("Delete entry?")
+            Button("button.delete".localized, role: .destructive, action: viewModel.confirmDelete)
+        } message: { entry in
+            Text("confirmation.deleteEntry.message".localized(viewModel.formattedVolumeToDelete))
         }
     }
 
     private var sevenDayChartCard: some View {
-        CardPanel("\(viewModel.statsPeriod.days)-Day History") {
+        CardPanel("card.dayHistory".localized(viewModel.statsPeriod.days)) {
             HistoryChartView(
                 dailyTotals: viewModel.statsPeriod == .week ? viewModel.weekTotals : viewModel.monthTotals,
                 dailyGoal: viewModel.dailyGoal,
@@ -198,14 +198,14 @@ struct MainView: View {
             )
         } trailingButton: {
             Button(action: viewModel.toggleStatsPeriod) {
-                Text("\(viewModel.statsPeriod.days)d")
+                Text("period.days".localized(viewModel.statsPeriod.days))
                     .animation(nil, value: viewModel.statsPeriod)
             }
         }
     }
 
     private var nextReminderPanel: some View {
-        CardPanel("Next Drink") {
+        CardPanel("card.nextDrink".localized) {
             NextReminderPanel(
                 nextReminderTime: viewModel.nextReminderTime,
                 onAddReminder: viewModel.showSettings
@@ -214,13 +214,13 @@ struct MainView: View {
     }
 
     private var remainingToGoalCard: some View {
-        SimpleValueCard(title: "Remaining", value: viewModel.formattedRemainingToGoal.uppercased())
+        SimpleValueCard(title: "card.remaining".localized, value: viewModel.formattedRemainingToGoal.uppercased())
             .contentTransition(.numericText())
     }
 
     private var averageIntakeCard: some View {
         SimpleValueCard(
-            title: "Average",
+            title: "card.average".localized,
             value: viewModel.formattedAverageIntake.uppercased(),
             periodDays: viewModel.statsPeriod.days,
             onTogglePeriod: viewModel.toggleStatsPeriod
@@ -230,7 +230,7 @@ struct MainView: View {
 
     private var goalHitRateCard: some View {
         SimpleValueCard(
-            title: "Goal Hit",
+            title: "card.goalHit".localized,
             value: "\(viewModel.goalHitRate)%",
             periodDays: viewModel.statsPeriod.days,
             onTogglePeriod: viewModel.toggleStatsPeriod
@@ -241,12 +241,12 @@ struct MainView: View {
     private var addButton: some View {
         Menu {
             ForEach(Constants.standardVolumes, id: \.self) { volume in
-                Button("\(volume) ml") {
+                Button("volume.ml".localized(volume)) {
                     viewModel.quickAddEntry(volume: volume)
                 }
             }
         } label: {
-            Label("Add", systemImage: "plus")
+            Label("button.add".localized, systemImage: "plus")
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(.white)
                 .padding(.horizontal)

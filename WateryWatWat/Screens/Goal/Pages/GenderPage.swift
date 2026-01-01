@@ -7,7 +7,7 @@ struct GenderPage: View {
         VStack(spacing: 24) {
             Spacer()
 
-            Text("What is your gender?")
+            Text("goal.gender.question".localized)
                 .font(.title)
 
             HStack(spacing: 16) {

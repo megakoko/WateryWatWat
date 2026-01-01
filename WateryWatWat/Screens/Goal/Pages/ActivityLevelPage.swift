@@ -8,7 +8,7 @@ struct ActivityLevelPage: View {
         VStack(spacing: 24) {
             Spacer()
 
-            Text("What is your daily activity level?")
+            Text("goal.activityLevel.question".localized)
                 .font(.title)
                 .multilineTextAlignment(.center)
 

@@ -1,0 +1,155 @@
+"app.name" = "WateryWatWat";
+"app.title" = "Watery Wat Wat";
+
+"navigation.history" = "Histórico";
+"navigation.settings" = "Configurações";
+"navigation.dailyGoal" = "Meta diária";
+"navigation.addEntry" = "Adicionar registro";
+"navigation.editEntry" = "Editar registro";
+
+"button.add" = "Adicionar";
+"button.cancel" = "Cancelar";
+"button.addReminder" = "Adicionar lembrete";
+"button.seeAll" = "Ver tudo";
+"button.delete" = "Excluir";
+"button.openSettings" = "Abrir configurações";
+"button.notificationSettings" = "Configurações de notificação";
+"button.deleteHealthData" = "Excluir dados de saúde";
+"button.done" = "Concluído";
+"button.next" = "Próximo";
+
+"goal.intro.title" = "Defina sua meta diária";
+"goal.intro.description" = "Responda algumas perguntas para calcular sua meta personalizada de ingestão de água";
+"goal.gender.question" = "Qual é o seu gênero?";
+"goal.weight.question" = "Qual é o seu peso?";
+"goal.activityLevel.question" = "Qual é o seu nível de atividade diária?";
+"goal.climate.question" = "Qual é o seu clima típico?";
+"goal.additionalFactors.question" = "Algum fator adicional?";
+"goal.result.title" = "Sua meta diária";
+"goal.result.description" = "Com base no seu perfil, esta é a sua ingestão diária de água recomendada";
+"goal.result.hint" = "Você pode ajustar isso de acordo com suas necessidades";
+
+"gender.male" = "Masculino";
+"gender.female" = "Feminino";
+
+"activityLevel.low" = "Baixo";
+"activityLevel.moderate" = "Moderado";
+"activityLevel.high" = "Alto";
+"activityLevel.low.description" = "Sedentário";
+"activityLevel.moderate.description" = "Ativo";
+"activityLevel.high.description" = "Exercício intenso";
+
+"climate.cold" = "Frio/temperado";
+"climate.warm" = "Quente";
+"climate.hot" = "Quente/úmido";
+"climate.cold.description" = "< 20°C";
+"climate.warm.description" = "20-30°C";
+"climate.hot.description" = "30°C+";
+
+"additionalFactor.coffee.name" = "Consumo regular de café";
+"additionalFactor.coffee.description" = "Efeito diurético";
+"additionalFactor.exercise.name" = "Exercício > 60 min/dia";
+"additionalFactor.exercise.description" = "Requer mais hidratação";
+
+"congratulations.title" = "Parabéns!";
+"congratulations.message" = "Meta diária alcançada";
+
+"confirmation.deleteEntry.title" = "Excluir registro";
+"confirmation.deleteEntry.message" = "Excluir %@?";
+
+"alert.deleteHealthData.title" = "Excluir dados de saúde";
+"alert.deleteHealthData.message" = "Isso removerá todos os registros de ingestão de água criados por este app do Apple Health. Esta ação não pode ser desfeita.";
+"alert.result" = "Resultado";
+"alert.error" = "Erro";
+"alert.notificationsDisabled" = "As notificações estão desativadas. Por favor, ative-as nas Configurações.";
+
+"card.history" = "Histórico";
+"card.nextDrink" = "Próximo drink";
+"card.goal" = "Meta";
+"card.streak" = "Sequência";
+"card.remaining" = "Restante";
+"card.average" = "Média";
+"card.goalHit" = "Meta atingida";
+"card.dayHistory" = "Histórico de %d dias";
+
+"settings.section.dailyGoal" = "Meta diária";
+"settings.section.reminders" = "Lembretes";
+"settings.section.health" = "Saúde";
+
+"form.date" = "Data";
+"form.custom" = "Personalizado";
+"form.volume" = "Volume";
+"form.enableReminders" = "Ativar lembretes";
+"form.startTime" = "Hora de início";
+"form.endTime" = "Hora de término";
+"form.remindEvery" = "Lembrar a cada";
+"form.syncToHealth" = "Sincronizar com Apple Health";
+
+"time.soon" = "Em breve";
+"time.inHoursMinutes" = "em %dh %dm";
+"time.inMinutes" = "em %dm";
+"time.lessThanMinute" = "em < 1m";
+
+"volume.ml" = "%d ml";
+"volume.200ml" = "200 ml";
+"volume.300ml" = "300 ml";
+"volume.500ml" = "500 ml";
+"volume.750ml" = "750 ml";
+"volume.1000ml" = "1000 ml";
+"volume.1500ml" = "1500 ml";
+
+"period.days" = "%dd";
+
+"intent.addWater.title" = "Adicionar água";
+"intent.addWater.description" = "Registrar ingestão de água";
+"intent.addWater.dialog" = "Adicionados %d mL. Total de hoje: %d mL";
+"intent.addWater.result.added" = "+%d mL";
+"intent.addWater.result.total" = "Total: %d mL";
+"intent.addWater.siri.add" = "Adicionar água";
+"intent.addWater.siri.log" = "Registrar água";
+
+"healthData.deletedRecords" = "Excluídos %d registros do Apple Health";
+
+"motivational.almostThere" = "Quase lá!";
+"motivational.keepGoing" = "Continue assim!";
+"motivational.greatProgress" = "Ótimo progresso!";
+"motivational.youGotThis" = "Você consegue!";
+"motivational.stayHydrated" = "Mantenha-se hidratado!";
+"motivational.niceWork" = "Bom trabalho!";
+"motivational.excellentStart" = "Excelente começo!";
+"motivational.halfwayThere" = "Metade do caminho!";
+"motivational.soClose" = "Tão perto!";
+"motivational.amazing" = "Incrível!";
+
+"hydration.reminder" = "Lembrete de hidratação";
+
+"motivation.1" = "Mantenha-se hidratado, mantenha-se saudável!";
+"motivation.2" = "Hora de beber água!";
+"motivation.3" = "Seu corpo vai agradecer!";
+"motivation.4" = "Mantenha a água fluindo!";
+"motivation.5" = "Hora da pausa para hidratação!";
+"motivation.6" = "Água: o melhor amigo do seu corpo!";
+"motivation.7" = "Mate sua sede!";
+"motivation.8" = "Pequenos goles, grandes benefícios!";
+"motivation.9" = "Beba e sinta-se ótimo!";
+"motivation.10" = "Sua dose diária de hidratação!";
+"motivation.11" = "Refresque seu corpo e mente!";
+"motivation.12" = "Água é vida, beba!";
+"motivation.13" = "Um gole por dia mantém o médico longe!";
+"motivation.14" = "Você está indo muito bem, mantenha-se hidratado!";
+"motivation.15" = "Presenteie-se com um pouco de H2O!";
+"motivation.16" = "Alimente seu corpo com água!";
+"motivation.17" = "Saúde para você!";
+"motivation.18" = "Mantenha bons hábitos de hidratação!";
+"motivation.19" = "Hora de uma pausa para água!";
+"motivation.20" = "Dê ao seu corpo o que ele precisa!";
+"motivation.21" = "Gole, gole, viva!";
+"motivation.22" = "Água: a bebida energética da natureza!";
+"motivation.23" = "Hidrate-se agora, sinta-se melhor depois!";
+"motivation.24" = "Você merece esta pausa para água!";
+"motivation.25" = "Nutra seu corpo com água!";
+"motivation.26" = "Mantenha-se no fluxo!";
+"motivation.27" = "A água faz maravilhas!";
+"motivation.28" = "Beba água, sinta-se incrível!";
+"motivation.29" = "Suas células estão pedindo água!";
+"motivation.30" = "Fique fresco, fique hidratado!";

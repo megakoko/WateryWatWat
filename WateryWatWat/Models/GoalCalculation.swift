@@ -45,8 +45,8 @@ extension Gender {
 
     var name: String {
         switch self {
-        case .male: return "Male"
-        case .female: return "Female"
+        case .male: return "gender.male".localized
+        case .female: return "gender.female".localized
         }
     }
 
@@ -66,17 +66,17 @@ extension ActivityLevel {
 
     var name: String {
         switch self {
-        case .low: return "Low"
-        case .moderate: return "Moderate"
-        case .high: return "High"
+        case .low: return "activityLevel.low".localized
+        case .moderate: return "activityLevel.moderate".localized
+        case .high: return "activityLevel.high".localized
         }
     }
 
     var description: String? {
         switch self {
-        case .low: return "Sedentary"
-        case .moderate: return "Active"
-        case .high: return "Intense exercise"
+        case .low: return "activityLevel.low.description".localized
+        case .moderate: return "activityLevel.moderate.description".localized
+        case .high: return "activityLevel.high.description".localized
         }
     }
 }
@@ -92,17 +92,17 @@ extension Climate {
 
     var name: String {
         switch self {
-        case .cold: return "Cold/Temperate"
-        case .warm: return "Warm"
-        case .hot: return "Hot/Humid"
+        case .cold: return "climate.cold".localized
+        case .warm: return "climate.warm".localized
+        case .hot: return "climate.hot".localized
         }
     }
 
     var description: String? {
         switch self {
-        case .cold: return "< 20°C"
-        case .warm: return "20-30°C"
-        case .hot: return "30°C+"
+        case .cold: return "climate.cold.description".localized
+        case .warm: return "climate.warm.description".localized
+        case .hot: return "climate.hot.description".localized
         }
     }
 }
@@ -117,15 +117,15 @@ extension AdditionalFactor {
 
     var name: String {
         switch self {
-        case .coffee: return "Regular coffee intake"
-        case .exercise: return "Exercise > 60 min/day"
+        case .coffee: return "additionalFactor.coffee.name".localized
+        case .exercise: return "additionalFactor.exercise.name".localized
         }
     }
 
     var description: String? {
         switch self {
-        case .coffee: return "Diuretic effect"
-        case .exercise: return "Requires more hydration"
+        case .coffee: return "additionalFactor.coffee.description".localized
+        case .exercise: return "additionalFactor.exercise.description".localized
         }
     }
 }

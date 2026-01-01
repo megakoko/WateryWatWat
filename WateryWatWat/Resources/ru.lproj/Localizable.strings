@@ -1,0 +1,155 @@
+"app.name" = "WateryWatWat";
+"app.title" = "Watery Wat Wat";
+
+"navigation.history" = "История";
+"navigation.settings" = "Настройки";
+"navigation.dailyGoal" = "Дневная цель";
+"navigation.addEntry" = "Добавить запись";
+"navigation.editEntry" = "Редактировать запись";
+
+"button.add" = "Добавить";
+"button.cancel" = "Отмена";
+"button.addReminder" = "Добавить напоминание";
+"button.seeAll" = "Показать все";
+"button.delete" = "Удалить";
+"button.openSettings" = "Открыть настройки";
+"button.notificationSettings" = "Настройки уведомлений";
+"button.deleteHealthData" = "Удалить данные здоровья";
+"button.done" = "Готово";
+"button.next" = "Далее";
+
+"goal.intro.title" = "Установите дневную цель";
+"goal.intro.description" = "Ответьте на несколько вопросов, чтобы рассчитать персональную норму потребления воды";
+"goal.gender.question" = "Ваш пол?";
+"goal.weight.question" = "Ваш вес?";
+"goal.activityLevel.question" = "Ваш уровень ежедневной активности?";
+"goal.climate.question" = "Ваш типичный климат?";
+"goal.additionalFactors.question" = "Есть дополнительные факторы?";
+"goal.result.title" = "Ваша дневная цель";
+"goal.result.description" = "На основе вашего профиля рекомендуемая норма потребления воды";
+"goal.result.hint" = "Вы можете настроить это под свои нужды";
+
+"gender.male" = "Мужской";
+"gender.female" = "Женский";
+
+"activityLevel.low" = "Низкий";
+"activityLevel.moderate" = "Средний";
+"activityLevel.high" = "Высокий";
+"activityLevel.low.description" = "Малоподвижный";
+"activityLevel.moderate.description" = "Активный";
+"activityLevel.high.description" = "Интенсивные тренировки";
+
+"climate.cold" = "Холодный/умеренный";
+"climate.warm" = "Тёплый";
+"climate.hot" = "Жаркий/влажный";
+"climate.cold.description" = "< 20°C";
+"climate.warm.description" = "20-30°C";
+"climate.hot.description" = "30°C+";
+
+"additionalFactor.coffee.name" = "Регулярное употребление кофе";
+"additionalFactor.coffee.description" = "Мочегонный эффект";
+"additionalFactor.exercise.name" = "Тренировки > 60 мин/день";
+"additionalFactor.exercise.description" = "Требуется больше воды";
+
+"congratulations.title" = "Поздравляем!";
+"congratulations.message" = "Дневная цель достигнута";
+
+"confirmation.deleteEntry.title" = "Удалить запись";
+"confirmation.deleteEntry.message" = "Удалить %@?";
+
+"alert.deleteHealthData.title" = "Удалить данные здоровья";
+"alert.deleteHealthData.message" = "Это удалит все записи о потреблении воды, созданные этим приложением, из Apple Health. Это действие нельзя отменить.";
+"alert.result" = "Результат";
+"alert.error" = "Ошибка";
+"alert.notificationsDisabled" = "Уведомления отключены. Пожалуйста, включите их в Настройках.";
+
+"card.history" = "История";
+"card.nextDrink" = "Следующий приём";
+"card.goal" = "Цель";
+"card.streak" = "Серия";
+"card.remaining" = "Осталось";
+"card.average" = "Среднее";
+"card.goalHit" = "Достижение цели";
+"card.dayHistory" = "История за %d дней";
+
+"settings.section.dailyGoal" = "Дневная цель";
+"settings.section.reminders" = "Напоминания";
+"settings.section.health" = "Здоровье";
+
+"form.date" = "Дата";
+"form.custom" = "Свой";
+"form.volume" = "Объём";
+"form.enableReminders" = "Включить напоминания";
+"form.startTime" = "Время начала";
+"form.endTime" = "Время окончания";
+"form.remindEvery" = "Напоминать каждые";
+"form.syncToHealth" = "Синхронизировать с Apple Health";
+
+"time.soon" = "Скоро";
+"time.inHoursMinutes" = "через %dч %dм";
+"time.inMinutes" = "через %dм";
+"time.lessThanMinute" = "через < 1м";
+
+"volume.ml" = "%d мл";
+"volume.200ml" = "200 мл";
+"volume.300ml" = "300 мл";
+"volume.500ml" = "500 мл";
+"volume.750ml" = "750 мл";
+"volume.1000ml" = "1000 мл";
+"volume.1500ml" = "1500 мл";
+
+"period.days" = "%dд";
+
+"intent.addWater.title" = "Добавить воду";
+"intent.addWater.description" = "Записать потребление воды";
+"intent.addWater.dialog" = "Добавлено %d мл. Сегодня всего: %d мл";
+"intent.addWater.result.added" = "+%d мл";
+"intent.addWater.result.total" = "Всего: %d мл";
+"intent.addWater.siri.add" = "Добавить воду";
+"intent.addWater.siri.log" = "Записать воду";
+
+"healthData.deletedRecords" = "Удалено %d записей из Apple Health";
+
+"motivational.almostThere" = "Почти у цели!";
+"motivational.keepGoing" = "Продолжай!";
+"motivational.greatProgress" = "Отличный прогресс!";
+"motivational.youGotThis" = "У тебя получится!";
+"motivational.stayHydrated" = "Не забывай пить воду!";
+"motivational.niceWork" = "Хорошая работа!";
+"motivational.excellentStart" = "Отличное начало!";
+"motivational.halfwayThere" = "Половина пути пройдена!";
+"motivational.soClose" = "Совсем близко!";
+"motivational.amazing" = "Потрясающе!";
+
+"hydration.reminder" = "Напоминание о гидратации";
+
+"motivation.1" = "Поддерживайте водный баланс, будьте здоровы!";
+"motivation.2" = "Время пить воду!";
+"motivation.3" = "Ваше тело скажет спасибо!";
+"motivation.4" = "Держите воду в потоке!";
+"motivation.5" = "Время для гидратации!";
+"motivation.6" = "Вода: лучший друг вашего тела!";
+"motivation.7" = "Утолите жажду!";
+"motivation.8" = "Маленькие глотки, большая польза!";
+"motivation.9" = "Пейте и чувствуйте себя прекрасно!";
+"motivation.10" = "Ваша ежедневная доза гидратации!";
+"motivation.11" = "Освежите тело и разум!";
+"motivation.12" = "Вода - это жизнь, пейте!";
+"motivation.13" = "Глоток в день - доктор в стороне!";
+"motivation.14" = "Вы отлично справляетесь, поддерживайте водный баланс!";
+"motivation.15" = "Побалуйте себя H2O!";
+"motivation.16" = "Питайте свое тело водой!";
+"motivation.17" = "За ваше здоровье!";
+"motivation.18" = "Поддерживайте хорошие привычки гидратации!";
+"motivation.19" = "Время для перерыва на воду!";
+"motivation.20" = "Дайте телу то, что ему нужно!";
+"motivation.21" = "Глоток, глоток, ура!";
+"motivation.22" = "Вода: энергетический напиток природы!";
+"motivation.23" = "Пейте сейчас, почувствуйте себя лучше позже!";
+"motivation.24" = "Вы заслуживаете этот перерыв на воду!";
+"motivation.25" = "Питайте свое тело водой!";
+"motivation.26" = "Оставайтесь в потоке!";
+"motivation.27" = "Вода творит чудеса!";
+"motivation.28" = "Пейте воду, чувствуйте себя потрясающе!";
+"motivation.29" = "Ваши клетки просят воду!";
+"motivation.30" = "Оставайтесь прохладными, поддерживайте водный баланс!";

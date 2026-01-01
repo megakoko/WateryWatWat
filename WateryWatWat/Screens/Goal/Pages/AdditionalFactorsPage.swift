@@ -8,7 +8,7 @@ struct AdditionalFactorsPage: View {
         VStack(spacing: 24) {
             Spacer()
 
-            Text("Any additional factors?")
+            Text("goal.additionalFactors.question".localized)
                 .font(.title)
                 .multilineTextAlignment(.center)
 

@@ -9,10 +9,10 @@ struct IntroPage: View {
                 .font(.system(size: 80))
                 .foregroundStyle(Color.accent)
 
-            Text("Set Your Daily Goal")
+            Text("goal.intro.title".localized)
                 .font(.title)
 
-            Text("Answer a few questions to calculate your personalized daily water intake goal")
+            Text("goal.intro.description".localized)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
 

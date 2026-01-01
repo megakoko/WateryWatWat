@@ -1,0 +1,155 @@
+"app.name" = "WateryWatWat";
+"app.title" = "Watery Wat Wat";
+
+"navigation.history" = "السجل";
+"navigation.settings" = "الإعدادات";
+"navigation.dailyGoal" = "الهدف اليومي";
+"navigation.addEntry" = "إضافة سجل";
+"navigation.editEntry" = "تعديل السجل";
+
+"button.add" = "إضافة";
+"button.cancel" = "إلغاء";
+"button.addReminder" = "إضافة تذكير";
+"button.seeAll" = "عرض الكل";
+"button.delete" = "حذف";
+"button.openSettings" = "فتح الإعدادات";
+"button.notificationSettings" = "إعدادات الإشعارات";
+"button.deleteHealthData" = "حذف بيانات الصحة";
+"button.done" = "تم";
+"button.next" = "التالي";
+
+"goal.intro.title" = "حدد هدفك اليومي";
+"goal.intro.description" = "أجب عن بعض الأسئلة لحساب هدفك الشخصي لتناول الماء يومياً";
+"goal.gender.question" = "ما هو جنسك؟";
+"goal.weight.question" = "ما هو وزنك؟";
+"goal.activityLevel.question" = "ما هو مستوى نشاطك اليومي؟";
+"goal.climate.question" = "ما هو مناخك المعتاد؟";
+"goal.additionalFactors.question" = "هل هناك عوامل إضافية؟";
+"goal.result.title" = "هدفك اليومي";
+"goal.result.description" = "بناءً على ملفك الشخصي، هذا هو تناولك الموصى به من الماء يومياً";
+"goal.result.hint" = "يمكنك تعديل هذا حسب احتياجاتك";
+
+"gender.male" = "ذكر";
+"gender.female" = "أنثى";
+
+"activityLevel.low" = "منخفض";
+"activityLevel.moderate" = "معتدل";
+"activityLevel.high" = "عالي";
+"activityLevel.low.description" = "قليل الحركة";
+"activityLevel.moderate.description" = "نشط";
+"activityLevel.high.description" = "تمارين مكثفة";
+
+"climate.cold" = "بارد/معتدل";
+"climate.warm" = "دافئ";
+"climate.hot" = "حار/رطب";
+"climate.cold.description" = "< 20°م";
+"climate.warm.description" = "20-30°م";
+"climate.hot.description" = "30°م+";
+
+"additionalFactor.coffee.name" = "تناول القهوة بانتظام";
+"additionalFactor.coffee.description" = "تأثير مدر للبول";
+"additionalFactor.exercise.name" = "تمارين > 60 دقيقة/يوم";
+"additionalFactor.exercise.description" = "يتطلب المزيد من الماء";
+
+"congratulations.title" = "مبروك!";
+"congratulations.message" = "تم تحقيق الهدف اليومي";
+
+"confirmation.deleteEntry.title" = "حذف السجل";
+"confirmation.deleteEntry.message" = "حذف %@؟";
+
+"alert.deleteHealthData.title" = "حذف بيانات الصحة";
+"alert.deleteHealthData.message" = "سيؤدي هذا إلى إزالة جميع سجلات تناول الماء التي تم إنشاؤها بواسطة هذا التطبيق من Apple Health. لا يمكن التراجع عن هذا الإجراء.";
+"alert.result" = "النتيجة";
+"alert.error" = "خطأ";
+"alert.notificationsDisabled" = "الإشعارات معطلة. يرجى تفعيلها من الإعدادات.";
+
+"card.history" = "السجل";
+"card.nextDrink" = "الشرب التالي";
+"card.goal" = "الهدف";
+"card.streak" = "السلسلة";
+"card.remaining" = "المتبقي";
+"card.average" = "المتوسط";
+"card.goalHit" = "تحقيق الهدف";
+"card.dayHistory" = "سجل %d يوم";
+
+"settings.section.dailyGoal" = "الهدف اليومي";
+"settings.section.reminders" = "التذكيرات";
+"settings.section.health" = "الصحة";
+
+"form.date" = "التاريخ";
+"form.custom" = "مخصص";
+"form.volume" = "الحجم";
+"form.enableReminders" = "تفعيل التذكيرات";
+"form.startTime" = "وقت البدء";
+"form.endTime" = "وقت الانتهاء";
+"form.remindEvery" = "التذكير كل";
+"form.syncToHealth" = "المزامنة مع Apple Health";
+
+"time.soon" = "قريباً";
+"time.inHoursMinutes" = "في %dس %dد";
+"time.inMinutes" = "في %dد";
+"time.lessThanMinute" = "في < 1د";
+
+"volume.ml" = "%d مل";
+"volume.200ml" = "200 مل";
+"volume.300ml" = "300 مل";
+"volume.500ml" = "500 مل";
+"volume.750ml" = "750 مل";
+"volume.1000ml" = "1000 مل";
+"volume.1500ml" = "1500 مل";
+
+"period.days" = "%dي";
+
+"intent.addWater.title" = "إضافة ماء";
+"intent.addWater.description" = "تسجيل شرب الماء";
+"intent.addWater.dialog" = "تمت إضافة %d مل. إجمالي اليوم: %d مل";
+"intent.addWater.result.added" = "+%d مل";
+"intent.addWater.result.total" = "الإجمالي: %d مل";
+"intent.addWater.siri.add" = "أضف ماء";
+"intent.addWater.siri.log" = "سجل ماء";
+
+"healthData.deletedRecords" = "تم حذف %d سجل من Apple Health";
+
+"motivational.almostThere" = "!أوشكت على الانتهاء";
+"motivational.keepGoing" = "!استمر";
+"motivational.greatProgress" = "!تقدم رائع";
+"motivational.youGotThis" = "!أنت تستطيع";
+"motivational.stayHydrated" = "!حافظ على رطوبتك";
+"motivational.niceWork" = "!عمل جيد";
+"motivational.excellentStart" = "!بداية ممتازة";
+"motivational.halfwayThere" = "!في منتصف الطريق";
+"motivational.soClose" = "!قريب جداً";
+"motivational.amazing" = "!مذهل";
+
+"hydration.reminder" = "تذكير الترطيب";
+
+"motivation.1" = "!ابق رطباً، ابق بصحة جيدة";
+"motivation.2" = "!حان وقت شرب الماء";
+"motivation.3" = "!جسمك سيشكرك";
+"motivation.4" = "!حافظ على تدفق الماء";
+"motivation.5" = "!وقت استراحة الترطيب";
+"motivation.6" = "!الماء: أفضل صديق لجسمك";
+"motivation.7" = "!أطفئ عطشك";
+"motivation.8" = "!رشفات صغيرة، فوائد كبيرة";
+"motivation.9" = "!اشرب واشعر بالروعة";
+"motivation.10" = "!جرعتك اليومية من الترطيب";
+"motivation.11" = "!جدد جسمك وعقلك";
+"motivation.12" = "!الماء هو الحياة، اشرب";
+"motivation.13" = "!رشفة في اليوم تبعد الطبيب";
+"motivation.14" = "!أنت تقوم بعمل رائع، ابق رطباً";
+"motivation.15" = "!دلل نفسك ببعض H2O";
+"motivation.16" = "!قوّ جسمك بالماء";
+"motivation.17" = "!في صحتك";
+"motivation.18" = "!حافظ على عادات الترطيب الجيدة";
+"motivation.19" = "!وقت استراحة للماء";
+"motivation.20" = "!أعط جسمك ما يحتاجه";
+"motivation.21" = "!رشفة، رشفة، ياهو";
+"motivation.22" = "!الماء: مشروب الطاقة الطبيعي";
+"motivation.23" = "!ارتوِ الآن، اشعر بتحسن لاحقاً";
+"motivation.24" = "!أنت تستحق استراحة الماء هذه";
+"motivation.25" = "!غذِّ جسمك بالماء";
+"motivation.26" = "!حافظ على التدفق";
+"motivation.27" = "!الماء يصنع المعجزات";
+"motivation.28" = "!اشرب الماء، اشعر بروعة";
+"motivation.29" = "!خلاياك تطلب الماء";
+"motivation.30" = "!ابق بارداً، ابق رطباً";

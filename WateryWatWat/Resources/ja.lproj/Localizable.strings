@@ -1,0 +1,155 @@
+"app.name" = "WateryWatWat";
+"app.title" = "Watery Wat Wat";
+
+"navigation.history" = "履歴";
+"navigation.settings" = "設定";
+"navigation.dailyGoal" = "1日の目標";
+"navigation.addEntry" = "記録を追加";
+"navigation.editEntry" = "記録を編集";
+
+"button.add" = "追加";
+"button.cancel" = "キャンセル";
+"button.addReminder" = "リマインダーを追加";
+"button.seeAll" = "すべて表示";
+"button.delete" = "削除";
+"button.openSettings" = "設定を開く";
+"button.notificationSettings" = "通知設定";
+"button.deleteHealthData" = "ヘルスデータを削除";
+"button.done" = "完了";
+"button.next" = "次へ";
+
+"goal.intro.title" = "1日の目標を設定";
+"goal.intro.description" = "いくつかの質問に答えて、あなたに合った1日の水分摂取目標を計算しましょう";
+"goal.gender.question" = "性別は？";
+"goal.weight.question" = "体重は？";
+"goal.activityLevel.question" = "1日の活動レベルは？";
+"goal.climate.question" = "お住まいの気候は？";
+"goal.additionalFactors.question" = "その他の要因は？";
+"goal.result.title" = "あなたの1日の目標";
+"goal.result.description" = "あなたのプロフィールに基づいた推奨される1日の水分摂取量です";
+"goal.result.hint" = "必要に応じて調整できます";
+
+"gender.male" = "男性";
+"gender.female" = "女性";
+
+"activityLevel.low" = "低い";
+"activityLevel.moderate" = "普通";
+"activityLevel.high" = "高い";
+"activityLevel.low.description" = "座りがち";
+"activityLevel.moderate.description" = "活動的";
+"activityLevel.high.description" = "激しい運動";
+
+"climate.cold" = "寒冷/温暖";
+"climate.warm" = "暖かい";
+"climate.hot" = "暑い/湿気が多い";
+"climate.cold.description" = "< 20°C";
+"climate.warm.description" = "20-30°C";
+"climate.hot.description" = "30°C+";
+
+"additionalFactor.coffee.name" = "定期的なコーヒー摂取";
+"additionalFactor.coffee.description" = "利尿作用";
+"additionalFactor.exercise.name" = "60分以上/日の運動";
+"additionalFactor.exercise.description" = "より多くの水分が必要";
+
+"congratulations.title" = "おめでとうございます！";
+"congratulations.message" = "1日の目標達成";
+
+"confirmation.deleteEntry.title" = "記録を削除";
+"confirmation.deleteEntry.message" = "%@を削除しますか？";
+
+"alert.deleteHealthData.title" = "ヘルスデータを削除";
+"alert.deleteHealthData.message" = "このアプリで作成されたすべての水分摂取記録がApple Healthから削除されます。この操作は元に戻せません。";
+"alert.result" = "結果";
+"alert.error" = "エラー";
+"alert.notificationsDisabled" = "通知が無効になっています。設定で有効にしてください。";
+
+"card.history" = "履歴";
+"card.nextDrink" = "次の飲水";
+"card.goal" = "目標";
+"card.streak" = "連続日数";
+"card.remaining" = "残り";
+"card.average" = "平均";
+"card.goalHit" = "目標達成率";
+"card.dayHistory" = "%d日間の履歴";
+
+"settings.section.dailyGoal" = "1日の目標";
+"settings.section.reminders" = "リマインダー";
+"settings.section.health" = "ヘルスケア";
+
+"form.date" = "日付";
+"form.custom" = "カスタム";
+"form.volume" = "量";
+"form.enableReminders" = "リマインダーを有効にする";
+"form.startTime" = "開始時刻";
+"form.endTime" = "終了時刻";
+"form.remindEvery" = "通知間隔";
+"form.syncToHealth" = "Apple Healthと同期";
+
+"time.soon" = "まもなく";
+"time.inHoursMinutes" = "%d時間%d分後";
+"time.inMinutes" = "%d分後";
+"time.lessThanMinute" = "1分未満";
+
+"volume.ml" = "%d ml";
+"volume.200ml" = "200 ml";
+"volume.300ml" = "300 ml";
+"volume.500ml" = "500 ml";
+"volume.750ml" = "750 ml";
+"volume.1000ml" = "1000 ml";
+"volume.1500ml" = "1500 ml";
+
+"period.days" = "%d日";
+
+"intent.addWater.title" = "水を追加";
+"intent.addWater.description" = "水分摂取を記録";
+"intent.addWater.dialog" = "%d mLを追加しました。今日の合計：%d mL";
+"intent.addWater.result.added" = "+%d mL";
+"intent.addWater.result.total" = "合計：%d mL";
+"intent.addWater.siri.add" = "水を追加";
+"intent.addWater.siri.log" = "水を記録";
+
+"healthData.deletedRecords" = "Apple Healthから%d件の記録を削除しました";
+
+"motivational.almostThere" = "もうすぐ！";
+"motivational.keepGoing" = "その調子！";
+"motivational.greatProgress" = "素晴らしい進歩！";
+"motivational.youGotThis" = "あなたならできる！";
+"motivational.stayHydrated" = "水分補給を忘れずに！";
+"motivational.niceWork" = "よくできました！";
+"motivational.excellentStart" = "素晴らしいスタート！";
+"motivational.halfwayThere" = "半分達成！";
+"motivational.soClose" = "もう少し！";
+"motivational.amazing" = "素晴らしい！";
+
+"hydration.reminder" = "水分補給リマインダー";
+
+"motivation.1" = "水分補給を忘れずに、健康でいよう！";
+"motivation.2" = "水を飲む時間です！";
+"motivation.3" = "あなたの体が喜びます！";
+"motivation.4" = "水分の流れを保ちましょう！";
+"motivation.5" = "水分補給の時間！";
+"motivation.6" = "水：あなたの体の親友！";
+"motivation.7" = "のどの渇きを癒しましょう！";
+"motivation.8" = "少しずつ、大きな効果！";
+"motivation.9" = "飲んで元気になろう！";
+"motivation.10" = "今日の水分補給量！";
+"motivation.11" = "体と心をリフレッシュ！";
+"motivation.12" = "水は命、飲もう！";
+"motivation.13" = "1日1口で医者いらず！";
+"motivation.14" = "よくできています、水分補給を忘れずに！";
+"motivation.15" = "H2Oでご褒美を！";
+"motivation.16" = "水で体に燃料補給！";
+"motivation.17" = "あなたの健康に乾杯！";
+"motivation.18" = "良い水分補給習慣を続けましょう！";
+"motivation.19" = "水分補給の時間！";
+"motivation.20" = "体に必要なものを与えましょう！";
+"motivation.21" = "ゴクゴク、万歳！";
+"motivation.22" = "水：自然のエネルギードリンク！";
+"motivation.23" = "今水分補給、後で元気！";
+"motivation.24" = "この水分補給休憩はあなたのご褒美！";
+"motivation.25" = "水で体を養いましょう！";
+"motivation.26" = "流れを保ちましょう！";
+"motivation.27" = "水は奇跡を起こす！";
+"motivation.28" = "水を飲んで素晴らしい気分に！";
+"motivation.29" = "あなたの細胞が水を求めています！";
+"motivation.30" = "涼しく、水分補給を忘れずに！";

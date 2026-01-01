@@ -22,9 +22,15 @@ final class MainViewModel {
     var showCongratulations = false
     var error: Error?
     var initialized = false
-    
+
     var confettiPublisher: AnyPublisher<Void, Never> {
         _confettiPublisher.eraseToAnyPublisher()
+    }
+
+    var formattedVolumeToDelete: String {
+        guard let entry = entryToDelete else { return "" }
+        let mlFormatter = VolumeFormatter(unit: .milliliters)
+        return mlFormatter.string(from: entry.volume)
     }
 
     var progress: Double {

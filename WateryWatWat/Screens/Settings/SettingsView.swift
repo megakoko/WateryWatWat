@@ -10,7 +10,7 @@ struct SettingsView: View {
             reminderSection
             healthSection
         }
-        .navigationTitle("Settings")
+        .navigationTitle("navigation.settings".localized)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
@@ -25,17 +25,17 @@ struct SettingsView: View {
             await viewModel.onAppear()
         }
         .errorAlert($viewModel.error)
-        .alert("Delete Health Data", isPresented: $viewModel.showDeleteConfirmation) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
+        .alert("alert.deleteHealthData.title".localized, isPresented: $viewModel.showDeleteConfirmation) {
+            Button("button.cancel".localized, role: .cancel) { }
+            Button("button.delete".localized, role: .destructive) {
                 Task {
                     await viewModel.confirmDeleteHealthData()
                 }
             }
         } message: {
-            Text("This will remove all water intake records created by this app from Apple Health. This action cannot be undone.")
+            Text("alert.deleteHealthData.message".localized)
         }
-        .alert("Result", isPresented: $viewModel.showDeleteResult) {
+        .alert("alert.result".localized, isPresented: $viewModel.showDeleteResult) {
             Button("OK", role: .cancel) { }
         } message: {
             if let message = viewModel.deleteResultMessage {
@@ -48,7 +48,7 @@ struct SettingsView: View {
         Section {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    Text("Daily Goal")
+                    Text("settings.section.dailyGoal".localized)
                     Spacer()
                     Text(viewModel.formattedDailyGoal)
                         .foregroundStyle(.secondary)
@@ -67,23 +67,23 @@ struct SettingsView: View {
 
     private var reminderSection: some View {
         Section {
-            Toggle("Enable Reminders", isOn: $viewModel.remindersEnabled)
+            Toggle("form.enableReminders".localized, isOn: $viewModel.remindersEnabled)
                 .disabled(viewModel.shouldShowPermissionDenied)
 
             if viewModel.remindersEnabled {
                 DatePicker(
-                    "Start Time",
+                    "form.startTime".localized,
                     selection: $viewModel.reminderStartTime,
                     displayedComponents: [.hourAndMinute]
                 )
 
                 DatePicker(
-                    "End Time",
+                    "form.endTime".localized,
                     selection: $viewModel.reminderEndTime,
                     displayedComponents: [.hourAndMinute]
                 )
 
-                Picker("Remind Every", selection: $viewModel.reminderPeriodMinutes) {
+                Picker("form.remindEvery".localized, selection: $viewModel.reminderPeriodMinutes) {
                     ForEach(viewModel.availablePeriods, id: \.self) { minutes in
                         Text(viewModel.formatPeriod(minutes)).tag(minutes)
                     }
@@ -91,30 +91,30 @@ struct SettingsView: View {
             }
 
             if viewModel.shouldShowPermissionDenied {
-                Text("Notifications are disabled. Please enable them in Settings.")
+                Text("alert.notificationsDisabled".localized)
                     .font(.caption)
                     .foregroundStyle(.secondary)
 
-                Button("Open Settings", action: viewModel.openAppSettings)
+                Button("button.openSettings".localized, action: viewModel.openAppSettings)
             }
         } header: {
-            Text("Drink Reminders")
+            Text("settings.section.reminders".localized)
         } footer: {
             if viewModel.shouldShowNotificationSettings {
-                Button("Notification Settings", action: viewModel.openAppSettings)
+                Button("button.notificationSettings".localized, action: viewModel.openAppSettings)
             }
         }
     }
 
     private var healthSection: some View {
         Section {
-            Toggle("Sync to Apple Health", isOn: $viewModel.healthSyncEnabled)
+            Toggle("form.syncToHealth".localized, isOn: $viewModel.healthSyncEnabled)
 
             if viewModel.healthSyncEnabled {
-                Button("Delete Health Data", role: .destructive, action: viewModel.deleteHealthData)
+                Button("button.deleteHealthData".localized, role: .destructive, action: viewModel.deleteHealthData)
             }
         } header: {
-            Text("Health")
+            Text("settings.section.health".localized)
         }
     }
 }

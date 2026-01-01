@@ -17,15 +17,15 @@ struct EntryView: View {
             Spacer()
         }
         .padding()
-        .navigationTitle(viewModel.isEditing ? "Edit Entry" : "Add Entry")
+        .navigationTitle(viewModel.isEditing ? "navigation.editEntry".localized : "navigation.addEntry".localized)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
-                Button("Cancel", systemImage: "xmark", role: .cancel, action: viewModel.cancel)
+                Button("button.cancel".localized, systemImage: "xmark", role: .cancel, action: viewModel.cancel)
             }
             
             ToolbarItem(placement: .confirmationAction) {
-                Button("Cancel", systemImage: "checkmark", role: .confirm, action: viewModel.confirmWithCustom)
+                Button("button.done".localized, systemImage: "checkmark", role: .confirm, action: viewModel.confirmWithCustom)
                     .disabled(!viewModel.canConfirm)
             }
         }
@@ -38,7 +38,7 @@ struct EntryView: View {
     }
 
     private var datePicker: some View {
-        DatePicker("Date", selection: $viewModel.selectedDate, displayedComponents: [.date, .hourAndMinute])
+        DatePicker("form.date".localized, selection: $viewModel.selectedDate, displayedComponents: [.date, .hourAndMinute])
             .datePickerStyle(.compact)
     }
 
@@ -58,7 +58,7 @@ struct EntryView: View {
         Button {
             viewModel.selectCustom()
         } label: {
-            Text("Custom")
+            Text("form.custom".localized)
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(viewModel.showCustomPicker ? Color.accentColor : Color.secondary.opacity(0.2))
@@ -68,9 +68,9 @@ struct EntryView: View {
     }
 
     private var customPicker: some View {
-        Picker("Volume", selection: $viewModel.customVolume) {
+        Picker("form.volume".localized, selection: $viewModel.customVolume) {
             ForEach(Array(stride(from: 100, through: 2000, by: 50)), id: \.self) { volume in
-                Text("\(volume) ml").tag(Int64(volume))
+                Text("volume.ml".localized(volume)).tag(Int64(volume))
             }
         }
         .pickerStyle(.wheel)

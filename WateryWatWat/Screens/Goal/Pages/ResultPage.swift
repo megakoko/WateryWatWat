@@ -8,7 +8,7 @@ struct ResultPage: View {
         VStack(spacing: 24) {
             Spacer()
 
-            Text("Your Daily Goal")
+            Text("goal.result.title".localized)
                 .font(.title)
 
             Text(formattedGoal)
@@ -16,7 +16,7 @@ struct ResultPage: View {
                 .foregroundStyle(Color.accentColor)
                 .textCase(.uppercase)
 
-            Text("Based on your profile, this is your recommended daily water intake")
+            Text("goal.result.description".localized)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
 
@@ -28,7 +28,7 @@ struct ResultPage: View {
             )
             .padding(.horizontal)
 
-            Text("You can adjust this to fit your needs")
+            Text("goal.result.hint".localized)
                 .font(.caption)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)

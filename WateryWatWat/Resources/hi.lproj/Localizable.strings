@@ -1,0 +1,155 @@
+"app.name" = "WateryWatWat";
+"app.title" = "Watery Wat Wat";
+
+"navigation.history" = "इतिहास";
+"navigation.settings" = "सेटिंग्स";
+"navigation.dailyGoal" = "दैनिक लक्ष्य";
+"navigation.addEntry" = "प्रविष्टि जोड़ें";
+"navigation.editEntry" = "प्रविष्टि संपादित करें";
+
+"button.add" = "जोड़ें";
+"button.cancel" = "रद्द करें";
+"button.addReminder" = "रिमाइंडर जोड़ें";
+"button.seeAll" = "सभी देखें";
+"button.delete" = "हटाएं";
+"button.openSettings" = "सेटिंग्स खोलें";
+"button.notificationSettings" = "नोटिफिकेशन सेटिंग्स";
+"button.deleteHealthData" = "स्वास्थ्य डेटा हटाएं";
+"button.done" = "पूर्ण";
+"button.next" = "आगे";
+
+"goal.intro.title" = "अपना दैनिक लक्ष्य निर्धारित करें";
+"goal.intro.description" = "अपने व्यक्तिगत दैनिक पानी सेवन लक्ष्य की गणना करने के लिए कुछ प्रश्नों के उत्तर दें";
+"goal.gender.question" = "आपका लिंग क्या है?";
+"goal.weight.question" = "आपका वजन क्या है?";
+"goal.activityLevel.question" = "आपका दैनिक गतिविधि स्तर क्या है?";
+"goal.climate.question" = "आपका सामान्य जलवायु क्या है?";
+"goal.additionalFactors.question" = "कोई अतिरिक्त कारक?";
+"goal.result.title" = "आपका दैनिक लक्ष्य";
+"goal.result.description" = "आपकी प्रोफ़ाइल के आधार पर, यह आपका अनुशंसित दैनिक पानी का सेवन है";
+"goal.result.hint" = "आप इसे अपनी आवश्यकताओं के अनुरूप समायोजित कर सकते हैं";
+
+"gender.male" = "पुरुष";
+"gender.female" = "महिला";
+
+"activityLevel.low" = "कम";
+"activityLevel.moderate" = "मध्यम";
+"activityLevel.high" = "उच्च";
+"activityLevel.low.description" = "गतिहीन";
+"activityLevel.moderate.description" = "सक्रिय";
+"activityLevel.high.description" = "तीव्र व्यायाम";
+
+"climate.cold" = "ठंडा/समशीतोष्ण";
+"climate.warm" = "गर्म";
+"climate.hot" = "बहुत गर्म/आर्द्र";
+"climate.cold.description" = "< 20°C";
+"climate.warm.description" = "20-30°C";
+"climate.hot.description" = "30°C+";
+
+"additionalFactor.coffee.name" = "नियमित कॉफी सेवन";
+"additionalFactor.coffee.description" = "मूत्रवर्धक प्रभाव";
+"additionalFactor.exercise.name" = "व्यायाम > 60 मिनट/दिन";
+"additionalFactor.exercise.description" = "अधिक हाइड्रेशन आवश्यक";
+
+"congratulations.title" = "बधाई हो!";
+"congratulations.message" = "दैनिक लक्ष्य पूरा हुआ";
+
+"confirmation.deleteEntry.title" = "प्रविष्टि हटाएं";
+"confirmation.deleteEntry.message" = "%@ हटाएं?";
+
+"alert.deleteHealthData.title" = "स्वास्थ्य डेटा हटाएं";
+"alert.deleteHealthData.message" = "यह Apple Health से इस ऐप द्वारा बनाए गए सभी पानी के सेवन रिकॉर्ड को हटा देगा। यह कार्रवाई पूर्ववत नहीं की जा सकती।";
+"alert.result" = "परिणाम";
+"alert.error" = "त्रुटि";
+"alert.notificationsDisabled" = "नोटिफिकेशन अक्षम हैं। कृपया उन्हें सेटिंग्स में सक्षम करें।";
+
+"card.history" = "इतिहास";
+"card.nextDrink" = "अगला पेय";
+"card.goal" = "लक्ष्य";
+"card.streak" = "लगातार";
+"card.remaining" = "शेष";
+"card.average" = "औसत";
+"card.goalHit" = "लक्ष्य पूर्ति";
+"card.dayHistory" = "%d-दिन का इतिहास";
+
+"settings.section.dailyGoal" = "दैनिक लक्ष्य";
+"settings.section.reminders" = "रिमाइंडर";
+"settings.section.health" = "स्वास्थ्य";
+
+"form.date" = "तारीख";
+"form.custom" = "कस्टम";
+"form.volume" = "मात्रा";
+"form.enableReminders" = "रिमाइंडर सक्षम करें";
+"form.startTime" = "प्रारंभ समय";
+"form.endTime" = "समाप्ति समय";
+"form.remindEvery" = "हर बार याद दिलाएं";
+"form.syncToHealth" = "Apple Health के साथ सिंक करें";
+
+"time.soon" = "जल्द ही";
+"time.inHoursMinutes" = "%d घंटे %d मिनट में";
+"time.inMinutes" = "%d मिनट में";
+"time.lessThanMinute" = "< 1 मिनट में";
+
+"volume.ml" = "%d ml";
+"volume.200ml" = "200 ml";
+"volume.300ml" = "300 ml";
+"volume.500ml" = "500 ml";
+"volume.750ml" = "750 ml";
+"volume.1000ml" = "1000 ml";
+"volume.1500ml" = "1500 ml";
+
+"period.days" = "%dदिन";
+
+"intent.addWater.title" = "पानी जोड़ें";
+"intent.addWater.description" = "पानी का सेवन रिकॉर्ड करें";
+"intent.addWater.dialog" = "%d mL जोड़ा गया। आज का कुल: %d mL";
+"intent.addWater.result.added" = "+%d mL";
+"intent.addWater.result.total" = "कुल: %d mL";
+"intent.addWater.siri.add" = "पानी जोड़ें";
+"intent.addWater.siri.log" = "पानी रिकॉर्ड करें";
+
+"healthData.deletedRecords" = "Apple Health से %d रिकॉर्ड हटाए गए";
+
+"motivational.almostThere" = "लगभग हो गया!";
+"motivational.keepGoing" = "जारी रखें!";
+"motivational.greatProgress" = "शानदार प्रगति!";
+"motivational.youGotThis" = "आप कर सकते हैं!";
+"motivational.stayHydrated" = "हाइड्रेटेड रहें!";
+"motivational.niceWork" = "अच्छा काम!";
+"motivational.excellentStart" = "उत्कृष्ट शुरुआत!";
+"motivational.halfwayThere" = "आधा पूरा!";
+"motivational.soClose" = "बहुत करीब!";
+"motivational.amazing" = "अद्भुत!";
+
+"hydration.reminder" = "हाइड्रेशन अनुस्मारक";
+
+"motivation.1" = "हाइड्रेटेड रहें, स्वस्थ रहें!";
+"motivation.2" = "पानी पीने का समय!";
+"motivation.3" = "आपका शरीर आभारी होगा!";
+"motivation.4" = "पानी का प्रवाह बनाए रखें!";
+"motivation.5" = "हाइड्रेशन ब्रेक का समय!";
+"motivation.6" = "पानी: आपके शरीर का सबसे अच्छा दोस्त!";
+"motivation.7" = "अपनी प्यास बुझाएं!";
+"motivation.8" = "छोटे घूंट, बड़े फायदे!";
+"motivation.9" = "पिएं और बढ़िया महसूस करें!";
+"motivation.10" = "आपकी दैनिक हाइड्रेशन खुराक!";
+"motivation.11" = "अपने शरीर और दिमाग को ताजा करें!";
+"motivation.12" = "पानी जीवन है, पिएं!";
+"motivation.13" = "दिन में एक घूंट डॉक्टर को दूर रखता है!";
+"motivation.14" = "आप बहुत अच्छा कर रहे हैं, हाइड्रेटेड रहें!";
+"motivation.15" = "खुद को कुछ H2O दें!";
+"motivation.16" = "अपने शरीर को पानी से ईंधन दें!";
+"motivation.17" = "आपके स्वास्थ्य के लिए!";
+"motivation.18" = "अच्छी हाइड्रेशन आदतें बनाए रखें!";
+"motivation.19" = "पानी के ब्रेक का समय!";
+"motivation.20" = "अपने शरीर को वह दें जो उसे चाहिए!";
+"motivation.21" = "घूंट, घूंट, हुर्रे!";
+"motivation.22" = "पानी: प्रकृति का एनर्जी ड्रिंक!";
+"motivation.23" = "अभी हाइड्रेट करें, बाद में बेहतर महसूस करें!";
+"motivation.24" = "आप इस पानी के ब्रेक के लायक हैं!";
+"motivation.25" = "अपने शरीर को पानी से पोषित करें!";
+"motivation.26" = "प्रवाह में बने रहें!";
+"motivation.27" = "पानी चमत्कार करता है!";
+"motivation.28" = "पानी पिएं, अद्भुत महसूस करें!";
+"motivation.29" = "आपकी कोशिकाएं पानी की मांग कर रही हैं!";
+"motivation.30" = "ठंडे रहें, हाइड्रेटेड रहें!";

@@ -231,6 +231,10 @@
 				es,
 				ru,
 				pt,
+				hi,
+				ja,
+				de,
+				fr,
 			);
 			mainGroup = DA1AF2B02EF40E9F000AFB3A;
 			minimizedProjectReferenceProxies = 1;

@@ -78,8 +78,8 @@ extension DefaultNotificationService: NotificationService {
 
         for time in allTimes {
             let content = UNMutableNotificationContent()
-            content.title = "Hydration Reminder"
-            content.body = HydrationMessages.motivational.randomElement() ?? "Time to drink some water!"
+            content.title = "hydration.reminder".localized
+            content.body = HydrationMessages.motivational.randomElement()!
             content.sound = .default
             content.categoryIdentifier = Constants.notificationCategoryId
 

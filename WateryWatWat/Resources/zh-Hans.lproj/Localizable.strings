@@ -1,0 +1,155 @@
+"app.name" = "WateryWatWat";
+"app.title" = "Watery Wat Wat";
+
+"navigation.history" = "历史记录";
+"navigation.settings" = "设置";
+"navigation.dailyGoal" = "每日目标";
+"navigation.addEntry" = "添加记录";
+"navigation.editEntry" = "编辑记录";
+
+"button.add" = "添加";
+"button.cancel" = "取消";
+"button.addReminder" = "添加提醒";
+"button.seeAll" = "查看全部";
+"button.delete" = "删除";
+"button.openSettings" = "打开设置";
+"button.notificationSettings" = "通知设置";
+"button.deleteHealthData" = "删除健康数据";
+"button.done" = "完成";
+"button.next" = "下一步";
+
+"goal.intro.title" = "设定每日目标";
+"goal.intro.description" = "回答几个问题以计算您的个性化每日饮水目标";
+"goal.gender.question" = "您的性别是？";
+"goal.weight.question" = "您的体重是？";
+"goal.activityLevel.question" = "您的日常活动水平是？";
+"goal.climate.question" = "您所在的典型气候是？";
+"goal.additionalFactors.question" = "是否有其他因素？";
+"goal.result.title" = "您的每日目标";
+"goal.result.description" = "根据您的情况，这是推荐的每日饮水量";
+"goal.result.hint" = "您可以根据需要进行调整";
+
+"gender.male" = "男性";
+"gender.female" = "女性";
+
+"activityLevel.low" = "低";
+"activityLevel.moderate" = "中等";
+"activityLevel.high" = "高";
+"activityLevel.low.description" = "久坐";
+"activityLevel.moderate.description" = "活跃";
+"activityLevel.high.description" = "高强度运动";
+
+"climate.cold" = "寒冷/温和";
+"climate.warm" = "温暖";
+"climate.hot" = "炎热/潮湿";
+"climate.cold.description" = "< 20°C";
+"climate.warm.description" = "20-30°C";
+"climate.hot.description" = "30°C+";
+
+"additionalFactor.coffee.name" = "经常饮用咖啡";
+"additionalFactor.coffee.description" = "利尿作用";
+"additionalFactor.exercise.name" = "每天运动 > 60 分钟";
+"additionalFactor.exercise.description" = "需要更多水分";
+
+"congratulations.title" = "恭喜！";
+"congratulations.message" = "已达成每日目标";
+
+"confirmation.deleteEntry.title" = "删除记录";
+"confirmation.deleteEntry.message" = "删除 %@？";
+
+"alert.deleteHealthData.title" = "删除健康数据";
+"alert.deleteHealthData.message" = "这将从 Apple Health 中删除此应用创建的所有饮水记录。此操作无法撤销。";
+"alert.result" = "结果";
+"alert.error" = "错误";
+"alert.notificationsDisabled" = "通知已禁用。请在设置中启用通知。";
+
+"card.history" = "历史记录";
+"card.nextDrink" = "下次饮水";
+"card.goal" = "目标";
+"card.streak" = "连续天数";
+"card.remaining" = "剩余";
+"card.average" = "平均";
+"card.goalHit" = "达标率";
+"card.dayHistory" = "%d 天历史";
+
+"settings.section.dailyGoal" = "每日目标";
+"settings.section.reminders" = "饮水提醒";
+"settings.section.health" = "健康";
+
+"form.date" = "日期";
+"form.custom" = "自定义";
+"form.volume" = "容量";
+"form.enableReminders" = "启用提醒";
+"form.startTime" = "开始时间";
+"form.endTime" = "结束时间";
+"form.remindEvery" = "提醒间隔";
+"form.syncToHealth" = "同步到 Apple Health";
+
+"time.soon" = "即将";
+"time.inHoursMinutes" = "%d小时%d分钟后";
+"time.inMinutes" = "%d分钟后";
+"time.lessThanMinute" = "< 1分钟后";
+
+"volume.ml" = "%d 毫升";
+"volume.200ml" = "200 毫升";
+"volume.300ml" = "300 毫升";
+"volume.500ml" = "500 毫升";
+"volume.750ml" = "750 毫升";
+"volume.1000ml" = "1000 毫升";
+"volume.1500ml" = "1500 毫升";
+
+"period.days" = "%d天";
+
+"intent.addWater.title" = "添加饮水";
+"intent.addWater.description" = "记录饮水量";
+"intent.addWater.dialog" = "已添加 %d 毫升。今日总量：%d 毫升";
+"intent.addWater.result.added" = "+%d 毫升";
+"intent.addWater.result.total" = "总计：%d 毫升";
+"intent.addWater.siri.add" = "添加饮水";
+"intent.addWater.siri.log" = "记录饮水";
+
+"healthData.deletedRecords" = "已从 Apple Health 删除 %d 条记录";
+
+"motivational.almostThere" = "快到了！";
+"motivational.keepGoing" = "继续加油！";
+"motivational.greatProgress" = "进步很大！";
+"motivational.youGotThis" = "你能行！";
+"motivational.stayHydrated" = "保持水分！";
+"motivational.niceWork" = "做得好！";
+"motivational.excellentStart" = "开始得很好！";
+"motivational.halfwayThere" = "完成一半了！";
+"motivational.soClose" = "就快完成了！";
+"motivational.amazing" = "太棒了！";
+
+"hydration.reminder" = "饮水提醒";
+
+"motivation.1" = "保持水分，保持健康！";
+"motivation.2" = "该喝水了！";
+"motivation.3" = "你的身体会感谢你！";
+"motivation.4" = "让水分持续流动！";
+"motivation.5" = "补水时间到！";
+"motivation.6" = "水：你身体的最好朋友！";
+"motivation.7" = "解渴吧！";
+"motivation.8" = "小口喝，大益处！";
+"motivation.9" = "喝起来，感觉棒！";
+"motivation.10" = "你的每日补水量！";
+"motivation.11" = "刷新你的身心！";
+"motivation.12" = "水是生命，喝起来！";
+"motivation.13" = "一天一口水，医生远离你！";
+"motivation.14" = "你做得很好，保持水分！";
+"motivation.15" = "给自己来点H2O吧！";
+"motivation.16" = "用水滋养你的身体！";
+"motivation.17" = "为你的健康干杯！";
+"motivation.18" = "保持良好的补水习惯！";
+"motivation.19" = "饮水休息时间！";
+"motivation.20" = "给你的身体它所需要的！";
+"motivation.21" = "喝，喝，万岁！";
+"motivation.22" = "水：大自然的能量饮料！";
+"motivation.23" = "现在补水，稍后感觉更好！";
+"motivation.24" = "你值得这次饮水休息！";
+"motivation.25" = "用水滋养你的身体！";
+"motivation.26" = "保持在流动中！";
+"motivation.27" = "水创造奇迹！";
+"motivation.28" = "喝水，感觉棒极了！";
+"motivation.29" = "你的细胞在呼唤水！";
+"motivation.30" = "保持凉爽，保持水分！";

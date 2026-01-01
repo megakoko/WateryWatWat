@@ -16,7 +16,7 @@ struct GoalView: View {
             
             bottomButton
         }
-        .navigationTitle("Daily Goal")
+        .navigationTitle("navigation.dailyGoal".localized)
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -52,7 +52,7 @@ struct GoalView: View {
             }
 
             Button(action: viewModel.nextPage) {
-                Text(viewModel.currentPage == .result ? "Done" : "Next")
+                Text(viewModel.currentPage == .result ? "button.done".localized : "button.next".localized)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 6)
             }

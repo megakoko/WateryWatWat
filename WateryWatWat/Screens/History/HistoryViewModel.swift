@@ -7,8 +7,16 @@ final class HistoryViewModel: Identifiable {
     var groupedEntries: [GroupedHydrationEntries] = []
     var editEntryViewModel: EntryViewModel?
     var error: Error?
+    var entryToDelete: HydrationEntry?
+    var showDeleteConfirmation = false
+
+    var formattedVolumeToDelete: String {
+        guard let entry = entryToDelete else { return "" }
+        return volumeFormatter.string(from: entry.volume)
+    }
 
     private let service: HydrationService
+    private let volumeFormatter = VolumeFormatter(unit: .milliliters)
 
     init(service: HydrationService) {
         self.service = service
@@ -18,17 +26,31 @@ final class HistoryViewModel: Identifiable {
         await fetchEntries()
     }
 
-    func deleteEntry(_ entry: HydrationEntry) async {
+    func requestDelete(_ entry: HydrationEntry) {
+        entryToDelete = entry
+        showDeleteConfirmation = true
+    }
+
+    func confirmDelete() {
+        guard let entry = entryToDelete else { return }
+        showDeleteConfirmation = false
+        entryToDelete = nil
+        Task {
+            await deleteEntry(entry)
+        }
+    }
+
+    func onDidTap(_ entry: HydrationEntry) {
+        editEntryViewModel = EntryViewModel(service: service, entry: entry)
+    }
+
+    private func deleteEntry(_ entry: HydrationEntry) async {
         do {
             try await service.deleteEntry(entry)
             await fetchEntries()
         } catch {
             self.error = error
         }
-    }
-
-    func onDidTap(_ entry: HydrationEntry) {
-        editEntryViewModel = EntryViewModel(service: service, entry: entry)
     }
 
     private func fetchEntries() async {

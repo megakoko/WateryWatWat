@@ -8,7 +8,7 @@ struct ClimatePage: View {
         VStack(spacing: 24) {
             Spacer()
 
-            Text("What is your typical climate?")
+            Text("goal.climate.question".localized)
                 .font(.title)
                 .multilineTextAlignment(.center)
 

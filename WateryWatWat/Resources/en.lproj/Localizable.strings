@@ -1,0 +1,155 @@
+"app.name" = "WateryWatWat";
+"app.title" = "Watery Wat Wat";
+
+"navigation.history" = "History";
+"navigation.settings" = "Settings";
+"navigation.dailyGoal" = "Daily Goal";
+"navigation.addEntry" = "Add Entry";
+"navigation.editEntry" = "Edit Entry";
+
+"button.add" = "Add";
+"button.cancel" = "Cancel";
+"button.addReminder" = "Add Reminder";
+"button.seeAll" = "See All";
+"button.delete" = "Delete";
+"button.openSettings" = "Open Settings";
+"button.notificationSettings" = "Notification Settings";
+"button.deleteHealthData" = "Delete Health Data";
+"button.done" = "Done";
+"button.next" = "Next";
+
+"goal.intro.title" = "Set Your Daily Goal";
+"goal.intro.description" = "Answer a few questions to calculate your personalized daily water intake goal";
+"goal.gender.question" = "What is your gender?";
+"goal.weight.question" = "What is your weight?";
+"goal.activityLevel.question" = "What is your daily activity level?";
+"goal.climate.question" = "What is your typical climate?";
+"goal.additionalFactors.question" = "Any additional factors?";
+"goal.result.title" = "Your Daily Goal";
+"goal.result.description" = "Based on your profile, this is your recommended daily water intake";
+"goal.result.hint" = "You can adjust this to fit your needs";
+
+"gender.male" = "Male";
+"gender.female" = "Female";
+
+"activityLevel.low" = "Low";
+"activityLevel.moderate" = "Moderate";
+"activityLevel.high" = "High";
+"activityLevel.low.description" = "Sedentary";
+"activityLevel.moderate.description" = "Active";
+"activityLevel.high.description" = "Intense exercise";
+
+"climate.cold" = "Cold/Temperate";
+"climate.warm" = "Warm";
+"climate.hot" = "Hot/Humid";
+"climate.cold.description" = "< 20°C";
+"climate.warm.description" = "20-30°C";
+"climate.hot.description" = "30°C+";
+
+"additionalFactor.coffee.name" = "Regular coffee intake";
+"additionalFactor.coffee.description" = "Diuretic effect";
+"additionalFactor.exercise.name" = "Exercise > 60 min/day";
+"additionalFactor.exercise.description" = "Requires more hydration";
+
+"congratulations.title" = "Congratulations!";
+"congratulations.message" = "Daily goal reached";
+
+"confirmation.deleteEntry.title" = "Delete Entry";
+"confirmation.deleteEntry.message" = "Delete %@?";
+
+"alert.deleteHealthData.title" = "Delete Health Data";
+"alert.deleteHealthData.message" = "This will remove all water intake records created by this app from Apple Health. This action cannot be undone.";
+"alert.result" = "Result";
+"alert.error" = "Error";
+"alert.notificationsDisabled" = "Notifications are disabled. Please enable them in Settings.";
+
+"card.history" = "History";
+"card.nextDrink" = "Next Drink";
+"card.goal" = "Goal";
+"card.streak" = "Streak";
+"card.remaining" = "Remaining";
+"card.average" = "Average";
+"card.goalHit" = "Goal Hit";
+"card.dayHistory" = "%d-Day History";
+
+"settings.section.dailyGoal" = "Daily Goal";
+"settings.section.reminders" = "Drink Reminders";
+"settings.section.health" = "Health";
+
+"form.date" = "Date";
+"form.custom" = "Custom";
+"form.volume" = "Volume";
+"form.enableReminders" = "Enable Reminders";
+"form.startTime" = "Start Time";
+"form.endTime" = "End Time";
+"form.remindEvery" = "Remind Every";
+"form.syncToHealth" = "Sync to Apple Health";
+
+"time.soon" = "Soon";
+"time.inHoursMinutes" = "in %dh %dm";
+"time.inMinutes" = "in %dm";
+"time.lessThanMinute" = "in < 1m";
+
+"volume.ml" = "%d ml";
+"volume.200ml" = "200 ml";
+"volume.300ml" = "300 ml";
+"volume.500ml" = "500 ml";
+"volume.750ml" = "750 ml";
+"volume.1000ml" = "1000 ml";
+"volume.1500ml" = "1500 ml";
+
+"period.days" = "%dd";
+
+"intent.addWater.title" = "Add Water";
+"intent.addWater.description" = "Log water intake";
+"intent.addWater.dialog" = "Added %d mL. Today's total: %d mL";
+"intent.addWater.result.added" = "+%d mL";
+"intent.addWater.result.total" = "Total: %d mL";
+"intent.addWater.siri.add" = "Add water";
+"intent.addWater.siri.log" = "Log water";
+
+"healthData.deletedRecords" = "Deleted %d records from Apple Health";
+
+"motivational.almostThere" = "Almost there!";
+"motivational.keepGoing" = "Keep going!";
+"motivational.greatProgress" = "Great progress!";
+"motivational.youGotThis" = "You got this!";
+"motivational.stayHydrated" = "Stay hydrated!";
+"motivational.niceWork" = "Nice work!";
+"motivational.excellentStart" = "Excellent start!";
+"motivational.halfwayThere" = "Halfway there!";
+"motivational.soClose" = "So close!";
+"motivational.amazing" = "Amazing!";
+
+"hydration.reminder" = "Hydration Reminder";
+
+"motivation.1" = "Stay hydrated, stay healthy!";
+"motivation.2" = "Time to drink some water!";
+"motivation.3" = "Your body will thank you!";
+"motivation.4" = "Keep that water flowing!";
+"motivation.5" = "Hydration break time!";
+"motivation.6" = "Water: your body's best friend!";
+"motivation.7" = "Quench your thirst!";
+"motivation.8" = "Small sips, big benefits!";
+"motivation.9" = "Drink up and feel great!";
+"motivation.10" = "Your daily dose of hydration!";
+"motivation.11" = "Refresh your body and mind!";
+"motivation.12" = "Water is life, drink up!";
+"motivation.13" = "A sip a day keeps the doctor away!";
+"motivation.14" = "You're doing great, stay hydrated!";
+"motivation.15" = "Treat yourself to some H2O!";
+"motivation.16" = "Fuel your body with water!";
+"motivation.17" = "Cheers to your health!";
+"motivation.18" = "Keep up the good hydration habits!";
+"motivation.19" = "Time for a water break!";
+"motivation.20" = "Give your body what it needs!";
+"motivation.21" = "Sip, sip, hooray!";
+"motivation.22" = "Water: nature's energy drink!";
+"motivation.23" = "Hydrate now, feel better later!";
+"motivation.24" = "You deserve this water break!";
+"motivation.25" = "Nourish your body with water!";
+"motivation.26" = "Keep yourself in the flow!";
+"motivation.27" = "Water works wonders!";
+"motivation.28" = "Drink water, feel amazing!";
+"motivation.29" = "Your cells are calling for water!";
+"motivation.30" = "Stay cool, stay hydrated!";
