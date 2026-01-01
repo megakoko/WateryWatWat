@@ -24,6 +24,7 @@ struct ClimatePage: View {
                     )
                 }
             }
+            .animation(nil, value: maxIconWidth)
             .onPreferenceChange(IconWidthPreferenceKey.self) { width in
                 maxIconWidth = width
             }
