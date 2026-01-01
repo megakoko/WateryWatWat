@@ -95,6 +95,8 @@ final class MainViewModel {
     }
 
     func toggleStatsPeriod() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
         statsPeriod = statsPeriod.toggled()
         settingsService.setStatsPeriod(statsPeriod)
     }
