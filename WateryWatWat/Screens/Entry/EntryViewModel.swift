@@ -69,7 +69,7 @@ final class EntryViewModel: Identifiable {
             if let entry {
                 try await service.updateEntry(entry, volume: volume, date: selectedDate)
             } else {
-                try await service.addEntry(volume: volume, type: "water", date: selectedDate)
+                try await service.addEntry(volume: volume, type: .water, date: selectedDate)
             }
             onEntryAdded?()
         } catch {

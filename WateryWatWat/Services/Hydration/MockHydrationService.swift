@@ -35,7 +35,8 @@ final class MockHydrationService: HydrationService {
                     entry.volume = [250, 500, 750, 1000].randomElement()!
                 }
 
-                entry.type = "water"
+                entry.type = EntryType.water.rawValue
+                entry.unit = VolumeUnit.ml.rawValue
                 entries.append(entry)
                 dayTotal += entry.volume
             }
@@ -47,7 +48,7 @@ final class MockHydrationService: HydrationService {
         self.mockEntries = entries.sorted { ($0.date ?? Date()) > ($1.date ?? Date()) }
     }
 
-    func addEntry(volume: Int64, type: String, date: Date) async throws {
+    func addEntry(volume: Int64, type: EntryType, unit: VolumeUnit, date: Date) async throws {
         try await Task.sleep(for: .seconds(delay))
         if fail {
             throw NSError(domain: "MockHydrationService", code: -1)
@@ -128,7 +129,7 @@ final class MockHydrationService: HydrationService {
         }
     }
 
-    func updateEntry(_ entry: HydrationEntry, volume: Int64, date: Date) async throws {
+    func updateEntry(_ entry: HydrationEntry, volume: Int64, type: EntryType, unit: VolumeUnit, date: Date) async throws {
         try await Task.sleep(for: .seconds(delay))
         if fail {
             throw NSError(domain: "MockHydrationService", code: -1)

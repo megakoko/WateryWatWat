@@ -28,7 +28,7 @@ struct AddWaterIntent: AppIntent {
             healthKitService: healthKitService,
             settingsService: settingsService
         )
-        try await service.addEntry(volume: volumeInML, type: "water", date: Date())
+        try await service.addEntry(volume: volumeInML, type: .water, date: Date())
 
         let todayTotal = try await service.fetchTodayTotal()
 

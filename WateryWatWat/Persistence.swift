@@ -19,7 +19,8 @@ struct PersistenceController {
             let entry = HydrationEntry(context: viewContext)
             entry.date = Date().addingTimeInterval(-TimeInterval.random(in: 0...604800))
             entry.volume = Int64.random(in: 500...2500)
-            entry.type = "water"
+            entry.type = EntryType.water.rawValue
+            entry.unit = VolumeUnit.ml.rawValue
         }
         do {
             try viewContext.save()

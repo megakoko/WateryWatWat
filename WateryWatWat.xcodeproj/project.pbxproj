@@ -66,6 +66,8 @@
 				Constants.swift,
 				"Extensions/Int64+.swift",
 				Extensions/VolumeFormatter.swift,
+				Models/EntryType.swift,
+				Models/VolumeUnit.swift,
 				Persistence.swift,
 				Views/CircularProgressView.swift,
 				WateryWatWat.xcdatamodeld,

@@ -203,7 +203,7 @@ final class MainViewModel {
 
     private func addQuickEntry(volume: Int64) async {
         do {
-            try await service.addEntry(volume: volume, type: "water", date: Date())
+            try await service.addEntry(volume: volume, type: .water, date: Date())
             await loadData(initialLoad: false)
         } catch {
             self.error = error

@@ -14,14 +14,15 @@ final class DefaultHydrationService {
 }
 
 extension DefaultHydrationService: HydrationService {
-    func addEntry(volume: Int64, type: String = "water", date: Date = Date()) async throws {
+    func addEntry(volume: Int64, type: EntryType, unit: VolumeUnit, date: Date) async throws {
         var objectIDString: String?
 
         try await context.perform {
             let entry = HydrationEntry(context: self.context)
             entry.date = date
             entry.volume = volume
-            entry.type = type
+            entry.type = type.rawValue
+            entry.unit = unit.rawValue
             try self.context.save()
 
             objectIDString = entry.objectID.uriRepresentation().absoluteString
@@ -131,7 +132,7 @@ extension DefaultHydrationService: HydrationService {
         }
     }
 
-    func updateEntry(_ entry: HydrationEntry, volume: Int64, date: Date) async throws {
+    func updateEntry(_ entry: HydrationEntry, volume: Int64, type: EntryType, unit: VolumeUnit, date: Date) async throws {
         let objectIDString = entry.objectID.uriRepresentation().absoluteString
 
         if settingsService.getHealthSyncEnabled() {
@@ -140,6 +141,8 @@ extension DefaultHydrationService: HydrationService {
 
         try await context.perform {
             entry.volume = volume
+            entry.type = type.rawValue
+            entry.unit = unit.rawValue
             entry.date = date
             try self.context.save()
         }
