@@ -21,7 +21,8 @@ struct MainView: View {
                 .ignoresSafeArea()
         }
         .scrollIndicators(.hidden)
-        .navigationTitle("Hydration")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle("WateryWatWat")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: viewModel.showSettings) {
