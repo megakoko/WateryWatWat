@@ -7,11 +7,13 @@ struct MainView: View {
     @Environment(\.sizeCategory) private var sizeCategory
     
     private let confettiView = C3DView()
+    private let extraAddButtonSpacing = 100.0
     
     var body: some View {
         ScrollView {
             if viewModel.initialized {
                 content
+                    .padding(.bottom, extraAddButtonSpacing)
             }
         }
         .overlay {
@@ -26,18 +28,11 @@ struct MainView: View {
                     Image(systemName: "gearshape")
                 }
             }
-            
-            if #available(iOS 26, *) {
-                ToolbarItem(placement: .bottomBar) {
-                    Spacer()
-                }
-                ToolbarItem(placement: .bottomBar) {
-                    addButton
-                }
-            } else {
-                ToolbarItem(placement: .primaryAction) {
-                    addButton
-                }
+        }
+        .overlay(alignment: .bottom) {
+            if viewModel.initialized {
+                addButton
+                    .ignoresSafeArea()
             }
         }
         .sheet(item: $viewModel.entryViewModel) { addEntryViewModel in
@@ -214,12 +209,20 @@ struct MainView: View {
     }
 
     private var addButton: some View {
-        Menu("Add", systemImage: "plus") {
+        Menu {
             ForEach(Constants.standardVolumes, id: \.self) { volume in
                 Button("\(volume) ml") {
                     viewModel.quickAddEntry(volume: volume)
                 }
             }
+        } label: {
+            Label("Add", systemImage: "plus")
+                .font(.system(size: 20, weight: .semibold))
+                .foregroundStyle(.white)
+                .padding(.horizontal)
+                .padding()
+                .glassEffect(.clear.tint(.accent).interactive())
+                .padding()
         } primaryAction: {
             viewModel.showAddEntry()
         }
