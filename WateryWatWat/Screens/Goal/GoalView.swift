@@ -3,17 +3,21 @@ import SwiftUI
 struct GoalView: View {
     @State var viewModel: GoalViewModel
     @Environment(\.dismiss) private var dismiss
+    
+    private var currentPageTransition: AnyTransition {
+        viewModel.navigatingForward ? .push(from: .trailing) : .push(from: .leading)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
             currentPageView
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-
+                .transition(currentPageTransition)
+            
             bottomButton
         }
         .navigationTitle("Daily Goal")
         .navigationBarTitleDisplayMode(.inline)
-        .animation(.easeInOut, value: viewModel.currentPage)
     }
 
     @ViewBuilder

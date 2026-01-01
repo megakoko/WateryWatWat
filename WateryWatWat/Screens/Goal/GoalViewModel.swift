@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 enum GoalPage {
     case intro
@@ -14,6 +15,7 @@ enum GoalPage {
 final class GoalViewModel: Identifiable {
     let id = UUID()
     var currentPage: GoalPage = .intro
+    var navigatingForward = true
     var data = GoalCalculationData()
     var adjustedGoal: Int64 = 2000
     var onComplete: (() -> Void)?
@@ -68,23 +70,27 @@ final class GoalViewModel: Identifiable {
 
     func nextPage() {
         guard canGoNext else { return }
-
-        switch currentPage {
-        case .intro:
-            currentPage = .weight
-        case .weight:
-            currentPage = .gender
-        case .gender:
-            currentPage = .activity
-        case .activity:
-            currentPage = .climate
-        case .climate:
-            currentPage = .factors
-        case .factors:
-            adjustedGoal = calculatedGoal
-            currentPage = .result
-        case .result:
-            completeGoalSetup()
+        
+        navigatingForward = true
+        
+        withAnimation {
+            switch currentPage {
+            case .intro:
+                currentPage = .weight
+            case .weight:
+                currentPage = .gender
+            case .gender:
+                currentPage = .activity
+            case .activity:
+                currentPage = .climate
+            case .climate:
+                currentPage = .factors
+            case .factors:
+                adjustedGoal = calculatedGoal
+                currentPage = .result
+            case .result:
+                completeGoalSetup()
+            }
         }
     }
 
@@ -92,23 +98,27 @@ final class GoalViewModel: Identifiable {
         settingsService.setDailyGoal(adjustedGoal)
         onComplete?()
     }
-
+    
     func previousPage() {
-        switch currentPage {
-        case .intro:
-            break
-        case .weight:
-            currentPage = .intro
-        case .gender:
-            currentPage = .weight
-        case .activity:
-            currentPage = .gender
-        case .climate:
-            currentPage = .activity
-        case .factors:
-            currentPage = .climate
-        case .result:
-            currentPage = .factors
+        navigatingForward = false
+        
+        withAnimation {
+            switch currentPage {
+            case .intro:
+                break
+            case .weight:
+                currentPage = .intro
+            case .gender:
+                currentPage = .weight
+            case .activity:
+                currentPage = .gender
+            case .climate:
+                currentPage = .activity
+            case .factors:
+                currentPage = .climate
+            case .result:
+                currentPage = .factors
+            }
         }
     }
 }
