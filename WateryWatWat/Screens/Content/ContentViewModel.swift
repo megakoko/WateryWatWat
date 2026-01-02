@@ -5,17 +5,41 @@ import CoreData
 final class ContentViewModel {
     var isGoalSet = false
 
-    let goalViewModel: GoalViewModel
-    let mainViewModel: MainViewModel
+    var goalViewModel: GoalViewModel?
+    var mainViewModel: MainViewModel?
 
     private let settingsService: SettingsService
+    private let persistenceController: PersistenceController
+    private let healthKitService: HealthKitService
 
     init(settingsService: SettingsService, persistenceController: PersistenceController, healthKitService: HealthKitService) {
         self.settingsService = settingsService
-        self.goalViewModel = GoalViewModel(settingsService: settingsService)
+        self.persistenceController = persistenceController
+        self.healthKitService = healthKitService
+
+        isGoalSet = settingsService.isGoalSet()
+
+        if isGoalSet {
+            initializeMainViewModel()
+        } else {
+            initializeGoalViewModel()
+        }
+    }
+
+    private func initializeGoalViewModel() {
+        let viewModel = GoalViewModel(settingsService: settingsService)
+        viewModel.onComplete = { [weak self] in
+            self?.isGoalSet = true
+            self?.goalViewModel = nil
+            self?.initializeMainViewModel()
+        }
+        self.goalViewModel = viewModel
+    }
+
+    private func initializeMainViewModel() {
         self.mainViewModel = MainViewModel(
             service: DefaultHydrationService(
-                context: persistenceController.container.viewContext,
+                persistenceController: persistenceController,
                 healthKitService: healthKitService,
                 settingsService: settingsService
             ),
@@ -23,9 +47,5 @@ final class ContentViewModel {
             notificationService: DefaultNotificationService(settingsService: settingsService),
             healthKitService: healthKitService
         )
-        self.goalViewModel.onComplete = { [weak self] in
-            self?.isGoalSet = true
-        }
-        isGoalSet = settingsService.isGoalSet()
     }
 }

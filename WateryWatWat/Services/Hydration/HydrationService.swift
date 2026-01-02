@@ -2,12 +2,16 @@ import Foundation
 import CoreData
 
 final class DefaultHydrationService {
-    private let context: NSManagedObjectContext
+    private let persistenceController: PersistenceController
     private let healthKitService: HealthKitService
     private let settingsService: SettingsService
 
-    init(context: NSManagedObjectContext, healthKitService: HealthKitService, settingsService: SettingsService) {
-        self.context = context
+    private var context: NSManagedObjectContext {
+        persistenceController.container.viewContext
+    }
+
+    init(persistenceController: PersistenceController, healthKitService: HealthKitService, settingsService: SettingsService) {
+        self.persistenceController = persistenceController
         self.healthKitService = healthKitService
         self.settingsService = settingsService
     }

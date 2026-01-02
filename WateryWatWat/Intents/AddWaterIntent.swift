@@ -24,7 +24,7 @@ struct AddWaterIntent: AppIntent {
         let healthKitService = DefaultHealthKitService()
         let settingsService = DefaultSettingsService()
         let service = DefaultHydrationService(
-            context: PersistenceController.sharedApp.container.viewContext,
+            persistenceController: PersistenceController.sharedApp,
             healthKitService: healthKitService,
             settingsService: settingsService
         )

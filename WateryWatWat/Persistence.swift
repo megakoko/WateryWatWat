@@ -7,13 +7,13 @@
 
 import CoreData
 
-struct PersistenceController {
+final class PersistenceController {
     static let sharedApp = PersistenceController(useCloudKit: true)
     static let sharedWidget = PersistenceController(useCloudKit: false)
 
     @MainActor
     static let preview: PersistenceController = {
-        let result = PersistenceController(inMemory: true, useCloudKit: false)
+        var result = PersistenceController(inMemory: true, useCloudKit: false)
         let viewContext = result.container.viewContext
         for _ in 0..<7 {
             let entry = HydrationEntry(context: viewContext)
@@ -31,11 +31,12 @@ struct PersistenceController {
         return result
     }()
 
-    let container: NSPersistentCloudKitContainer
+    private let inMemory: Bool
+    private let useCloudKit: Bool
 
-    init(inMemory: Bool = false, useCloudKit: Bool) {
-        container = NSPersistentCloudKitContainer(name: "WateryWatWat")
-        if inMemory {
+    lazy var container: NSPersistentCloudKitContainer = {
+        let container = NSPersistentCloudKitContainer(name: "WateryWatWat")
+        if self.inMemory {
             container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
         } else {
             guard let description = container.persistentStoreDescriptions.first else {
@@ -46,7 +47,7 @@ struct PersistenceController {
                 description.url = groupURL.appendingPathComponent("WateryWatWat.sqlite")
             }
 
-            if useCloudKit {
+            if self.useCloudKit {
                 description.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: "iCloud.com.chukavin.WateryWatWat")
             }
             description.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
@@ -58,5 +59,11 @@ struct PersistenceController {
             }
         })
         container.viewContext.automaticallyMergesChangesFromParent = true
+        return container
+    }()
+
+    init(inMemory: Bool = false, useCloudKit: Bool) {
+        self.inMemory = inMemory
+        self.useCloudKit = useCloudKit
     }
 }
