@@ -21,17 +21,17 @@ struct CardPanel<Content: View, TrailingButton: View>: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 4) {
             if let title {
                 HStack {
                     Text(title)
                         .textCase(.uppercase)
-                        .font(.callout)
                         .lineLimit(1)
-                    Spacer()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
                     trailingButton
-                        .font(.subheadline)
                 }
+                .font(.caption)
                 .padding(.horizontal)
             }
 
@@ -43,7 +43,8 @@ struct CardPanel<Content: View, TrailingButton: View>: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.vertical, 16)
+        .padding(.top, 10)
+        .padding(.bottom, 8)
         .background(.regularMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }

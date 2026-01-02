@@ -9,6 +9,8 @@ struct NextReminderPanel: View {
             Text(timeUntilReminder(nextTime))
                 .font(.largeTitle)
                 .frame(maxHeight: .infinity)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
         } else {
             Button("button.addReminder".localized, action: onAddReminder)
                 .frame(maxHeight: .infinity)

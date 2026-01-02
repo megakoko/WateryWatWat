@@ -9,6 +9,7 @@ final class VolumeFormatter {
         formatter.locale = locale
         formatter.unitOptions = .providedUnit
         formatter.unitStyle = .short
+        formatter.numberFormatter.maximumFractionDigits = 1
         return formatter
     }()
 
@@ -16,7 +17,7 @@ final class VolumeFormatter {
         let formatter = NumberFormatter()
         formatter.locale = locale
         formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 2
+        formatter.maximumFractionDigits = 1
         return formatter
     }()
 
