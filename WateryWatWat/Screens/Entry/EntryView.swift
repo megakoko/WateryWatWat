@@ -46,7 +46,8 @@ struct EntryView: View {
         LazyVGrid(columns: [GridItem(.flexible(), spacing: gridSpacing), GridItem(.flexible(), spacing: gridSpacing), GridItem(.flexible(), spacing: gridSpacing)], spacing: gridSpacing) {
             ForEach(viewModel.availableVolumes, id: \.self) { volume in
                 VolumeButton(
-                    volume: volume,
+                    formattedValue: viewModel.formattedVolumeValue(for: volume),
+                    unit: viewModel.volumeUnit,
                     isSelected: viewModel.selectedVolume == volume,
                     action: { viewModel.selectVolume(volume) }
                 )
@@ -70,7 +71,7 @@ struct EntryView: View {
     private var customPicker: some View {
         Picker("form.volume".localized, selection: $viewModel.customVolume) {
             ForEach(Array(stride(from: 100, through: 2000, by: 50)), id: \.self) { volume in
-                Text("volume.ml".localized(volume)).tag(Int64(volume))
+                Text(viewModel.formattedVolume(for: volume)).tag(Int64(volume))
             }
         }
         .pickerStyle(.wheel)

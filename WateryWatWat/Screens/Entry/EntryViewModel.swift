@@ -10,6 +10,7 @@ final class EntryViewModel: Identifiable {
 
     private let service: HydrationService
     private let entry: HydrationEntry?
+    private let volumeFormatter = VolumeFormatter(unit: .milliliters)
     var onEntryAdded: (() -> Void)?
 
     let availableVolumes = Constants.standardVolumes
@@ -18,6 +19,18 @@ final class EntryViewModel: Identifiable {
 
     var isEditing: Bool {
         entry != nil
+    }
+
+    var volumeUnit: String {
+        volumeFormatter.formattedComponents(from: 0).unit
+    }
+
+    func formattedVolume(for volume: Int) -> String {
+        volumeFormatter.string(from: Int64(volume))
+    }
+
+    func formattedVolumeValue(for volume: Int64) -> String {
+        volumeFormatter.formattedComponents(from: volume).value
     }
 
     init(service: HydrationService, entry: HydrationEntry? = nil) {

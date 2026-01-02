@@ -1,16 +1,17 @@
 import SwiftUI
 
 struct VolumeButton: View {
-    let volume: Int64
+    let formattedValue: String
+    let unit: String
     let isSelected: Bool
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
             VStack(spacing: 0) {
-                Text("\(volume)")
+                Text(formattedValue)
                     .font(.title)
-                Text("ml")
+                Text(unit)
                     .font(.caption)
             }
             .frame(maxWidth: .infinity)
@@ -25,8 +26,8 @@ struct VolumeButton: View {
 
 #Preview {
     VStack {
-        VolumeButton(volume: 250, isSelected: false, action: {})
-        VolumeButton(volume: 500, isSelected: true, action: {})
+        VolumeButton(formattedValue: "250", unit: "ml", isSelected: false, action: {})
+        VolumeButton(formattedValue: "500", unit: "ml", isSelected: true, action: {})
     }
     .padding()
 }

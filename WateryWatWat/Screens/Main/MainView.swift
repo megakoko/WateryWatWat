@@ -124,8 +124,9 @@ struct MainView: View {
         CardPanel {
             CircularProgressView(
                 progress: viewModel.progress,
-                formattedValue: viewModel.formattedTodayValue,
-                symbol: viewModel.volumeSymbol,
+                formattedValue: viewModel.formattedTodayComponents.value,
+                symbol: viewModel.formattedTodayComponents.unit,
+                unitPosition: viewModel.formattedTodayComponents.unitPosition,
                 font: .system(size: 60, weight: .bold),
                 lineWidth: 25,
                 color: .accentColor
@@ -241,7 +242,7 @@ struct MainView: View {
     private var addButton: some View {
         Menu {
             ForEach(Constants.standardVolumes, id: \.self) { volume in
-                Button("volume.ml".localized(volume)) {
+                Button(viewModel.formattedVolume(for: volume)) {
                     viewModel.quickAddEntry(volume: volume)
                 }
             }

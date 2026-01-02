@@ -57,12 +57,8 @@ final class MainViewModel {
         volumeFormatter.string(from: todayTotal)
     }
 
-    var formattedTodayValue: String {
-        volumeFormatter.formattedValue(from: todayTotal)
-    }
-
-    var volumeSymbol: String {
-        volumeFormatter.symbol
+    var formattedTodayComponents: FormattedVolume {
+        volumeFormatter.formattedComponents(from: todayTotal)
     }
 
     private var averageCalculationDays: [DailyTotal] {
@@ -240,6 +236,11 @@ final class MainViewModel {
             await performDelete(entry: entry)
         }
         entryToDelete = nil
+    }
+    
+    func formattedVolume(for volume: Int64) -> String {
+        let mlFormatter = VolumeFormatter(unit: .milliliters)
+        return mlFormatter.string(from: volume)
     }
 
     private func performDelete(entry: HydrationEntry) async {
