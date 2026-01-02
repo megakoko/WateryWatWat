@@ -10,28 +10,15 @@ struct NextReminderPanel: View {
                 .font(.largeTitle)
                 .frame(maxHeight: .infinity)
         } else {
-            Button("Add Reminder", action: onAddReminder)
+            Button("button.addReminder".localized, action: onAddReminder)
                 .frame(maxHeight: .infinity)
         }
     }
 
     private func timeUntilReminder(_ time: Date) -> String {
-        let interval = time.timeIntervalSince(Date())
-
-        guard interval > 0 else {
-            return "Soon"
-        }
-
-        let hours = Int(interval) / 3600
-        let minutes = (Int(interval) % 3600) / 60
-
-        if hours > 0 {
-            return "in \(hours)h \(minutes)m"
-        } else if minutes > 0 {
-            return "in \(minutes)m"
-        } else {
-            return "in < 1m"
-        }
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .short
+        return formatter.localizedString(for: time, relativeTo: Date())
     }
 }
 

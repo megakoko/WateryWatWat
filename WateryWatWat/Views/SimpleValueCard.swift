@@ -17,7 +17,7 @@ struct SimpleValueCard: View {
         if let periodDays, let onTogglePeriod {
             CardPanel(title, content: content) {
                 Button(action: onTogglePeriod) {
-                    Text("\(periodDays)d")
+                    Text("period.days".localized(periodDays))
                         .animation(nil, value: periodDays)
                 }
             }

@@ -67,7 +67,11 @@ struct HistoryChartView: View {
             return "0"
         }
         let weeksAgo = calendar.dateComponents([.weekOfYear], from: date, to: today).weekOfYear ?? 0
-        return "\(weeksAgo)w"
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.weekOfMonth]
+        formatter.unitsStyle = .abbreviated
+        let interval = TimeInterval(weeksAgo * 7 * 24 * 60 * 60)
+        return formatter.string(from: interval) ?? "\(weeksAgo)w"
     }
 }
 
