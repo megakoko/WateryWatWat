@@ -12,7 +12,7 @@ struct ResultPage: View {
                 .font(.title)
 
             Text(formattedGoal)
-                .font(.system(size: 60, weight: .bold))
+                .font(.system(size: 60, weight: .bold).monospacedDigit())
                 .foregroundStyle(Color.accentColor)
                 .textCase(.uppercase)
 
