@@ -27,6 +27,9 @@
 - service namings: 'Default' for real service, 'Mock' for mock, no preffix/suffix for protocol
 - if there are any auxiliary types put them after the main one of the file
 - don't make any whitespace changes
+- every class and struct must have the following structure: first public/open/internal var/let, then private var/let. Then init, deinit. Then func, then private func.
+- for SwiftUI struct must have the following structure: first property wrappers, then var/let, then body, then private var and private func. Try to avoid init.
+- every file must have its the primary type at the start. If you want to add more types to the file do so at the end after 'MARK'
 
 ## SwiftUI
 - No styling unless I specify
