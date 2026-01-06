@@ -19,13 +19,8 @@ final class MainViewModel {
     var statsPeriod: StatsPeriod = .week
     var entryToDelete: HydrationEntry?
     var showDeleteConfirmation = false
-    var showCongratulations = false
     var error: Error?
     var initialized = false
-
-    var confettiPublisher: AnyPublisher<Void, Never> {
-        _confettiPublisher.eraseToAnyPublisher()
-    }
 
     var formattedVolumeToDelete: String {
         guard let entry = entryToDelete else { return "" }
@@ -121,7 +116,6 @@ final class MainViewModel {
     private var cancellables = Set<AnyCancellable>()
     private var midnightTimer: Timer?
     private var lastRefreshDate: Date = Date()
-    private var _confettiPublisher = PassthroughSubject<Void, Never>()
 
     init(service: HydrationService, settingsService: SettingsService, notificationService: NotificationService, healthKitService: HealthKitService) {
         self.service = service
@@ -268,9 +262,6 @@ final class MainViewModel {
     }
 
     private func loadData(initialLoad: Bool) async {
-        let previousTotal = self.todayTotal
-        let previousGoal = self.dailyGoal
-        
         do {
             async let todayTask = fetchTodayTotal()
             async let historyTask = fetchHistory()
@@ -289,13 +280,6 @@ final class MainViewModel {
                 self.streak = streak
                 self.recentEntries = recentEntries
                 self.initialized = true
-            }
-            
-            if dailyGoal == previousGoal &&
-                previousTotal > 0 &&
-                previousTotal < dailyGoal &&
-                todayTotal >= dailyGoal {
-                onGoalReached()
             }
         } catch {
             self.error = error
@@ -397,21 +381,5 @@ final class MainViewModel {
 
     private func reloadWidgets() {
         WidgetCenter.shared.reloadAllTimelines()
-    }
-    
-    private func onGoalReached() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self._confettiPublisher.send(())
-            
-            withAnimation(.easeOut(duration: 0.2)) {
-                self.showCongratulations = true
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                withAnimation(.easeInOut(duration: 1)) {
-                    self.showCongratulations = false
-                }
-            }
-        }
     }
 }

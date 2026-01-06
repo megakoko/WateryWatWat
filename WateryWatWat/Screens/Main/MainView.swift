@@ -1,13 +1,10 @@
 import SwiftUI
-import Confetti3D
 
 struct MainView: View {
     @State var viewModel: MainViewModel
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.sizeCategory) private var sizeCategory
 
-    private let confettiView = C3DView()
-    
     var body: some View {
         ScrollView {
             if viewModel.initialized {
@@ -18,29 +15,17 @@ struct MainView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("app.title".localized)
         .toolbar {
-            if !viewModel.showCongratulations {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: viewModel.showSettings) {
-                        Image(systemName: "gearshape")
-                    }
-                }
-                
-                ToolbarItem(placement: .bottomBar) {
-                    Spacer()
-                }
-                ToolbarItem(placement: .bottomBar) {
-                    addButton
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: viewModel.showSettings) {
+                    Image(systemName: "gearshape")
                 }
             }
-        }
-        .overlay {
-            ZStack {
-                if viewModel.showCongratulations {
-                    congratulationsView
-                }
-                
-                confettiView
-                    .ignoresSafeArea()
+
+            ToolbarItem(placement: .bottomBar) {
+                Spacer()
+            }
+            ToolbarItem(placement: .bottomBar) {
+                addButton
             }
         }
         .sheet(item: $viewModel.entryViewModel) { addEntryViewModel in
@@ -62,9 +47,6 @@ struct MainView: View {
         .errorAlert($viewModel.error)
         .onChange(of: scenePhase) { _, newPhase in
             viewModel.handleScenePhaseChange(newPhase)
-        }
-        .onReceive(viewModel.confettiPublisher) {
-            confettiView.throwConfetti()
         }
     }
     
@@ -101,22 +83,6 @@ struct MainView: View {
             }
         }
         .padding()
-    }
-    
-    private var congratulationsView: some View {
-        Color.clear
-            .background(.ultraThinMaterial, in: Rectangle())
-            .ignoresSafeArea()
-            .overlay {
-                VStack {
-                    Text("congratulations.title".localized)
-                        .font(.title.bold())
-
-                    Text("congratulations.message".localized)
-                        .foregroundStyle(.gray)
-                }
-                .offset(y: 50)
-            }
     }
 
     private var circularProgressCard: some View {
