@@ -133,6 +133,7 @@ struct MainView: View {
                                 EntryCard(entry: entry)
                             }
                             .padding(.horizontal, 10)
+                            .contentShape(Rectangle())
                             .contextMenu {
                                 Button("button.duplicate".localized, systemImage: "plus.square.on.square") {
                                     viewModel.duplicateEntry(entry)
