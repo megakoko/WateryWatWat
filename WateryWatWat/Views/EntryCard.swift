@@ -21,6 +21,6 @@ struct EntryCard: View {
     private var timeText: some View {
         Text(entry.date ?? Date(), format: .dateTime.hour().minute())
             .font(.caption)
-            .foregroundStyle(.secondary)
+            .opacity(0.7)
     }
 }

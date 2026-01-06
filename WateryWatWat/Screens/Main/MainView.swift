@@ -157,21 +157,23 @@ struct MainView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 12) {
                 ForEach(viewModel.recentEntries) { group in
-                    HStack(alignment: .bottom, spacing: 20) {
+                    HStack(alignment: .bottom, spacing: 0) {
                         DayCard(date: group.date, formattedVolume: group.formattedTotalVolume)
 
                         ForEach(group.entries, id: \.objectID) { entry in
-                            Menu {
+                            Button {
+                                viewModel.editEntry(entry)
+                            } label: {
+                                EntryCard(entry: entry)
+                            }
+                            .padding(.horizontal, 10)
+                            .contextMenu {
                                 Button("button.duplicate".localized, systemImage: "plus.square.on.square") {
                                     viewModel.duplicateEntry(entry)
                                 }
                                 Button("button.delete".localized, systemImage: "trash", role: .destructive) {
                                     viewModel.deleteEntry(entry)
                                 }
-                            } label: {
-                                EntryCard(entry: entry)
-                            } primaryAction: {
-                                viewModel.editEntry(entry)
                             }
                             .buttonStyle(.plain)
                         }
