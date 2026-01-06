@@ -12,6 +12,7 @@
 "button.addReminder" = "Erinnerung hinzufügen";
 "button.seeAll" = "Alle anzeigen";
 "button.delete" = "Löschen";
+"button.duplicate" = "Duplizieren";
 "button.openSettings" = "Einstellungen öffnen";
 "button.notificationSettings" = "Benachrichtigungseinstellungen";
 "button.deleteHealthData" = "Gesundheitsdaten löschen";

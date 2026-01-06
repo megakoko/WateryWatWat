@@ -8,6 +8,7 @@ protocol HydrationService {
     func fetchEntries(from startDate: Date, to endDate: Date) async throws -> [HydrationEntry]
     func deleteEntry(_ entry: HydrationEntry) async throws
     func updateEntry(_ entry: HydrationEntry, volume: Int64, type: EntryType, unit: VolumeUnit, date: Date) async throws
+    func duplicateEntry(_ entry: HydrationEntry) async throws
 }
 
 extension HydrationService {

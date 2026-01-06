@@ -12,6 +12,7 @@
 "button.addReminder" = "Добавить напоминание";
 "button.seeAll" = "Показать все";
 "button.delete" = "Удалить";
+"button.duplicate" = "Дублировать";
 "button.openSettings" = "Открыть настройки";
 "button.notificationSettings" = "Настройки уведомлений";
 "button.deleteHealthData" = "Удалить данные здоровья";

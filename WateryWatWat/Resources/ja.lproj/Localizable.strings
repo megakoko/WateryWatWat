@@ -12,6 +12,7 @@
 "button.addReminder" = "リマインダーを追加";
 "button.seeAll" = "すべて表示";
 "button.delete" = "削除";
+"button.duplicate" = "複製";
 "button.openSettings" = "設定を開く";
 "button.notificationSettings" = "通知設定";
 "button.deleteHealthData" = "ヘルスデータを削除";

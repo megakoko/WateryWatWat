@@ -162,6 +162,9 @@ struct MainView: View {
 
                         ForEach(group.entries, id: \.objectID) { entry in
                             Menu {
+                                Button("button.duplicate".localized, systemImage: "plus.square.on.square") {
+                                    viewModel.duplicateEntry(entry)
+                                }
                                 Button("button.delete".localized, systemImage: "trash", role: .destructive) {
                                     viewModel.deleteEntry(entry)
                                 }

@@ -135,4 +135,11 @@ final class MockHydrationService: HydrationService {
             throw NSError(domain: "MockHydrationService", code: -1)
         }
     }
+
+    func duplicateEntry(_ entry: HydrationEntry) async throws {
+        try await Task.sleep(for: .seconds(delay))
+        if fail {
+            throw NSError(domain: "MockHydrationService", code: -1)
+        }
+    }
 }

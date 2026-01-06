@@ -44,9 +44,24 @@ final class HistoryViewModel: Identifiable {
         editEntryViewModel = EntryViewModel(service: service, entry: entry)
     }
 
+    func duplicateEntry(_ entry: HydrationEntry) {
+        Task {
+            await performDuplicate(entry: entry)
+        }
+    }
+
     private func deleteEntry(_ entry: HydrationEntry) async {
         do {
             try await service.deleteEntry(entry)
+            await fetchEntries()
+        } catch {
+            self.error = error
+        }
+    }
+
+    private func performDuplicate(entry: HydrationEntry) async {
+        do {
+            try await service.duplicateEntry(entry)
             await fetchEntries()
         } catch {
             self.error = error

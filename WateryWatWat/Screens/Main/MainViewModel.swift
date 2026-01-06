@@ -237,6 +237,12 @@ final class MainViewModel {
         }
         entryToDelete = nil
     }
+
+    func duplicateEntry(_ entry: HydrationEntry) {
+        Task {
+            await performDuplicate(entry: entry)
+        }
+    }
     
     func formattedVolume(for volume: Int64) -> String {
         let mlFormatter = VolumeFormatter(unit: .milliliters)
@@ -246,6 +252,15 @@ final class MainViewModel {
     private func performDelete(entry: HydrationEntry) async {
         do {
             try await service.deleteEntry(entry)
+            await loadData(initialLoad: false)
+        } catch {
+            self.error = error
+        }
+    }
+
+    private func performDuplicate(entry: HydrationEntry) async {
+        do {
+            try await service.duplicateEntry(entry)
             await loadData(initialLoad: false)
         } catch {
             self.error = error

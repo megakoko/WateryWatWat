@@ -155,4 +155,17 @@ extension DefaultHydrationService: HydrationService {
             try? await healthKitService.saveDietaryWater(volume: volume, date: date, coreDataID: objectIDString)
         }
     }
+
+    func duplicateEntry(_ entry: HydrationEntry) async throws {
+        guard
+            let entryTypeString = entry.type,
+            let entryType = EntryType(rawValue: entryTypeString),
+            let entryUnitString = entry.unit,
+            let entryUnit = VolumeUnit(rawValue: entryUnitString)
+        else {
+            return
+        }
+
+        try await addEntry(volume: entry.volume, type: entryType, unit: entryUnit, date: Date())
+    }
 }

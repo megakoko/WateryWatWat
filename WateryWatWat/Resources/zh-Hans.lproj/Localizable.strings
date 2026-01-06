@@ -12,6 +12,7 @@
 "button.addReminder" = "添加提醒";
 "button.seeAll" = "查看全部";
 "button.delete" = "删除";
+"button.duplicate" = "复制";
 "button.openSettings" = "打开设置";
 "button.notificationSettings" = "通知设置";
 "button.deleteHealthData" = "删除健康数据";

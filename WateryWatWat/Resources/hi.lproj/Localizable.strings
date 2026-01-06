@@ -12,6 +12,7 @@
 "button.addReminder" = "रिमाइंडर जोड़ें";
 "button.seeAll" = "सभी देखें";
 "button.delete" = "हटाएं";
+"button.duplicate" = "डुप्लिकेट करें";
 "button.openSettings" = "सेटिंग्स खोलें";
 "button.notificationSettings" = "नोटिफिकेशन सेटिंग्स";
 "button.deleteHealthData" = "स्वास्थ्य डेटा हटाएं";

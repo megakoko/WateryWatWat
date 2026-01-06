@@ -14,11 +14,25 @@ struct HistoryView: View {
                             EntryRow(entry: entry)
                         }
                         .buttonStyle(.plain)
+                        .contextMenu {
+                            Button("button.duplicate".localized, systemImage: "plus.square.on.square") {
+                                viewModel.duplicateEntry(entry)
+                            }
+                            Button("button.delete".localized, systemImage: "trash", role: .destructive) {
+                                viewModel.requestDelete(entry)
+                            }
+                        }
                         .swipeActions(edge: .trailing) {
                             Button("button.delete".localized, systemImage: "trash") {
                                 viewModel.requestDelete(entry)
                             }
                             .tint(.red)
+                        }
+                        .swipeActions(edge: .leading) {
+                            Button("button.duplicate".localized, systemImage: "plus.square.on.square") {
+                                viewModel.duplicateEntry(entry)
+                            }
+                            .tint(.blue)
                         }
                     }
                 } header: {
