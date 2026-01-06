@@ -7,13 +7,11 @@ struct MainView: View {
     @Environment(\.sizeCategory) private var sizeCategory
 
     private let confettiView = C3DView()
-    private let extraAddButtonSpacing = 100.0
     
     var body: some View {
         ScrollView {
             if viewModel.initialized {
                 content
-                    .padding(.bottom, extraAddButtonSpacing)
             }
         }
         .scrollIndicators(.hidden)
@@ -26,12 +24,13 @@ struct MainView: View {
                         Image(systemName: "gearshape")
                     }
                 }
-            }
-        }
-        .overlay(alignment: .bottom) {
-            if viewModel.initialized {
-                addButton
-                    .ignoresSafeArea()
+                
+                ToolbarItem(placement: .bottomBar) {
+                    Spacer()
+                }
+                ToolbarItem(placement: .bottomBar) {
+                    addButton
+                }
             }
         }
         .overlay {
@@ -258,7 +257,7 @@ struct MainView: View {
             viewModel.showAddEntry()
         }
     }
-
+    
     private var shouldUseAccessibilityLayout: Bool {
         sizeCategory.isAccessibilityCategory
     }
