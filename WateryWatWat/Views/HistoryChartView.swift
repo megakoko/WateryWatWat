@@ -22,7 +22,7 @@ struct HistoryChartView: View {
             }
 
             ForEach(goalPeriods, id: \.start) { period in
-                RuleMark(xStart: .value("Start", period.start), xEnd: .value("End", period.end), y: .value("Goal", period.value))
+                RuleMark(xStart: .value("Start", period.start), xEnd: .value("End", period.end.nextDay), y: .value("Goal", period.value))
                     .lineStyle(StrokeStyle(lineWidth: 2, dash: [10, 5]))
                     .foregroundStyle(Color.init(uiColor: .secondaryLabel))
             }
@@ -43,11 +43,13 @@ struct HistoryChartView: View {
             }
         }
         .chartYAxis {
-            AxisMarks(values: goalPeriods.map { Double($0.value) }) { value in
-                AxisValueLabel {
-                    if let goalValue = value.as(Double.self) {
-                        Text(volumeFormatter.string(from: Int64(goalValue)))
-                            .textCase(.uppercase)
+            if let latestGoal = goalPeriods.last {
+                AxisMarks(values: [Double(latestGoal.value)]) { value in
+                    AxisValueLabel {
+                        if let goalValue = value.as(Double.self) {
+                            Text(volumeFormatter.string(from: Int64(goalValue)))
+                                .textCase(.uppercase)
+                        }
                     }
                 }
             }
@@ -105,10 +107,8 @@ struct HistoryChartView: View {
     }
 }
 
-// MARK: - GoalPeriod
-
-struct GoalPeriod {
-    let start: Date
-    let end: Date
-    let value: Int64
+private extension Date {
+    var nextDay: Date {
+        Calendar.current.date(byAdding: .day, value: 1, to: self)!
+    }
 }

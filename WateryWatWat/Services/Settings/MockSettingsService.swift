@@ -4,7 +4,6 @@ import Combine
 final class MockSettingsService: SettingsService {
     private let delay: TimeInterval
     private let fail: Bool
-    private var storedGoal: Int64 = Constants.defaultDailyGoalML
     private var storedReminderSettings = ReminderSettings(
         enabled: false,
         startHour: Constants.defaultReminderStartHour,
@@ -24,18 +23,6 @@ final class MockSettingsService: SettingsService {
     init(delay: TimeInterval = 0, fail: Bool = false) {
         self.delay = delay
         self.fail = fail
-    }
-
-    func getDailyGoal() -> Int64 {
-        return storedGoal
-    }
-
-    func setDailyGoal(_ value: Int64) {
-        storedGoal = value
-    }
-
-    func isGoalSet() -> Bool {
-        storedGoal != Constants.defaultDailyGoalML
     }
 
     func getReminderSettings() -> ReminderSettings {

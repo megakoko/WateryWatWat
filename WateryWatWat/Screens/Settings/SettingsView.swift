@@ -123,7 +123,8 @@ struct SettingsView: View {
     NavigationStack {
         SettingsView(
             viewModel: SettingsViewModel(
-                service: MockSettingsService(),
+                settingsService: MockSettingsService(),
+                hydrationService: MockHydrationService(),
                 notificationService: MockNotificationService(),
                 healthKitService: MockHealthKitService(delay: 0, fail: false)
             )

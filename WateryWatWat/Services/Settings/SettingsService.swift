@@ -2,9 +2,6 @@ import Foundation
 import Combine
 
 protocol SettingsService {
-    func getDailyGoal() -> Int64
-    func setDailyGoal(_ value: Int64)
-    func isGoalSet() -> Bool
     func getReminderSettings() -> ReminderSettings
     func setReminderEnabled(_ enabled: Bool)
     func setReminderStartTime(hour: Int, minute: Int)
@@ -20,7 +17,6 @@ protocol SettingsService {
 
 final class DefaultSettingsService: SettingsService {
     private let defaults = UserDefaults.standard
-    private let dailyGoalKey = "dailyGoalML"
     private let reminderEnabledKey = "remindersEnabled"
     private let reminderStartHourKey = "reminderStartHour"
     private let reminderStartMinuteKey = "reminderStartMinute"
@@ -40,19 +36,6 @@ final class DefaultSettingsService: SettingsService {
             UserDefaults.standard.publisher(for: \.reminderPeriodMinutes).map { _ in () }
         )
         .eraseToAnyPublisher()
-    }
-
-    func getDailyGoal() -> Int64 {
-        let goal = defaults.integer(forKey: dailyGoalKey)
-        return goal > 0 ? Int64(goal) : Constants.defaultDailyGoalML
-    }
-
-    func setDailyGoal(_ value: Int64) {
-        defaults.set(Int(value), forKey: dailyGoalKey)
-    }
-
-    func isGoalSet() -> Bool {
-        defaults.object(forKey: dailyGoalKey) != nil
     }
 
     func getReminderSettings() -> ReminderSettings {

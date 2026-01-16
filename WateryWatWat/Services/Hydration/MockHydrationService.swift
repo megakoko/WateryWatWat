@@ -7,6 +7,7 @@ final class MockHydrationService: HydrationService {
     private let context: NSManagedObjectContext
     private let mockDailyTotals: [Date: Int64]
     private let mockEntries: [HydrationEntry]
+    private var goalHistory: [(effectiveDate: Date, value: Int64)] = []
 
     init(delay: TimeInterval = 0, fail: Bool = false) {
         self.delay = delay
@@ -81,7 +82,7 @@ final class MockHydrationService: HydrationService {
         return mockDailyTotals[today] ?? 0
     }
 
-    func calculateStreak(goal: Int64) async throws -> Int {
+    func calculateStreak() async throws -> Int {
         try await Task.sleep(for: .seconds(delay))
         if fail {
             throw NSError(domain: "MockHydrationService", code: -1)
@@ -95,9 +96,11 @@ final class MockHydrationService: HydrationService {
             guard let date = calendar.date(byAdding: .day, value: -dayOffset, to: today),
                   let total = mockDailyTotals[date] else { break }
 
-            if total >= goal {
+            let goalForDay = goalHistory.last { $0.effectiveDate <= date }?.value ?? Constants.defaultDailyGoalML
+
+            if total >= goalForDay {
                 streak += 1
-            } else {
+            } else if dayOffset > 0 {
                 break
             }
         }
@@ -141,5 +144,70 @@ final class MockHydrationService: HydrationService {
         if fail {
             throw NSError(domain: "MockHydrationService", code: -1)
         }
+    }
+
+    func setDailyGoal(_ value: Int64, effectiveDate: Date) async throws {
+        try await Task.sleep(for: .seconds(delay))
+        if fail {
+            throw NSError(domain: "MockHydrationService", code: -1)
+        }
+
+        let calendar = Calendar.current
+        let normalizedDate = calendar.startOfDay(for: effectiveDate)
+
+        if let index = goalHistory.firstIndex(where: { $0.effectiveDate == normalizedDate }) {
+            goalHistory[index] = (normalizedDate, value)
+        } else {
+            goalHistory.append((normalizedDate, value))
+            goalHistory.sort { $0.effectiveDate < $1.effectiveDate }
+        }
+    }
+
+    func getDailyGoal() async throws -> Int64 {
+        try await Task.sleep(for: .seconds(delay))
+        if fail {
+            throw NSError(domain: "MockHydrationService", code: -1)
+        }
+
+        return goalHistory.last?.value ?? Constants.defaultDailyGoalML
+    }
+
+    func isGoalSet() -> Bool {
+        !goalHistory.isEmpty
+    }
+
+    func fetchGoalPeriods(from startDate: Date, to endDate: Date) async throws -> [GoalPeriod] {
+        try await Task.sleep(for: .seconds(delay))
+        if fail {
+            throw NSError(domain: "MockHydrationService", code: -1)
+        }
+
+        let calendar = Calendar.current
+        let normalizedStart = calendar.startOfDay(for: startDate)
+        let normalizedEnd = calendar.startOfDay(for: endDate)
+
+        guard let firstGoal = goalHistory.first else {
+            return []
+        }
+
+        let goalBeforeRange = goalHistory.last { $0.effectiveDate < normalizedStart }
+        let goalsInRange = goalHistory.filter { $0.effectiveDate >= normalizedStart && $0.effectiveDate <= normalizedEnd }
+
+        var periods: [GoalPeriod] = []
+        var currentStart = normalizedStart
+        var currentValue = goalBeforeRange?.value ?? firstGoal.value
+
+        for goal in goalsInRange {
+            if goal.effectiveDate > currentStart {
+                let periodEnd = calendar.date(byAdding: .day, value: -1, to: goal.effectiveDate)!
+                periods.append(GoalPeriod(start: currentStart, end: periodEnd, value: currentValue))
+            }
+            currentStart = goal.effectiveDate
+            currentValue = goal.value
+        }
+
+        periods.append(GoalPeriod(start: currentStart, end: normalizedEnd, value: currentValue))
+
+        return periods
     }
 }

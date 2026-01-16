@@ -163,8 +163,8 @@ struct MainView: View {
     private var sevenDayChartCard: some View {
         CardPanel("card.dayHistory".localized(viewModel.statsPeriod.days)) {
             HistoryChartView(
-                dailyTotals: viewModel.statsPeriod == .week ? viewModel.weekTotals : viewModel.monthTotals,
-                goalPeriods: viewModel.goalPeriods,
+                dailyTotals: viewModel.currentChartData.dailyTotals,
+                goalPeriods: viewModel.currentChartData.goalPeriods,
                 periodDays: viewModel.statsPeriod.days,
                 onTogglePeriod: viewModel.toggleStatsPeriod
             )

@@ -7,8 +7,8 @@ import WidgetKit
 @Observable
 final class MainViewModel {
     var todayTotal: Int64 = 0
-    var weekTotals: [DailyTotal] = []
-    var monthTotals: [DailyTotal] = []
+    var weekChartData: HistoryChartData = .empty
+    var monthChartData: HistoryChartData = .empty
     var dailyGoal: Int64 = Constants.defaultDailyGoalML
     var streak: Int = 0
     var recentEntries: [GroupedHydrationEntries] = []
@@ -44,12 +44,8 @@ final class MainViewModel {
         volumeFormatter.string(from: dailyGoal)
     }
 
-    var goalPeriods: [GoalPeriod] {
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date())
-        let daysBack = statsPeriod == .week ? 6 : 29
-        let startDate = calendar.date(byAdding: .day, value: -daysBack, to: today)!
-        return [GoalPeriod(start: startDate, end: today, value: dailyGoal)]
+    var currentChartData: HistoryChartData {
+        statsPeriod == .week ? weekChartData : monthChartData
     }
 
     var formattedAverageIntake: String {
@@ -65,7 +61,7 @@ final class MainViewModel {
     }
 
     private var averageCalculationDays: [DailyTotal] {
-        let totals = statsPeriod == .week ? weekTotals : monthTotals
+        let totals = currentChartData.dailyTotals
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
 
@@ -142,23 +138,6 @@ final class MainViewModel {
             }
         }
 
-        UserDefaults.standard.publisher(for: \.dailyGoalML)
-            .sink { [weak self] _ in
-                Task {
-                    do {
-                        let dailyGoal = try await self?.fetchDailyGoal()
-                        let streak = try await self?.fetchStreak()
-                        if let dailyGoal, let streak {
-                            self?.dailyGoal = dailyGoal
-                            self?.streak = streak
-                        }
-                    } catch {
-                        self?.error = error
-                    }
-                }
-            }
-            .store(in: &cancellables)
-
         notificationService.nextReminderTimePublisher
             .sink { [weak self] nextTime in
                 self?.nextReminderTime = nextTime
@@ -216,7 +195,7 @@ final class MainViewModel {
     }
 
     func showSettings() {
-        settingsViewModel = SettingsViewModel(service: settingsService, notificationService: notificationService, healthKitService: healthKitService)
+        settingsViewModel = SettingsViewModel(settingsService: settingsService, hydrationService: service, notificationService: notificationService, healthKitService: healthKitService)
     }
 
     func showHistory() {
@@ -272,18 +251,18 @@ final class MainViewModel {
     private func loadData(initialLoad: Bool) async {
         do {
             async let todayTask = fetchTodayTotal()
-            async let historyTask = fetchHistory()
+            async let chartDataTask = fetchChartData()
             async let goalTask = fetchDailyGoal()
             async let streakTask = fetchStreak()
             async let recentTask = fetchRecentEntries()
 
-            let (todayTotal, (monthTotals, weekTotals), dailyGoal, streak, recentEntries) = try await (todayTask, historyTask, goalTask, streakTask, recentTask)
+            let (todayTotal, (weekChartData, monthChartData), dailyGoal, streak, recentEntries) = try await (todayTask, chartDataTask, goalTask, streakTask, recentTask)
 
             let animation = initialLoad ? nil : Animation.default
             withAnimation(animation) {
                 self.todayTotal = todayTotal
-                self.monthTotals = monthTotals
-                self.weekTotals = weekTotals
+                self.weekChartData = weekChartData
+                self.monthChartData = monthChartData
                 self.dailyGoal = dailyGoal
                 self.streak = streak
                 self.recentEntries = recentEntries
@@ -295,25 +274,34 @@ final class MainViewModel {
     }
 
     private func fetchDailyGoal() async throws -> Int64 {
-        settingsService.getDailyGoal()
+        try await service.getDailyGoal()
     }
 
     private func fetchTodayTotal() async throws -> Int64 {
         try await service.fetchTodayTotal()
     }
 
-    private func fetchHistory() async throws -> ([DailyTotal], [DailyTotal]) {
+    private func fetchChartData() async throws -> (HistoryChartData, HistoryChartData) {
         let calendar = Calendar.current
-        let endDate = calendar.startOfDay(for: Date())
-        let startDate = calendar.date(byAdding: .day, value: -29, to: endDate)!
+        let today = calendar.startOfDay(for: Date())
+        let monthStart = calendar.date(byAdding: .day, value: -29, to: today)!
+        let weekStart = calendar.date(byAdding: .day, value: -6, to: today)!
 
-        let monthTotals = try await service.fetchDailyTotals(from: startDate, to: endDate)
+        async let monthTotalsTask = service.fetchDailyTotals(from: monthStart, to: today)
+        async let weekGoalsTask = service.fetchGoalPeriods(from: weekStart, to: today)
+        async let monthGoalsTask = service.fetchGoalPeriods(from: monthStart, to: today)
+
+        let (monthTotals, weekGoals, monthGoals) = try await (monthTotalsTask, weekGoalsTask, monthGoalsTask)
         let weekTotals = Array(monthTotals.suffix(7))
-        return (monthTotals, weekTotals)
+
+        let weekData = HistoryChartData(dailyTotals: weekTotals, goalPeriods: weekGoals)
+        let monthData = HistoryChartData(dailyTotals: monthTotals, goalPeriods: monthGoals)
+
+        return (weekData, monthData)
     }
 
     private func fetchStreak() async throws -> Int {
-        try await service.calculateStreak(goal: dailyGoal)
+        try await service.calculateStreak()
     }
 
     private func fetchRecentEntries() async throws -> [GroupedHydrationEntries] {
