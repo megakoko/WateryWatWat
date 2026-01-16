@@ -66,6 +66,6 @@ struct GoalView: View {
 
 #Preview {
     NavigationStack {
-        GoalView(viewModel: GoalViewModel(settingsService: MockSettingsService()))
+        GoalView(viewModel: GoalViewModel(hydrationService: MockHydrationService()))
     }
 }

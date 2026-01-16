@@ -3,7 +3,7 @@ import Charts
 
 struct HistoryChartView: View {
     let dailyTotals: [DailyTotal]
-    let dailyGoal: Int64
+    let goalPeriods: [GoalPeriod]
     let periodDays: Int
     let onTogglePeriod: () -> Void
 
@@ -21,9 +21,11 @@ struct HistoryChartView: View {
                 .cornerRadius(periodDays == 7 ? 8 : 2)
             }
 
-            RuleMark(y: .value("Goal", dailyGoal))
-                .lineStyle(StrokeStyle(lineWidth: 2, dash: [10, 5]))
-                .foregroundStyle(Color.init(uiColor: .secondaryLabel))
+            ForEach(goalPeriods, id: \.start) { period in
+                RuleMark(xStart: .value("Start", period.start), xEnd: .value("End", period.end.nextDay), y: .value("Goal", period.value))
+                    .lineStyle(StrokeStyle(lineWidth: 2, dash: [10, 5]))
+                    .foregroundStyle(Color.init(uiColor: .secondaryLabel))
+            }
         }
         .chartXAxis {
             if periodDays == 7 {
@@ -41,10 +43,14 @@ struct HistoryChartView: View {
             }
         }
         .chartYAxis {
-            AxisMarks(values: [Double(dailyGoal)]) { _ in
-                AxisValueLabel {
-                    Text(volumeFormatter.string(from: dailyGoal))
-                        .textCase(.uppercase)
+            if let latestGoal = goalPeriods.last {
+                AxisMarks(values: [Double(latestGoal.value)]) { value in
+                    AxisValueLabel {
+                        if let goalValue = value.as(Double.self) {
+                            Text(volumeFormatter.string(from: Int64(goalValue)))
+                                .textCase(.uppercase)
+                        }
+                    }
                 }
             }
         }
@@ -87,12 +93,22 @@ struct HistoryChartView: View {
         DailyTotal(date: calendar.date(byAdding: .day, value: -1, to: today)!, volume: 2200),
         DailyTotal(date: today, volume: 1750)
     ]
+    let goalPeriods: [GoalPeriod] = [
+        GoalPeriod(start: calendar.date(byAdding: .day, value: -6, to: today)!, end: calendar.date(byAdding: .day, value: -3, to: today)!, value: 1800),
+        GoalPeriod(start: calendar.date(byAdding: .day, value: -3, to: today)!, end: today, value: 2000)
+    ]
 
     return ScrollView {
         VStack(spacing: 20) {
-            HistoryChartView(dailyTotals: dailyTotals, dailyGoal: 2000, periodDays: 7, onTogglePeriod: {})
-            HistoryChartView(dailyTotals: dailyTotals, dailyGoal: 2000, periodDays: 30, onTogglePeriod: {})
+            HistoryChartView(dailyTotals: dailyTotals, goalPeriods: goalPeriods, periodDays: 7, onTogglePeriod: {})
+            HistoryChartView(dailyTotals: dailyTotals, goalPeriods: goalPeriods, periodDays: 30, onTogglePeriod: {})
         }
         .padding()
+    }
+}
+
+private extension Date {
+    var nextDay: Date {
+        Calendar.current.date(byAdding: .day, value: 1, to: self)!
     }
 }

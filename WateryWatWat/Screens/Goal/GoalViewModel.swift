@@ -20,11 +20,11 @@ final class GoalViewModel: Identifiable {
     var adjustedGoal: Int64 = 2000
     var onComplete: (() -> Void)?
 
-    private let settingsService: SettingsService
+    private let hydrationService: HydrationService
     private let volumeFormatter = VolumeFormatter(unit: .liters)
 
-    init(settingsService: SettingsService) {
-        self.settingsService = settingsService
+    init(hydrationService: HydrationService) {
+        self.hydrationService = hydrationService
     }
     
     var canGoNext: Bool {
@@ -95,8 +95,13 @@ final class GoalViewModel: Identifiable {
     }
 
     func completeGoalSetup() {
-        settingsService.setDailyGoal(adjustedGoal)
-        onComplete?()
+        Task {
+            do {
+                try await hydrationService.setDailyGoal(adjustedGoal)
+            } catch {
+            }
+            onComplete?()
+        }
     }
     
     func previousPage() {

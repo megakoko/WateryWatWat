@@ -18,6 +18,7 @@ final class ContentViewModel {
     private let settingsService: SettingsService
     private let persistenceController: PersistenceController
     private let healthKitService: HealthKitService
+    private let hydrationService: HydrationService
     private var cancellables = Set<AnyCancellable>()
     private var _confettiPublisher = PassthroughSubject<Void, Never>()
     private var previousTotal: Int64 = 0
@@ -28,8 +29,17 @@ final class ContentViewModel {
         self.settingsService = settingsService
         self.persistenceController = persistenceController
         self.healthKitService = healthKitService
+        self.hydrationService = DefaultHydrationService(
+            persistenceController: persistenceController,
+            healthKitService: healthKitService,
+            settingsService: settingsService
+        )
+        
+        checkGoalSetAndInitialize()
+    }
 
-        isGoalSet = settingsService.isGoalSet()
+    func checkGoalSetAndInitialize() {
+        isGoalSet = hydrationService.isGoalSet()
 
         if isGoalSet {
             initializeMainViewModel()
@@ -43,7 +53,7 @@ final class ContentViewModel {
     }
 
     private func initializeGoalViewModel() {
-        let viewModel = GoalViewModel(settingsService: settingsService)
+        let viewModel = GoalViewModel(hydrationService: hydrationService)
         viewModel.onComplete = { [weak self] in
             self?.isGoalSet = true
             self?.goalViewModel = nil
@@ -54,11 +64,7 @@ final class ContentViewModel {
 
     private func initializeMainViewModel() {
         let mainViewModel = MainViewModel(
-            service: DefaultHydrationService(
-                persistenceController: persistenceController,
-                healthKitService: healthKitService,
-                settingsService: settingsService
-            ),
+            service: hydrationService,
             settingsService: settingsService,
             notificationService: DefaultNotificationService(settingsService: settingsService),
             healthKitService: healthKitService
