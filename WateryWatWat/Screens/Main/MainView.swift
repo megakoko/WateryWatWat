@@ -164,7 +164,7 @@ struct MainView: View {
         CardPanel("card.dayHistory".localized(viewModel.statsPeriod.days)) {
             HistoryChartView(
                 dailyTotals: viewModel.statsPeriod == .week ? viewModel.weekTotals : viewModel.monthTotals,
-                dailyGoal: viewModel.dailyGoal,
+                goalPeriods: viewModel.goalPeriods,
                 periodDays: viewModel.statsPeriod.days,
                 onTogglePeriod: viewModel.toggleStatsPeriod
             )

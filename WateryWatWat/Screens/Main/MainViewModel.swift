@@ -44,6 +44,14 @@ final class MainViewModel {
         volumeFormatter.string(from: dailyGoal)
     }
 
+    var goalPeriods: [GoalPeriod] {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let daysBack = statsPeriod == .week ? 6 : 29
+        let startDate = calendar.date(byAdding: .day, value: -daysBack, to: today)!
+        return [GoalPeriod(start: startDate, end: today, value: dailyGoal)]
+    }
+
     var formattedAverageIntake: String {
         volumeFormatter.string(from: averageIntake)
     }
