@@ -106,6 +106,12 @@ final class ContentViewModel {
         onGoalReached()
     }
 
+    func hideCongratulations() {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            showCongratulations = false
+        }
+    }
+
     private func onGoalReached() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self._confettiPublisher.send(())

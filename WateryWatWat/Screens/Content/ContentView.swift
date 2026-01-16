@@ -50,6 +50,7 @@ struct ContentView: View {
                 }
                 .offset(y: 50)
             }
+            .onTapGesture(perform: viewModel.hideCongratulations)
     }
 }
 
