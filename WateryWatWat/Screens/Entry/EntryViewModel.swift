@@ -25,6 +25,12 @@ final class EntryViewModel: Identifiable {
         volumeFormatter.formattedComponents(from: 0).unit
     }
 
+    var volumeRows: [[Int64]] {
+        stride(from: 0, to: availableVolumes.count, by: 3).map { index in
+            Array(availableVolumes[index..<min(index + 3, availableVolumes.count)])
+        }
+    }
+
     func formattedVolume(for volume: Int) -> String {
         volumeFormatter.string(from: Int64(volume))
     }

@@ -10,7 +10,6 @@ struct EntryView: View {
         VStack(spacing: 24) {
             datePicker
             volumeGrid
-            customButton
             if viewModel.showCustomPicker {
                 customPicker
             }
@@ -43,29 +42,36 @@ struct EntryView: View {
     }
 
     private var volumeGrid: some View {
-        LazyVGrid(columns: [GridItem(.flexible(), spacing: gridSpacing), GridItem(.flexible(), spacing: gridSpacing), GridItem(.flexible(), spacing: gridSpacing)], spacing: gridSpacing) {
-            ForEach(viewModel.availableVolumes, id: \.self) { volume in
-                VolumeButton(
-                    formattedValue: viewModel.formattedVolumeValue(for: volume),
-                    unit: viewModel.volumeUnit,
-                    isSelected: viewModel.selectedVolume == volume,
-                    action: { viewModel.selectVolume(volume) }
-                )
+        Grid(horizontalSpacing: gridSpacing, verticalSpacing: gridSpacing) {
+            ForEach(viewModel.volumeRows, id: \.self) { row in
+                GridRow {
+                    ForEach(row, id: \.self) { volume in
+                        VolumeButton(
+                            formattedValue: viewModel.formattedVolumeValue(for: volume),
+                            unit: viewModel.volumeUnit,
+                            isSelected: viewModel.selectedVolume == volume,
+                            action: { viewModel.selectVolume(volume) }
+                        )
+                    }
+                }
+            }
+            GridRow {
+                customButton.gridCellColumns(3)
             }
         }
     }
 
     private var customButton: some View {
-        Button {
-            viewModel.selectCustom()
-        } label: {
+        Button(action: viewModel.selectCustom) {
             Text("form.custom".localized)
+                .font(.title)
                 .frame(maxWidth: .infinity)
-                .padding()
+                .padding(.vertical)
                 .background(viewModel.showCustomPicker ? Color.accentColor : Color.secondary.opacity(0.2))
                 .foregroundStyle(viewModel.showCustomPicker ? .white : .primary)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
         }
+        .buttonStyle(.plain)
     }
 
     private var customPicker: some View {
