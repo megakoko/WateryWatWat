@@ -265,6 +265,30 @@ extension DefaultHydrationService: HydrationService {
         }
     }
 
+    func fetchFrequentVolumes(excluding standardVolumes: [Int64], limit: Int) async throws -> [Int64] {
+        try await context.perform {
+            let request = NSFetchRequest<NSDictionary>(entityName: "HydrationEntry")
+            request.resultType = .dictionaryResultType
+            let volumeDesc = NSExpressionDescription()
+            volumeDesc.name = "volume"
+            volumeDesc.expression = NSExpression(forKeyPath: "volume")
+            volumeDesc.expressionResultType = .integer64AttributeType
+            let countDesc = NSExpressionDescription()
+            countDesc.name = "count"
+            countDesc.expression = NSExpression(forFunction: "count:", arguments: [NSExpression(forKeyPath: "volume")])
+            countDesc.expressionResultType = .integer64AttributeType
+            request.propertiesToFetch = [volumeDesc, countDesc]
+            request.propertiesToGroupBy = ["volume"]
+            request.predicate = NSPredicate(format: "NOT (volume IN %@)", standardVolumes)
+            request.sortDescriptors = [NSSortDescriptor(key: "count", ascending: false)]
+            let results = try self.context.fetch(request)
+            return results
+                .filter { ($0["count"] as? Int64 ?? 0) >= 5 }
+                .prefix(limit)
+                .compactMap { $0["volume"] as? Int64 }
+        }
+    }
+
     private static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"

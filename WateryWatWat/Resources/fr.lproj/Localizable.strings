@@ -101,6 +101,8 @@
 
 "period.days" = "%dj";
 
+"menu.frequentVolumes" = "Fréquents";
+
 "intent.addWater.title" = "Ajouter de l'eau";
 "intent.addWater.description" = "Enregistrer l'apport en eau";
 "intent.addWater.dialog" = "Ajouté %d mL. Total aujourd'hui : %d mL";

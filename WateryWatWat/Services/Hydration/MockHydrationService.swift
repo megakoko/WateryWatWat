@@ -210,4 +210,12 @@ final class MockHydrationService: HydrationService {
 
         return periods
     }
+
+    func fetchFrequentVolumes(excluding standardVolumes: [Int64], limit: Int) async throws -> [Int64] {
+        try await Task.sleep(for: .seconds(delay))
+        if fail {
+            throw NSError(domain: "MockHydrationService", code: -1)
+        }
+        return [350, 400, 600].prefix(limit).map { $0 }
+    }
 }

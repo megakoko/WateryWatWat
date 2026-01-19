@@ -101,6 +101,8 @@
 
 "period.days" = "%dd";
 
+"menu.frequentVolumes" = "Frequent";
+
 "intent.addWater.title" = "Add Water";
 "intent.addWater.description" = "Log water intake";
 "intent.addWater.dialog" = "Added %d mL. Today's total: %d mL";

@@ -101,6 +101,8 @@
 
 "period.days" = "%dदिन";
 
+"menu.frequentVolumes" = "अक्सर उपयोग";
+
 "intent.addWater.title" = "पानी जोड़ें";
 "intent.addWater.description" = "पानी का सेवन रिकॉर्ड करें";
 "intent.addWater.dialog" = "%d mL जोड़ा गया। आज का कुल: %d mL";

@@ -101,6 +101,8 @@
 
 "period.days" = "%d日";
 
+"menu.frequentVolumes" = "よく使う";
+
 "intent.addWater.title" = "水を追加";
 "intent.addWater.description" = "水分摂取を記録";
 "intent.addWater.dialog" = "%d mLを追加しました。今日の合計：%d mL";

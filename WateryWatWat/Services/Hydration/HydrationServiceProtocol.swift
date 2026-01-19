@@ -13,6 +13,7 @@ protocol HydrationService {
     func getDailyGoal() async throws -> Int64
     func isGoalSet() -> Bool
     func fetchGoalPeriods(from startDate: Date, to endDate: Date) async throws -> [GoalPeriod]
+    func fetchFrequentVolumes(excluding standardVolumes: [Int64], limit: Int) async throws -> [Int64]
 }
 
 extension HydrationService {

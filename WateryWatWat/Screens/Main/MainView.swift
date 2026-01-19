@@ -217,6 +217,15 @@ struct MainView: View {
                     viewModel.quickAddEntry(volume: volume)
                 }
             }
+            if !viewModel.frequentVolumes.isEmpty {
+                Section("menu.frequentVolumes".localized) {
+                    ForEach(viewModel.frequentVolumes, id: \.self) { volume in
+                        Button(viewModel.formattedVolume(for: volume)) {
+                            viewModel.quickAddEntry(volume: volume)
+                        }
+                    }
+                }
+            }
         } label: {
             Label("button.add".localized, systemImage: "plus")
                 .font(.system(size: 20, weight: .semibold))

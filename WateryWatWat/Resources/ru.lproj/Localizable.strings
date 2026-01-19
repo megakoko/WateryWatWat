@@ -101,6 +101,8 @@
 
 "period.days" = "%dд";
 
+"menu.frequentVolumes" = "Частые";
+
 "intent.addWater.title" = "Добавить воду";
 "intent.addWater.description" = "Записать потребление воды";
 "intent.addWater.dialog" = "Добавлено %d мл. Сегодня всего: %d мл";

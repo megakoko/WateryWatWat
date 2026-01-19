@@ -101,6 +101,8 @@
 
 "period.days" = "%dي";
 
+"menu.frequentVolumes" = "المتكررة";
+
 "intent.addWater.title" = "إضافة ماء";
 "intent.addWater.description" = "تسجيل شرب الماء";
 "intent.addWater.dialog" = "تمت إضافة %d مل. إجمالي اليوم: %d مل";

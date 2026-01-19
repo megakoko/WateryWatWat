@@ -101,6 +101,8 @@
 
 "period.days" = "%d天";
 
+"menu.frequentVolumes" = "常用";
+
 "intent.addWater.title" = "添加饮水";
 "intent.addWater.description" = "记录饮水量";
 "intent.addWater.dialog" = "已添加 %d 毫升。今日总量：%d 毫升";

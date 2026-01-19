@@ -12,6 +12,7 @@ final class MainViewModel {
     var dailyGoal: Int64 = Constants.defaultDailyGoalML
     var streak: Int = 0
     var recentEntries: [GroupedHydrationEntries] = []
+    var frequentVolumes: [Int64] = []
     var entryViewModel: EntryViewModel?
     var settingsViewModel: SettingsViewModel?
     var historyViewModel: HistoryViewModel?
@@ -255,8 +256,9 @@ final class MainViewModel {
             async let goalTask = fetchDailyGoal()
             async let streakTask = fetchStreak()
             async let recentTask = fetchRecentEntries()
+            async let frequentTask = fetchFrequentVolumes()
 
-            let (todayTotal, (weekChartData, monthChartData), dailyGoal, streak, recentEntries) = try await (todayTask, chartDataTask, goalTask, streakTask, recentTask)
+            let (todayTotal, (weekChartData, monthChartData), dailyGoal, streak, recentEntries, frequentVolumes) = try await (todayTask, chartDataTask, goalTask, streakTask, recentTask, frequentTask)
 
             let animation = initialLoad ? nil : Animation.default
             withAnimation(animation) {
@@ -266,6 +268,7 @@ final class MainViewModel {
                 self.dailyGoal = dailyGoal
                 self.streak = streak
                 self.recentEntries = recentEntries
+                self.frequentVolumes = frequentVolumes
                 self.initialized = true
             }
         } catch {
@@ -320,6 +323,10 @@ final class MainViewModel {
         return grouped.map { date, entries in
             GroupedHydrationEntries(date: date, entries: entries)
         }.sorted { $0.date > $1.date }
+    }
+
+    private func fetchFrequentVolumes() async throws -> [Int64] {
+        try await service.fetchFrequentVolumes(excluding: Constants.standardVolumes, limit: 3)
     }
 
     func scheduleMidnightRefresh() {
