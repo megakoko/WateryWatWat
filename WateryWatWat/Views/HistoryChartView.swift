@@ -4,6 +4,10 @@ import SwiftUI
 // MARK: - HistoryChartView
 
 struct HistoryChartView: View {
+    @State private var selectedTotal: DailyTotal? = nil
+    @State private var selectedX: CGFloat? = nil
+    @State private var tooltipWidth: CGFloat = 0
+
     let dailyTotals: [DailyTotal]
     let goalPeriods: [GoalPeriod]
     let periodDays: Int
@@ -29,7 +33,7 @@ struct HistoryChartView: View {
                     x: .value("Day", total.date, unit: .day),
                     y: .value("Volume", total.volume)
                 )
-                .foregroundStyle(Color.accentColor)
+                .foregroundStyle(barColor(for: total))
                 .cornerRadius(periodDays == 7 ? 8 : 2)
             }
 
@@ -66,7 +70,74 @@ struct HistoryChartView: View {
                 }
             }
         }
+        .chartOverlay { proxy in
+            scrubOverlay(proxy: proxy)
+        }
         .frame(height: 100)
+        .overlay(alignment: .top) {
+            tooltipView
+        }
+    }
+
+    @ViewBuilder
+    private var tooltipView: some View {
+        if let total = selectedTotal, let x = selectedX {
+            ZStack {
+                Text(volumeFormatter.string(from: 2200))
+                    .hidden()
+
+                Text(volumeFormatter.string(from: total.volume))
+            }
+            .font(.caption.bold())
+            .textCase(.uppercase)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 6))
+            .fixedSize()
+            .background(GeometryReader { geo in
+                Color.clear.onAppear { tooltipWidth = geo.size.width }
+                    .onChange(of: geo.size.width) { tooltipWidth = $1 }
+            })
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .offset(x: x - tooltipWidth / 2)
+        }
+    }
+
+    private func scrubOverlay(proxy: ChartProxy) -> some View {
+        Rectangle()
+            .fill(.clear)
+            .contentShape(Rectangle())
+            .gesture(
+                LongPressGesture(minimumDuration: 0.3)
+                    .sequenced(before: DragGesture(minimumDistance: 0))
+                    .onChanged { value in
+                        if case .second(true, let drag) = value, let drag {
+                            updateSelection(at: drag.location, proxy: proxy)
+                        }
+                    }
+                    .onEnded { _ in
+                        selectedTotal = nil
+                        selectedX = nil
+                    }
+            )
+    }
+
+    private func barColor(for total: DailyTotal) -> Color {
+        guard selectedTotal != nil else {
+            return Color.accentColor
+        }
+
+        return calendar.isDate(total.date, inSameDayAs: selectedTotal!.date) ? Color.accentColor : Color.accentColor.opacity(0.3)
+    }
+
+    private func updateSelection(at location: CGPoint, proxy: ChartProxy) {
+        guard let date = proxy.value(atX: location.x, as: Date.self) else {
+            return
+        }
+
+        let match = dailyTotals.first { calendar.isDate($0.date, inSameDayAs: date) }
+        selectedTotal = match
+        selectedX = location.x
     }
 
     private func labelForDate(_ date: Date) -> String {
