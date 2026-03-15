@@ -1,0 +1,55 @@
+--swiftversion 6.0
+--exclude AppTests,Localization
+
+# Rules to enable
+--enable blankLinesAfterGuardStatements
+--enable blankLinesBetweenScopes
+--enable blankLineAfterImports
+--enable consistentSwitchCaseSpacing
+--enable docComments
+--enable emptyBraces
+--enable extensionAccessControl
+--enable markTypes
+--enable organizeDeclarations
+--enable noExplicitOwnership
+--enable wrapConditionalBodies
+--enable wrapMultilineStatementBraces
+--enable redundantAsync
+--enable redundantNilInit
+--enable redundantType
+
+# Disabled rules (conflict with codebase style or SwiftLint)
+--disable redundantReturn
+--disable andOperator
+--disable trailingCommas
+--disable wrapArguments
+--disable wrapAttributes
+--disable initCoderUnavailable
+
+# Formatting options
+--indent 4
+--tabwidth 4
+--maxwidth 160
+--trimwhitespace always
+--linebreaks lf
+--semicolons never
+--commas always
+--hexliteralcase uppercase
+--exponentcase lowercase
+--decimalgrouping 3,6
+--binarygrouping none
+--octalgrouping none
+--hexgrouping none
+--fractiongrouping disabled
+--exponentgrouping disabled
+--patternlet inline
+--stripunusedargs closure-only
+--self remove
+--importgrouping testable-last
+--extensionacl on-declarations
+--marktypes always
+--markextensions always
+--organization-mode type
+--mark-categories false
+--type-order beforeMarks,nestedType,swiftUIPropertyWrapper,staticProperty,staticPropertyWithBody,classPropertyWithBody,overriddenProperty,instanceProperty,instancePropertyWithBody,instanceLifecycle,swiftUIProperty,swiftUIMethod,overriddenMethod,staticMethod,classMethod,instanceMethod
+--visibility-order beforeMarks,instanceLifecycle,open,public,package,internal,fileprivate,private
