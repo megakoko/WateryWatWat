@@ -1,6 +1,6 @@
 import Foundation
 
-enum VolumeUnit: String, Codable, Sendable {
+enum VolumeUnit: String, Codable {
     case ml
     case oz
 

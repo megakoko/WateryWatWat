@@ -2,14 +2,31 @@ import Foundation
 import UIKit
 import UserNotifications
 
+// MARK: - SettingsViewModel
+
 @Observable
 final class SettingsViewModel: Identifiable {
     let id = UUID()
+    var isLoading = false
+    var permissionStatus: UNAuthorizationStatus = .notDetermined
+    var error: Error?
+    var showDeleteConfirmation = false
+    var deleteResultMessage: String?
+    var showDeleteResult = false
+
+    private let settingsService: SettingsService
+    private let hydrationService: HydrationService
+    private let notificationService: NotificationService
+    private let volumeFormatter = VolumeFormatter(unit: .liters)
+    private let healthKitService: HealthKitService
+    private var isInitialLoad = true
+
     var dailyGoal: Int64 = Constants.defaultDailyGoalML {
         didSet {
             saveDailyGoal()
         }
     }
+
     var remindersEnabled = false {
         didSet {
             Task {
@@ -17,6 +34,7 @@ final class SettingsViewModel: Identifiable {
             }
         }
     }
+
     var reminderStartTime = Date() {
         didSet {
             Task {
@@ -24,6 +42,7 @@ final class SettingsViewModel: Identifiable {
             }
         }
     }
+
     var reminderEndTime = Date() {
         didSet {
             Task {
@@ -31,6 +50,7 @@ final class SettingsViewModel: Identifiable {
             }
         }
     }
+
     var reminderPeriodMinutes = Constants.defaultReminderPeriodMinutes {
         didSet {
             Task {
@@ -38,6 +58,7 @@ final class SettingsViewModel: Identifiable {
             }
         }
     }
+
     var healthSyncEnabled = false {
         didSet {
             Task {
@@ -45,12 +66,6 @@ final class SettingsViewModel: Identifiable {
             }
         }
     }
-    var isLoading = false
-    var permissionStatus: UNAuthorizationStatus = .notDetermined
-    var error: Error?
-    var showDeleteConfirmation = false
-    var deleteResultMessage: String?
-    var showDeleteResult = false
 
     var shouldShowPermissionDenied: Bool {
         remindersEnabled && permissionStatus == .denied
@@ -71,13 +86,6 @@ final class SettingsViewModel: Identifiable {
     var formattedDailyGoal: String {
         volumeFormatter.string(from: dailyGoal)
     }
-
-    private let settingsService: SettingsService
-    private let hydrationService: HydrationService
-    private let notificationService: NotificationService
-    private let volumeFormatter = VolumeFormatter(unit: .liters)
-    private let healthKitService: HealthKitService
-    private var isInitialLoad = true
 
     init(settingsService: SettingsService, hydrationService: HydrationService, notificationService: NotificationService, healthKitService: HealthKitService) {
         self.settingsService = settingsService
@@ -108,8 +116,47 @@ final class SettingsViewModel: Identifiable {
         isInitialLoad = false
     }
 
+    func formatPeriod(_ minutes: Int) -> String {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute]
+        formatter.unitsStyle = .full
+        formatter.zeroFormattingBehavior = .dropAll
+        return formatter.string(from: TimeInterval(minutes * 60)) ?? "\(minutes) min"
+    }
+
+    func checkPermissionStatus() async {
+        permissionStatus = await notificationService.getAuthorizationStatus()
+    }
+
+    func openAppSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(url)
+        }
+    }
+
+    func deleteHealthData() {
+        showDeleteConfirmation = true
+    }
+
+    func confirmDeleteHealthData() async {
+        isLoading = true
+        defer { isLoading = false }
+
+        do {
+            let count = try await healthKitService.deleteAllRecords()
+            deleteResultMessage = "Deleted \(count) records from Apple Health"
+            showDeleteResult = true
+        } catch {
+            deleteResultMessage = error.localizedDescription
+            showDeleteResult = true
+        }
+    }
+
     private func saveDailyGoal() {
-        guard !isInitialLoad else { return }
+        guard !isInitialLoad else {
+            return
+        }
+
         Task {
             isLoading = true
             defer { isLoading = false }
@@ -122,7 +169,9 @@ final class SettingsViewModel: Identifiable {
     }
 
     private func saveReminderEnabled() async {
-        guard !isInitialLoad else { return }
+        guard !isInitialLoad else {
+            return
+        }
 
         if remindersEnabled {
             let granted = await notificationService.requestPermission()
@@ -148,7 +197,10 @@ final class SettingsViewModel: Identifiable {
     }
 
     private func saveReminderStartTime() async {
-        guard !isInitialLoad else { return }
+        guard !isInitialLoad else {
+            return
+        }
+
         isLoading = true
         defer { isLoading = false }
 
@@ -159,7 +211,10 @@ final class SettingsViewModel: Identifiable {
     }
 
     private func saveReminderEndTime() async {
-        guard !isInitialLoad else { return }
+        guard !isInitialLoad else {
+            return
+        }
+
         isLoading = true
         defer { isLoading = false }
 
@@ -170,7 +225,10 @@ final class SettingsViewModel: Identifiable {
     }
 
     private func saveReminderPeriod() async {
-        guard !isInitialLoad else { return }
+        guard !isInitialLoad else {
+            return
+        }
+
         isLoading = true
         defer { isLoading = false }
 
@@ -185,26 +243,10 @@ final class SettingsViewModel: Identifiable {
         return calendar.date(from: components) ?? Date()
     }
 
-    func formatPeriod(_ minutes: Int) -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.hour, .minute]
-        formatter.unitsStyle = .full
-        formatter.zeroFormattingBehavior = .dropAll
-        return formatter.string(from: TimeInterval(minutes * 60)) ?? "\(minutes) min"
-    }
-
-    func checkPermissionStatus() async {
-        permissionStatus = await notificationService.getAuthorizationStatus()
-    }
-
-    func openAppSettings() {
-        if let url = URL(string: UIApplication.openSettingsURLString) {
-            UIApplication.shared.open(url)
-        }
-    }
-
     private func toggleHealthSync() async {
-        guard !isInitialLoad else { return }
+        guard !isInitialLoad else {
+            return
+        }
 
         if healthSyncEnabled {
             do {
@@ -224,25 +266,9 @@ final class SettingsViewModel: Identifiable {
             settingsService.setHealthSyncEnabled(false)
         }
     }
-
-    func deleteHealthData() {
-        showDeleteConfirmation = true
-    }
-
-    func confirmDeleteHealthData() async {
-        isLoading = true
-        defer { isLoading = false }
-
-        do {
-            let count = try await healthKitService.deleteAllRecords()
-            deleteResultMessage = "Deleted \(count) records from Apple Health"
-            showDeleteResult = true
-        } catch {
-            deleteResultMessage = error.localizedDescription
-            showDeleteResult = true
-        }
-    }
 }
+
+// MARK: Hashable
 
 extension SettingsViewModel: Hashable {
     static func == (lhs: SettingsViewModel, rhs: SettingsViewModel) -> Bool {

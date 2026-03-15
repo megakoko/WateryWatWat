@@ -1,9 +1,13 @@
 import Foundation
 
+// MARK: - Gender
+
 enum Gender: Hashable {
     case male
     case female
 }
+
+// MARK: - ActivityLevel
 
 enum ActivityLevel: Hashable {
     case low
@@ -11,21 +15,29 @@ enum ActivityLevel: Hashable {
     case high
 }
 
+// MARK: - Climate
+
 enum Climate: Hashable {
     case cold
     case warm
     case hot
 }
 
+// MARK: - AdditionalFactor
+
 enum AdditionalFactor {
     case coffee
     case exercise
 }
 
+// MARK: - AdditionalFactors
+
 struct AdditionalFactors {
     var coffee: Bool
     var exercise: Bool
 }
+
+// MARK: - GoalCalculationData
 
 struct GoalCalculationData {
     var weight: Int?

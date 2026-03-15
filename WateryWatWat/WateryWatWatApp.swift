@@ -5,8 +5,8 @@
 //  Created by Andrey Chukavin on 18.12.2025.
 //
 
-import SwiftUI
 import CoreData
+import SwiftUI
 
 @main
 struct WateryWatWatApp: App {

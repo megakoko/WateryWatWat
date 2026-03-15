@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ResultPage: View {
     @Binding var goal: Int64
+
     let formattedGoal: String
 
     var body: some View {
@@ -41,5 +42,5 @@ struct ResultPage: View {
 
 #Preview {
     @Previewable @State var goal: Int64 = 2000
-    ResultPage(goal: $goal, formattedGoal: "\(Double(goal)/1000) L")
+    ResultPage(goal: $goal, formattedGoal: "\(Double(goal) / 1000) L")
 }

@@ -1,6 +1,10 @@
 import SwiftUI
 
+// MARK: - CircularProgressView
+
 struct CircularProgressView: View {
+    @State private var unitWidth: CGFloat = 0
+
     let progress: Double
     let formattedValue: String
     let symbol: String
@@ -9,8 +13,10 @@ struct CircularProgressView: View {
     let lineWidth: CGFloat
     let color: Color
 
-    @State private var unitWidth: CGFloat = 0
-    
+    private var cappedProgress: Double {
+        min(progress, 1.0)
+    }
+
     var body: some View {
         ZStack {
             Circle()
@@ -25,10 +31,6 @@ struct CircularProgressView: View {
 
             labelView
         }
-    }
-    
-    private var cappedProgress: Double {
-        min(progress, 1.0)
     }
 
     private var valueView: some View {
@@ -65,13 +67,24 @@ struct CircularProgressView: View {
 }
 
 #Preview {
-    CircularProgressView(progress: 0.65, formattedValue: "1.3", symbol: "L", unitPosition: .afterValue, font: .system(size: 60, weight: .bold), lineWidth: 25, color: .accentColor)
-        .frame(height: 300)
-        .padding()
+    CircularProgressView(
+        progress: 0.65,
+        formattedValue: "1.3",
+        symbol: "L",
+        unitPosition: .afterValue,
+        font: .system(size: 60, weight: .bold),
+        lineWidth: 25,
+        color: .accentColor
+    )
+    .frame(height: 300)
+    .padding()
 }
+
+// MARK: - UnitWidthKey
 
 private struct UnitWidthKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
+
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = nextValue()
     }

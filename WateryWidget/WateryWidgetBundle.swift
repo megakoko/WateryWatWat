@@ -5,8 +5,8 @@
 //  Created by Andrey Chukavin on 22.12.2025.
 //
 
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 @main
 struct WateryWidgetBundle: WidgetBundle {

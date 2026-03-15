@@ -47,9 +47,11 @@ struct HistoryView: View {
                 EntryView(viewModel: editEntryViewModel)
             }
         }
-        .confirmationDialog("confirmation.deleteEntry.title".localized, isPresented: $viewModel.showDeleteConfirmation, presenting: viewModel.entryToDelete) { entry in
+        .confirmationDialog("confirmation.deleteEntry.title".localized, isPresented: $viewModel.showDeleteConfirmation,
+                            presenting: viewModel.entryToDelete)
+        { _ in
             Button("button.delete".localized, role: .destructive, action: viewModel.confirmDelete)
-        } message: { entry in
+        } message: { _ in
             Text("confirmation.deleteEntry.message".localized(viewModel.formattedVolumeToDelete))
         }
         .task {

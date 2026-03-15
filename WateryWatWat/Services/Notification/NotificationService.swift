@@ -1,6 +1,8 @@
+import Combine
 import Foundation
 import UserNotifications
-import Combine
+
+// MARK: - DefaultNotificationService
 
 final class DefaultNotificationService {
     private let notificationCenter = UNUserNotificationCenter.current()
@@ -40,6 +42,8 @@ final class DefaultNotificationService {
         }
     }
 }
+
+// MARK: NotificationService
 
 extension DefaultNotificationService: NotificationService {
     func requestPermission() async -> Bool {
@@ -109,7 +113,10 @@ extension DefaultNotificationService: NotificationService {
         let hydrationRequests = requests.filter { $0.identifier.hasPrefix(Constants.notificationIdentifierPrefix) }
 
         let dates = hydrationRequests.compactMap { request -> Date? in
-            guard let trigger = request.trigger as? UNCalendarNotificationTrigger else { return nil }
+            guard let trigger = request.trigger as? UNCalendarNotificationTrigger else {
+                return nil
+            }
+
             return Calendar.current.date(from: trigger.dateComponents)
         }
 
@@ -122,8 +129,8 @@ extension DefaultNotificationService: NotificationService {
     }
 }
 
-private extension DefaultNotificationService {
-    func calculateReminderTimes(
+extension DefaultNotificationService {
+    private func calculateReminderTimes(
         settings: ReminderSettings,
         date: Date,
         fromNow: Bool
@@ -132,7 +139,9 @@ private extension DefaultNotificationService {
         let startTime = settings.startTime(for: date)
         let endTime = settings.endTime(for: date)
 
-        guard startTime < endTime else { return [] }
+        guard startTime < endTime else {
+            return []
+        }
 
         var times: [Date] = []
         var current = startTime
@@ -142,7 +151,10 @@ private extension DefaultNotificationService {
             if !fromNow || current > now {
                 times.append(current)
             }
-            guard let next = calendar.date(byAdding: .minute, value: settings.periodMinutes, to: current) else { break }
+            guard let next = calendar.date(byAdding: .minute, value: settings.periodMinutes, to: current) else {
+                break
+            }
+
             current = next
         }
 

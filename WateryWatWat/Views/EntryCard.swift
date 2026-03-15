@@ -3,7 +3,7 @@ import SwiftUI
 struct EntryCard: View {
     let entry: HydrationEntry
     let volumeFormatter = VolumeFormatter(unit: .milliliters)
-    
+
     var body: some View {
         VStack(spacing: 8) {
             volumeText

@@ -1,5 +1,7 @@
-import Foundation
 import Combine
+import Foundation
+
+// MARK: - SettingsService
 
 protocol SettingsService {
     func getReminderSettings() -> ReminderSettings
@@ -14,6 +16,8 @@ protocol SettingsService {
     func setStatsPeriod(_ period: StatsPeriod)
     var reminderSettingsPublisher: AnyPublisher<Void, Never> { get }
 }
+
+// MARK: - DefaultSettingsService
 
 final class DefaultSettingsService: SettingsService {
     private let defaults = UserDefaults.standard
@@ -69,21 +73,28 @@ final class DefaultSettingsService: SettingsService {
 
     func getNextReminderTime() -> Date? {
         let settings = getReminderSettings()
-        guard settings.enabled && settings.isValid else { return nil }
+        guard settings.enabled && settings.isValid else {
+            return nil
+        }
 
         let calendar = Calendar.current
         let now = Date()
         let startTime = settings.startTime(for: now)
         let endTime = settings.endTime(for: now)
 
-        guard startTime < endTime else { return nil }
+        guard startTime < endTime else {
+            return nil
+        }
 
         var current = startTime
         while current <= endTime {
             if current > now {
                 return current
             }
-            guard let next = calendar.date(byAdding: .minute, value: settings.periodMinutes, to: current) else { break }
+            guard let next = calendar.date(byAdding: .minute, value: settings.periodMinutes, to: current) else {
+                break
+            }
+
             current = next
         }
 

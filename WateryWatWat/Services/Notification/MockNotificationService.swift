@@ -1,6 +1,8 @@
-import Foundation
 import Combine
+import Foundation
 import UserNotifications
+
+// MARK: - MockNotificationService
 
 final class MockNotificationService {
     private let delay: TimeInterval
@@ -18,6 +20,8 @@ final class MockNotificationService {
         self.fail = fail
     }
 }
+
+// MARK: NotificationService
 
 extension MockNotificationService: NotificationService {
     func requestPermission() async -> Bool {
@@ -74,13 +78,15 @@ extension MockNotificationService: NotificationService {
     }
 }
 
-private extension MockNotificationService {
-    func calculateMockTimes(settings: ReminderSettings, date: Date, fromNow: Bool) -> [Date] {
+extension MockNotificationService {
+    private func calculateMockTimes(settings: ReminderSettings, date: Date, fromNow: Bool) -> [Date] {
         let calendar = Calendar.current
         let startTime = settings.startTime(for: date)
         let endTime = settings.endTime(for: date)
 
-        guard startTime < endTime else { return [] }
+        guard startTime < endTime else {
+            return []
+        }
 
         var times: [Date] = []
         var current = startTime
@@ -90,7 +96,10 @@ private extension MockNotificationService {
             if !fromNow || current > now {
                 times.append(current)
             }
-            guard let next = calendar.date(byAdding: .minute, value: settings.periodMinutes, to: current) else { break }
+            guard let next = calendar.date(byAdding: .minute, value: settings.periodMinutes, to: current) else {
+                break
+            }
+
             current = next
         }
 

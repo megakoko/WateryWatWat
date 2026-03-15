@@ -81,7 +81,7 @@ final class DefaultHealthKitService: HealthKitService, @unchecked Sendable {
                 limit: limit,
                 sortDescriptors: nil
             ) { _, samples, error in
-                if let error = error {
+                if let error {
                     continuation.resume(throwing: error)
                     return
                 }
@@ -100,7 +100,7 @@ final class DefaultHealthKitService: HealthKitService, @unchecked Sendable {
 
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             healthStore.delete(samples) { success, error in
-                if let error = error {
+                if let error {
                     continuation.resume(throwing: error)
                     return
                 }

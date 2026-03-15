@@ -2,8 +2,9 @@ import SwiftUI
 
 struct EntryView: View {
     @State var viewModel: EntryViewModel
+
     @Environment(\.dismiss) private var dismiss
-    
+
     private let gridSpacing: Double = 8
 
     var body: some View {
@@ -22,7 +23,7 @@ struct EntryView: View {
             ToolbarItem(placement: .cancellationAction) {
                 Button("button.cancel".localized, systemImage: "xmark", role: .cancel, action: viewModel.cancel)
             }
-            
+
             ToolbarItem(placement: .confirmationAction) {
                 Button("button.done".localized, systemImage: "checkmark", role: .confirm, action: viewModel.confirmWithCustom)
                     .disabled(!viewModel.canConfirm)

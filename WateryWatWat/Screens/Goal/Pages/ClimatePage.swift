@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ClimatePage: View {
     @Binding var climate: Climate?
+
     @State private var maxIconWidth: CGFloat = 0
 
     var body: some View {

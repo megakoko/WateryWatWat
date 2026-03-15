@@ -1,5 +1,7 @@
-import Foundation
 import CoreData
+import Foundation
+
+// MARK: - DefaultHydrationService
 
 final class DefaultHydrationService {
     private let persistenceController: PersistenceController
@@ -16,6 +18,8 @@ final class DefaultHydrationService {
         self.settingsService = settingsService
     }
 }
+
+// MARK: HydrationService
 
 extension DefaultHydrationService: HydrationService {
     func addEntry(volume: Int64, type: EntryType, unit: VolumeUnit, date: Date) async throws {
@@ -242,7 +246,11 @@ extension DefaultHydrationService: HydrationService {
             let goalsInRange = allGoals.compactMap { goal -> (date: Date, value: Int64)? in
                 guard let dateString = goal.effectiveDateString,
                       dateString >= startDateString && dateString <= endDateString,
-                      let date = Self.dateFormatter.date(from: dateString) else { return nil }
+                      let date = Self.dateFormatter.date(from: dateString)
+                else {
+                    return nil
+                }
+
                 return (date, goal.value)
             }
 

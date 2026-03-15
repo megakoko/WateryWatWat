@@ -2,8 +2,9 @@ import SwiftUI
 
 struct GoalView: View {
     @State var viewModel: GoalViewModel
+
     @Environment(\.dismiss) private var dismiss
-    
+
     private var currentPageTransition: AnyTransition {
         viewModel.navigatingForward ? .push(from: .trailing) : .push(from: .leading)
     }
@@ -13,7 +14,7 @@ struct GoalView: View {
             currentPageView
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .transition(currentPageTransition)
-            
+
             bottomButton
         }
         .navigationTitle("navigation.dailyGoal".localized)

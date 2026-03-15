@@ -5,9 +5,9 @@
 //  Created by Andrey Chukavin on 22.12.2025.
 //
 
-import WidgetKit
-import SwiftUI
 import CoreData
+import SwiftUI
+import WidgetKit
 
 // MARK: - Provider
 
@@ -18,15 +18,21 @@ struct Provider: TimelineProvider {
 
     func placeholder(in context: Context) -> WidgetHydrationEntry {
         let components = volumeFormatter.formattedComponents(from: 1500)
-        return WidgetHydrationEntry(date: Date(), progress: 0.75, formattedValue: components.value, symbol: components.unit, unitPosition: components.unitPosition)
+        return WidgetHydrationEntry(
+            date: Date(),
+            progress: 0.75,
+            formattedValue: components.value,
+            symbol: components.unit,
+            unitPosition: components.unitPosition
+        )
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (WidgetHydrationEntry) -> ()) {
+    func getSnapshot(in context: Context, completion: @escaping (WidgetHydrationEntry) -> Void) {
         let entry = fetchCurrentData()
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
+    func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
         let entry = fetchCurrentData()
 
         let calendar = Calendar.current
@@ -49,17 +55,22 @@ struct Provider: TimelineProvider {
         let fetchRequest: NSFetchRequest<HydrationEntry> = HydrationEntry.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "date >= %@ AND date < %@", startOfDay as NSDate, endOfDay as NSDate)
 
-        let todayTotal: Int64
-        if let entries = try? context.fetch(fetchRequest) {
-            todayTotal = entries.reduce(0) { $0 + $1.volume }
+        let todayTotal: Int64 = if let entries = try? context.fetch(fetchRequest) {
+            entries.reduce(0) { $0 + $1.volume }
         } else {
-            todayTotal = 0
+            0
         }
 
         let progress = Double(todayTotal) / Double(dailyGoal)
         let components = volumeFormatter.formattedComponents(from: todayTotal)
 
-        return WidgetHydrationEntry(date: Date(), progress: progress, formattedValue: components.value, symbol: components.unit, unitPosition: components.unitPosition)
+        return WidgetHydrationEntry(
+            date: Date(),
+            progress: progress,
+            formattedValue: components.value,
+            symbol: components.unit,
+            unitPosition: components.unitPosition
+        )
     }
 }
 
@@ -75,7 +86,7 @@ struct WidgetHydrationEntry: TimelineEntry {
 
 // MARK: - WateryWidgetEntryView
 
-struct WateryWidgetEntryView : View {
+struct WateryWidgetEntryView: View {
     @Environment(\.widgetFamily) var family
 
     var entry: Provider.Entry
@@ -98,8 +109,16 @@ struct WateryWidgetEntryView : View {
     }
 
     private var homeScreenView: some View {
-        CircularProgressView(progress: entry.progress, formattedValue: entry.formattedValue, symbol: entry.symbol, unitPosition: entry.unitPosition, font: .title.bold(), lineWidth: 14, color: .accent)
-            .padding(4)
+        CircularProgressView(
+            progress: entry.progress,
+            formattedValue: entry.formattedValue,
+            symbol: entry.symbol,
+            unitPosition: entry.unitPosition,
+            font: .title.bold(),
+            lineWidth: 14,
+            color: .accent
+        )
+        .padding(4)
     }
 
     private var lockScreenView: some View {

@@ -6,6 +6,8 @@ extension View {
     }
 }
 
+// MARK: - ErrorAlertModifier
+
 struct ErrorAlertModifier: ViewModifier {
     @Binding var error: Error?
 
@@ -13,7 +15,9 @@ struct ErrorAlertModifier: ViewModifier {
         content
             .alert("Error", isPresented: Binding(
                 get: { error != nil },
-                set: { if !$0 { error = nil } }
+                set: { if !$0 {
+                    error = nil
+                } }
             )) {
                 Button("OK", role: .cancel) {}
             } message: {

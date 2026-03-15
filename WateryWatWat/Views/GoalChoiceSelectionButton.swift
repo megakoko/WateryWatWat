@@ -1,11 +1,16 @@
 import SwiftUI
 
+// MARK: - IconWidthPreferenceKey
+
 struct IconWidthPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
+
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = max(value, nextValue())
     }
 }
+
+// MARK: - GoalChoiceSelectionButton
 
 struct GoalChoiceSelectionButton<Value: Equatable>: View {
     let icon: String
@@ -13,8 +18,9 @@ struct GoalChoiceSelectionButton<Value: Equatable>: View {
     let description: String?
     let value: Value
     @Binding var selection: Value?
+
     var layout: Layout = .horizontal
-    var iconWidth: CGFloat? = nil
+    var iconWidth: CGFloat?
 
     var body: some View {
         Button {
@@ -68,6 +74,8 @@ struct GoalChoiceSelectionButton<Value: Equatable>: View {
         }
     }
 }
+
+// MARK: GoalChoiceSelectionButton.Layout
 
 extension GoalChoiceSelectionButton {
     enum Layout {

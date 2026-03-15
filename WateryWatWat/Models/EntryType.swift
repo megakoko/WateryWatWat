@@ -1,5 +1,5 @@
 import Foundation
 
-enum EntryType: String, Codable, Sendable {
+enum EntryType: String, Codable {
     case water
 }

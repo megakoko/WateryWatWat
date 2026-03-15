@@ -1,5 +1,5 @@
-import Foundation
 import CoreData
+import Foundation
 
 final class MockHydrationService: HydrationService {
     private let delay: TimeInterval
@@ -12,21 +12,24 @@ final class MockHydrationService: HydrationService {
     init(delay: TimeInterval = 0, fail: Bool = false) {
         self.delay = delay
         self.fail = fail
-        self.context = PersistenceController.preview.container.viewContext
+        context = PersistenceController.preview.container.viewContext
 
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         var dailyTotals: [Date: Int64] = [:]
         var entries: [HydrationEntry] = []
 
-        for dayOffset in 0..<30 {
-            guard let currentDate = calendar.date(byAdding: .day, value: -dayOffset, to: today) else { continue }
+        for dayOffset in 0 ..< 30 {
+            guard let currentDate = calendar.date(byAdding: .day, value: -dayOffset, to: today) else {
+                continue
+            }
+
             let dayStart = calendar.startOfDay(for: currentDate)
 
-            let entryCount = Int.random(in: 2...5)
+            let entryCount = Int.random(in: 2 ... 5)
             var dayTotal: Int64 = 0
 
-            for i in 0..<entryCount {
+            for i in 0 ..< entryCount {
                 let entry = HydrationEntry(context: context)
                 entry.date = calendar.date(byAdding: .hour, value: 8 + i * 3, to: dayStart)
 
@@ -45,8 +48,8 @@ final class MockHydrationService: HydrationService {
             dailyTotals[dayStart] = dayTotal
         }
 
-        self.mockDailyTotals = dailyTotals
-        self.mockEntries = entries.sorted { ($0.date ?? Date()) > ($1.date ?? Date()) }
+        mockDailyTotals = dailyTotals
+        mockEntries = entries.sorted { ($0.date ?? Date()) > ($1.date ?? Date()) }
     }
 
     func addEntry(volume: Int64, type: EntryType, unit: VolumeUnit, date: Date) async throws {
@@ -92,9 +95,12 @@ final class MockHydrationService: HydrationService {
         let today = calendar.startOfDay(for: Date())
         var streak = 0
 
-        for dayOffset in 0..<30 {
+        for dayOffset in 0 ..< 30 {
             guard let date = calendar.date(byAdding: .day, value: -dayOffset, to: today),
-                  let total = mockDailyTotals[date] else { break }
+                  let total = mockDailyTotals[date]
+            else {
+                break
+            }
 
             let goalForDay = goalHistory.last { $0.effectiveDate <= date }?.value ?? Constants.defaultDailyGoalML
 
@@ -119,7 +125,10 @@ final class MockHydrationService: HydrationService {
         let endDay = calendar.startOfDay(for: endDate)
 
         return mockEntries.filter { entry in
-            guard let date = entry.date else { return false }
+            guard let date = entry.date else {
+                return false
+            }
+
             let day = calendar.startOfDay(for: date)
             return day >= startDay && day <= endDay
         }
@@ -216,6 +225,6 @@ final class MockHydrationService: HydrationService {
         if fail {
             throw NSError(domain: "MockHydrationService", code: -1)
         }
-        return [350, 400, 600].prefix(limit).map { $0 }
+        return [350, 400, 600].prefix(limit).map(\.self)
     }
 }

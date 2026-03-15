@@ -1,6 +1,6 @@
-import Foundation
-import CoreData
 import Combine
+import CoreData
+import Foundation
 import SwiftUI
 
 @Observable
@@ -10,10 +10,6 @@ final class ContentViewModel {
 
     var goalViewModel: GoalViewModel?
     var mainViewModel: MainViewModel?
-
-    var confettiPublisher: AnyPublisher<Void, Never> {
-        _confettiPublisher.eraseToAnyPublisher()
-    }
 
     private let settingsService: SettingsService
     private let persistenceController: PersistenceController
@@ -25,17 +21,25 @@ final class ContentViewModel {
     private var previousGoal: Int64 = 0
     private var observationTask: Task<Void, Never>?
 
+    var confettiPublisher: AnyPublisher<Void, Never> {
+        _confettiPublisher.eraseToAnyPublisher()
+    }
+
     init(settingsService: SettingsService, persistenceController: PersistenceController, healthKitService: HealthKitService) {
         self.settingsService = settingsService
         self.persistenceController = persistenceController
         self.healthKitService = healthKitService
-        self.hydrationService = DefaultHydrationService(
+        hydrationService = DefaultHydrationService(
             persistenceController: persistenceController,
             healthKitService: healthKitService,
             settingsService: settingsService
         )
-        
+
         checkGoalSetAndInitialize()
+    }
+
+    deinit {
+        observationTask?.cancel()
     }
 
     func checkGoalSetAndInitialize() {
@@ -48,8 +52,10 @@ final class ContentViewModel {
         }
     }
 
-    deinit {
-        observationTask?.cancel()
+    func hideCongratulations() {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            showCongratulations = false
+        }
     }
 
     private func initializeGoalViewModel() {
@@ -59,7 +65,7 @@ final class ContentViewModel {
             self?.goalViewModel = nil
             self?.initializeMainViewModel()
         }
-        self.goalViewModel = viewModel
+        goalViewModel = viewModel
     }
 
     private func initializeMainViewModel() {
@@ -99,17 +105,12 @@ final class ContentViewModel {
         guard dailyGoal == previousGoal,
               previousTotal > 0,
               previousTotal < dailyGoal,
-              todayTotal >= dailyGoal else {
+              todayTotal >= dailyGoal
+        else {
             return
         }
 
         onGoalReached()
-    }
-
-    func hideCongratulations() {
-        withAnimation(.easeInOut(duration: 0.3)) {
-            showCongratulations = false
-        }
     }
 
     private func onGoalReached() {

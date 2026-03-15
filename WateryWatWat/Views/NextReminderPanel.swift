@@ -35,7 +35,7 @@ struct NextReminderPanel: View {
             nextReminderTime: nil,
             onAddReminder: {}
         )
-        
+
         Spacer()
     }
     .padding()

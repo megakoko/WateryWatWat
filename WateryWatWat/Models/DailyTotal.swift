@@ -1,6 +1,6 @@
 import Foundation
 
-struct DailyTotal: Equatable, Sendable {
+struct DailyTotal: Equatable {
     let date: Date
     let volume: Int64
 }

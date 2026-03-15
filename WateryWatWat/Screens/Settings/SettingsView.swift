@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @State var viewModel: SettingsViewModel
+
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -26,7 +27,7 @@ struct SettingsView: View {
         }
         .errorAlert($viewModel.error)
         .alert("alert.deleteHealthData.title".localized, isPresented: $viewModel.showDeleteConfirmation) {
-            Button("button.cancel".localized, role: .cancel) { }
+            Button("button.cancel".localized, role: .cancel) {}
             Button("button.delete".localized, role: .destructive) {
                 Task {
                     await viewModel.confirmDeleteHealthData()
@@ -36,7 +37,7 @@ struct SettingsView: View {
             Text("alert.deleteHealthData.message".localized)
         }
         .alert("alert.result".localized, isPresented: $viewModel.showDeleteResult) {
-            Button("OK", role: .cancel) { }
+            Button("OK", role: .cancel) {}
         } message: {
             if let message = viewModel.deleteResultMessage {
                 Text(message)

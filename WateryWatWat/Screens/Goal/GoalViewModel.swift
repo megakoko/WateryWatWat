@@ -1,6 +1,8 @@
 import Foundation
 import SwiftUI
 
+// MARK: - GoalPage
+
 enum GoalPage {
     case intro
     case weight
@@ -10,6 +12,8 @@ enum GoalPage {
     case factors
     case result
 }
+
+// MARK: - GoalViewModel
 
 @Observable
 final class GoalViewModel: Identifiable {
@@ -23,10 +27,6 @@ final class GoalViewModel: Identifiable {
     private let hydrationService: HydrationService
     private let volumeFormatter = VolumeFormatter(unit: .liters)
 
-    init(hydrationService: HydrationService) {
-        self.hydrationService = hydrationService
-    }
-    
     var canGoNext: Bool {
         switch currentPage {
         case .intro:
@@ -50,7 +50,8 @@ final class GoalViewModel: Identifiable {
         guard let weight = data.weight,
               let gender = data.gender,
               let activity = data.activityLevel,
-              let climate = data.climate else {
+              let climate = data.climate
+        else {
             return Constants.defaultDailyGoalML
         }
 
@@ -68,11 +69,17 @@ final class GoalViewModel: Identifiable {
         volumeFormatter.string(from: adjustedGoal)
     }
 
+    init(hydrationService: HydrationService) {
+        self.hydrationService = hydrationService
+    }
+
     func nextPage() {
-        guard canGoNext else { return }
-        
+        guard canGoNext else {
+            return
+        }
+
         navigatingForward = true
-        
+
         withAnimation {
             switch currentPage {
             case .intro:
@@ -98,15 +105,14 @@ final class GoalViewModel: Identifiable {
         Task {
             do {
                 try await hydrationService.setDailyGoal(adjustedGoal)
-            } catch {
-            }
+            } catch {}
             onComplete?()
         }
     }
-    
+
     func previousPage() {
         navigatingForward = false
-        
+
         withAnimation {
             switch currentPage {
             case .intro:
@@ -127,6 +133,8 @@ final class GoalViewModel: Identifiable {
         }
     }
 }
+
+// MARK: Hashable
 
 extension GoalViewModel: Hashable {
     static func == (lhs: GoalViewModel, rhs: GoalViewModel) -> Bool {

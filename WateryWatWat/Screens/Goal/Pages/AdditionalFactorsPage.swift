@@ -2,6 +2,7 @@ import SwiftUI
 
 struct AdditionalFactorsPage: View {
     @Binding var factors: AdditionalFactors
+
     @State private var maxIconWidth: CGFloat = 0
 
     var body: some View {

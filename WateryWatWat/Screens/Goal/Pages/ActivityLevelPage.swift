@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ActivityLevelPage: View {
     @Binding var activityLevel: ActivityLevel?
+
     @State private var maxIconWidth: CGFloat = 0
 
     var body: some View {

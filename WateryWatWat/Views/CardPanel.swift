@@ -9,7 +9,7 @@ struct CardPanel<Content: View, TrailingButton: View>: View {
     init(_ title: String? = nil, usePadding: Bool = true, @ViewBuilder content: () -> Content) where TrailingButton == EmptyView {
         self.title = title
         self.content = content()
-        self.trailingButton = nil
+        trailingButton = nil
         self.usePadding = usePadding
     }
 
@@ -28,7 +28,7 @@ struct CardPanel<Content: View, TrailingButton: View>: View {
                         .textCase(.uppercase)
                         .lineLimit(1)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    
+
                     trailingButton
                 }
                 .font(.caption)

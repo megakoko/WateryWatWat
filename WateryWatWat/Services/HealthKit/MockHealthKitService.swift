@@ -1,13 +1,15 @@
 import Foundation
 
+// MARK: - MockHealthKitService
+
 @Observable
 final class MockHealthKitService: HealthKitService {
-    private let delay: TimeInterval
-    private let fail: Bool
-
     private(set) var isAuthorizationRequested = false
     private(set) var savedEntries: [(volume: Int64, date: Date, coreDataID: String)] = []
     private(set) var deleteCallCount = 0
+
+    private let delay: TimeInterval
+    private let fail: Bool
 
     init(delay: TimeInterval, fail: Bool) {
         self.delay = delay
@@ -54,6 +56,8 @@ final class MockHealthKitService: HealthKitService {
         savedEntries.removeAll { $0.coreDataID == coreDataID }
     }
 }
+
+// MARK: - HealthKitError
 
 enum HealthKitError: LocalizedError {
     case authorizationDenied

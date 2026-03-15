@@ -12,8 +12,8 @@ struct WateryRow<Leading: View, Trailing: View>: View {
     }
 
     init(@ViewBuilder content: () -> Leading) where Trailing == EmptyView {
-        self.leading = content()
-        self.trailing = nil
+        leading = content()
+        trailing = nil
     }
 
     var body: some View {

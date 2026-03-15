@@ -25,7 +25,7 @@ struct SimpleValueCard: View {
             CardPanel(title, content: content)
         }
     }
-    
+
     private func content() -> some View {
         Text(value)
             .lineLimit(1)

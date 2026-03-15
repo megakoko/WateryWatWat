@@ -1,5 +1,7 @@
-import Foundation
 import CoreData
+import Foundation
+
+// MARK: - HistoryViewModel
 
 @Observable
 final class HistoryViewModel: Identifiable {
@@ -10,13 +12,16 @@ final class HistoryViewModel: Identifiable {
     var entryToDelete: HydrationEntry?
     var showDeleteConfirmation = false
 
-    var formattedVolumeToDelete: String {
-        guard let entry = entryToDelete else { return "" }
-        return volumeFormatter.string(from: entry.volume)
-    }
-
     private let service: HydrationService
     private let volumeFormatter = VolumeFormatter(unit: .milliliters)
+
+    var formattedVolumeToDelete: String {
+        guard let entry = entryToDelete else {
+            return ""
+        }
+
+        return volumeFormatter.string(from: entry.volume)
+    }
 
     init(service: HydrationService) {
         self.service = service
@@ -32,7 +37,10 @@ final class HistoryViewModel: Identifiable {
     }
 
     func confirmDelete() {
-        guard let entry = entryToDelete else { return }
+        guard let entry = entryToDelete else {
+            return
+        }
+
         showDeleteConfirmation = false
         entryToDelete = nil
         Task {
@@ -91,6 +99,8 @@ final class HistoryViewModel: Identifiable {
         }
     }
 }
+
+// MARK: Hashable
 
 extension HistoryViewModel: Hashable {
     static func == (lhs: HistoryViewModel, rhs: HistoryViewModel) -> Bool {

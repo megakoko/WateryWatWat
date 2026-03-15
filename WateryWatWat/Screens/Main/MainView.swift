@@ -2,8 +2,13 @@ import SwiftUI
 
 struct MainView: View {
     @State var viewModel: MainViewModel
+
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.sizeCategory) private var sizeCategory
+
+    private var shouldUseAccessibilityLayout: Bool {
+        sizeCategory.isAccessibilityCategory
+    }
 
     var body: some View {
         ScrollView {
@@ -49,7 +54,7 @@ struct MainView: View {
             viewModel.handleScenePhaseChange(newPhase)
         }
     }
-    
+
     private var content: some View {
         Grid {
             WateryRow {
@@ -155,7 +160,7 @@ struct MainView: View {
             presenting: viewModel.entryToDelete
         ) { _ in
             Button("button.delete".localized, role: .destructive, action: viewModel.confirmDelete)
-        } message: { entry in
+        } message: { _ in
             Text("confirmation.deleteEntry.message".localized(viewModel.formattedVolumeToDelete))
         }
     }
@@ -237,10 +242,6 @@ struct MainView: View {
         } primaryAction: {
             viewModel.showAddEntry()
         }
-    }
-    
-    private var shouldUseAccessibilityLayout: Bool {
-        sizeCategory.isAccessibilityCategory
     }
 }
 

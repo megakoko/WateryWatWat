@@ -1,6 +1,8 @@
 import Foundation
 
-struct HydrationGoalCalculator {
+// MARK: - HydrationGoalCalculator
+
+enum HydrationGoalCalculator {
     static func calculate(
         weightKg: Double,
         gender: Gender,
@@ -14,8 +16,12 @@ struct HydrationGoalCalculator {
         total *= activity.multiplier
         total *= climate.multiplier
 
-        if caffeine { total += 250 }
-        if longExercise { total += 500 }
+        if caffeine {
+            total += 250
+        }
+        if longExercise {
+            total += 500
+        }
 
         return Int64((total / 100).rounded() * 100)
     }

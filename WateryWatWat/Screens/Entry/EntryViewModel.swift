@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - EntryViewModel
+
 @Observable
 final class EntryViewModel: Identifiable {
     let id = UUID()
@@ -8,14 +10,14 @@ final class EntryViewModel: Identifiable {
     var isLoading = false
     var error: Error?
 
-    private let service: HydrationService
-    private let entry: HydrationEntry?
-    private let volumeFormatter = VolumeFormatter(unit: .milliliters)
     var onEntryAdded: (() -> Void)?
-
     let availableVolumes = Constants.standardVolumes
     var showCustomPicker = false
     var customVolume: Int64 = 100
+
+    private let service: HydrationService
+    private let entry: HydrationEntry?
+    private let volumeFormatter = VolumeFormatter(unit: .milliliters)
 
     var isEditing: Bool {
         entry != nil
@@ -27,7 +29,26 @@ final class EntryViewModel: Identifiable {
 
     var volumeRows: [[Int64]] {
         stride(from: 0, to: availableVolumes.count, by: 3).map { index in
-            Array(availableVolumes[index..<min(index + 3, availableVolumes.count)])
+            Array(availableVolumes[index ..< min(index + 3, availableVolumes.count)])
+        }
+    }
+
+    var canConfirm: Bool {
+        (selectedVolume != nil || showCustomPicker) && !isLoading
+    }
+
+    init(service: HydrationService, entry: HydrationEntry? = nil) {
+        self.service = service
+        self.entry = entry
+        if let entry {
+            selectedDate = entry.date ?? Date()
+
+            if availableVolumes.contains(entry.volume) {
+                selectedVolume = entry.volume
+            } else {
+                customVolume = entry.volume
+                showCustomPicker = true
+            }
         }
     }
 
@@ -37,21 +58,6 @@ final class EntryViewModel: Identifiable {
 
     func formattedVolumeValue(for volume: Int64) -> String {
         volumeFormatter.formattedComponents(from: volume).value
-    }
-
-    init(service: HydrationService, entry: HydrationEntry? = nil) {
-        self.service = service
-        self.entry = entry
-        if let entry {
-            self.selectedDate = entry.date ?? Date()
-
-            if availableVolumes.contains(entry.volume) {
-                self.selectedVolume = entry.volume
-            } else {
-                self.customVolume = entry.volume
-                self.showCustomPicker = true
-            }
-        }
     }
 
     func selectVolume(_ volume: Int64) {
@@ -67,10 +73,6 @@ final class EntryViewModel: Identifiable {
         selectedVolume = nil
     }
 
-    var canConfirm: Bool {
-        (selectedVolume != nil || showCustomPicker) && !isLoading
-    }
-
     func confirmWithCustom() {
         if showCustomPicker {
             selectedVolume = customVolume
@@ -81,7 +83,9 @@ final class EntryViewModel: Identifiable {
     }
 
     func confirm() async {
-        guard let volume = selectedVolume else { return }
+        guard let volume = selectedVolume else {
+            return
+        }
 
         isLoading = true
         do {
@@ -103,6 +107,8 @@ final class EntryViewModel: Identifiable {
         onEntryAdded?()
     }
 }
+
+// MARK: Hashable
 
 extension EntryViewModel: Hashable {
     static func == (lhs: EntryViewModel, rhs: EntryViewModel) -> Bool {

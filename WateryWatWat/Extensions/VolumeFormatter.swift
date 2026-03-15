@@ -1,5 +1,7 @@
 import Foundation
 
+// MARK: - VolumeFormatter
+
 final class VolumeFormatter {
     let unit: UnitVolume
     let locale: Locale
@@ -23,7 +25,7 @@ final class VolumeFormatter {
 
     init(unit: UnitVolume) {
         self.unit = unit
-        self.locale = .current
+        locale = .current
     }
 
     init(unit: UnitVolume, locale: Locale) {
@@ -70,14 +72,14 @@ final class VolumeFormatter {
     }
 }
 
-// MARK: - Unit position
+// MARK: - UnitPosition
 
 enum UnitPosition {
     case beforeValue
     case afterValue
 }
 
-// MARK: - Formatted volume
+// MARK: - FormattedVolume
 
 struct FormattedVolume {
     let value: String

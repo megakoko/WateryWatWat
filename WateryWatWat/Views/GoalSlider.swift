@@ -2,6 +2,7 @@ import SwiftUI
 
 struct GoalSlider: View {
     @Binding var goal: Int64
+
     let minGoal: Int64
     let maxGoal: Int64
     let step: Int64
@@ -14,7 +15,7 @@ struct GoalSlider: View {
                 get: { Double(goal) },
                 set: { goal = Int64($0) }
             ),
-            in: Double(minGoal)...Double(maxGoal),
+            in: Double(minGoal) ... Double(maxGoal),
             step: Double(step)
         ) {
             Text("Daily Goal")

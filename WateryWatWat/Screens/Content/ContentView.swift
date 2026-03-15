@@ -1,5 +1,5 @@
-import SwiftUI
 import Confetti3D
+import SwiftUI
 
 struct ContentView: View {
     @State var viewModel: ContentViewModel

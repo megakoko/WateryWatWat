@@ -2,6 +2,7 @@ import SwiftUI
 
 struct WeightPage: View {
     @Binding var weight: Int?
+
     @FocusState private var isWeightFocused: Bool
 
     var body: some View {

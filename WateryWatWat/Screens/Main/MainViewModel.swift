@@ -1,6 +1,6 @@
-import Foundation
-import CoreData
 import Combine
+import CoreData
+import Foundation
 import SwiftUI
 import WidgetKit
 
@@ -23,8 +23,21 @@ final class MainViewModel {
     var error: Error?
     var initialized = false
 
+    private let service: HydrationService
+    private let settingsService: SettingsService
+    private let notificationService: NotificationService
+    private let healthKitService: HealthKitService
+    private let notificationDelegate = NotificationDelegate()
+    private let volumeFormatter = VolumeFormatter(unit: .liters)
+    private var cancellables = Set<AnyCancellable>()
+    private var midnightTimer: Timer?
+    private var lastRefreshDate: Date = .init()
+
     var formattedVolumeToDelete: String {
-        guard let entry = entryToDelete else { return "" }
+        guard let entry = entryToDelete else {
+            return ""
+        }
+
         let mlFormatter = VolumeFormatter(unit: .milliliters)
         return mlFormatter.string(from: entry.volume)
     }
@@ -61,18 +74,6 @@ final class MainViewModel {
         volumeFormatter.formattedComponents(from: todayTotal)
     }
 
-    private var averageCalculationDays: [DailyTotal] {
-        let totals = currentChartData.dailyTotals
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date())
-
-        let datesWithData = totals.drop(while: { $0.volume == 0 })
-
-        return datesWithData.filter { dailyTotal in
-            !calendar.isDate(dailyTotal.date, inSameDayAs: today) || dailyTotal.volume >= dailyGoal
-        }
-    }
-
     var averageIntake: Int64 {
         let days = averageCalculationDays
 
@@ -96,13 +97,6 @@ final class MainViewModel {
         return Int((Double(daysMetGoal) / Double(days.count)) * 100)
     }
 
-    func toggleStatsPeriod() {
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()
-        statsPeriod = statsPeriod.toggled()
-        settingsService.setStatsPeriod(statsPeriod)
-    }
-
     var streakText: String {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .full
@@ -112,15 +106,17 @@ final class MainViewModel {
         return formatter.string(from: components)!
     }
 
-    private let service: HydrationService
-    private let settingsService: SettingsService
-    private let notificationService: NotificationService
-    private let healthKitService: HealthKitService
-    private let notificationDelegate = NotificationDelegate()
-    private let volumeFormatter = VolumeFormatter(unit: .liters)
-    private var cancellables = Set<AnyCancellable>()
-    private var midnightTimer: Timer?
-    private var lastRefreshDate: Date = Date()
+    private var averageCalculationDays: [DailyTotal] {
+        let totals = currentChartData.dailyTotals
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+
+        let datesWithData = totals.drop(while: { $0.volume == 0 })
+
+        return datesWithData.filter { dailyTotal in
+            !calendar.isDate(dailyTotal.date, inSameDayAs: today) || dailyTotal.volume >= dailyGoal
+        }
+    }
 
     init(service: HydrationService, settingsService: SettingsService, notificationService: NotificationService, healthKitService: HealthKitService) {
         self.service = service
@@ -150,23 +146,19 @@ final class MainViewModel {
         midnightTimer?.invalidate()
     }
 
+    func toggleStatsPeriod() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
+        statsPeriod = statsPeriod.toggled()
+        settingsService.setStatsPeriod(statsPeriod)
+    }
+
     func onAppear() async {
         statsPeriod = settingsService.getStatsPeriod()
         await loadData(initialLoad: true)
         await updateReminders()
         scheduleMidnightRefresh()
         setupNotificationDelegate()
-    }
-    
-    private func setupNotificationDelegate() {
-        UNUserNotificationCenter.current().delegate = notificationDelegate
-        notificationDelegate.onNotificationTap = { [weak self] in
-            self?.handleNotificationTap()
-        }
-    }
-
-    private func handleNotificationTap() {
-        showAddEntry()
     }
 
     func showAddEntry() {
@@ -179,15 +171,6 @@ final class MainViewModel {
         }
     }
 
-    private func addQuickEntry(volume: Int64) async {
-        do {
-            try await service.addEntry(volume: volume, type: .water, date: Date())
-            await loadData(initialLoad: false)
-        } catch {
-            self.error = error
-        }
-    }
-
     func onEntryAdded() {
         entryViewModel = nil
         Task {
@@ -196,7 +179,12 @@ final class MainViewModel {
     }
 
     func showSettings() {
-        settingsViewModel = SettingsViewModel(settingsService: settingsService, hydrationService: service, notificationService: notificationService, healthKitService: healthKitService)
+        settingsViewModel = SettingsViewModel(
+            settingsService: settingsService,
+            hydrationService: service,
+            notificationService: notificationService,
+            healthKitService: healthKitService
+        )
     }
 
     func showHistory() {
@@ -213,7 +201,10 @@ final class MainViewModel {
     }
 
     func confirmDelete() {
-        guard let entry = entryToDelete else { return }
+        guard let entry = entryToDelete else {
+            return
+        }
+
         Task {
             await performDelete(entry: entry)
         }
@@ -225,10 +216,53 @@ final class MainViewModel {
             await performDuplicate(entry: entry)
         }
     }
-    
+
     func formattedVolume(for volume: Int64) -> String {
         let mlFormatter = VolumeFormatter(unit: .milliliters)
         return mlFormatter.string(from: volume)
+    }
+
+    func scheduleMidnightRefresh() {
+        midnightTimer?.invalidate()
+
+        let calendar = Calendar.current
+        let now = Date()
+        let tomorrow = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: now))!
+        let timeInterval = tomorrow.timeIntervalSince(now)
+
+        midnightTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { [weak self] _ in
+            Task { @MainActor in
+                await self?.handleMidnightTransition()
+            }
+        }
+    }
+
+    func handleScenePhaseChange(_ phase: ScenePhase) {
+        if phase == .active {
+            Task {
+                await handleMidnightTransition()
+            }
+        }
+    }
+
+    private func setupNotificationDelegate() {
+        UNUserNotificationCenter.current().delegate = notificationDelegate
+        notificationDelegate.onNotificationTap = { [weak self] in
+            self?.handleNotificationTap()
+        }
+    }
+
+    private func handleNotificationTap() {
+        showAddEntry()
+    }
+
+    private func addQuickEntry(volume: Int64) async {
+        do {
+            try await service.addEntry(volume: volume, type: .water, date: Date())
+            await loadData(initialLoad: false)
+        } catch {
+            self.error = error
+        }
     }
 
     private func performDelete(entry: HydrationEntry) async {
@@ -258,7 +292,14 @@ final class MainViewModel {
             async let recentTask = fetchRecentEntries()
             async let frequentTask = fetchFrequentVolumes()
 
-            let (todayTotal, (weekChartData, monthChartData), dailyGoal, streak, recentEntries, frequentVolumes) = try await (todayTask, chartDataTask, goalTask, streakTask, recentTask, frequentTask)
+            let (todayTotal, (weekChartData, monthChartData), dailyGoal, streak, recentEntries, frequentVolumes) = try await (
+                todayTask,
+                chartDataTask,
+                goalTask,
+                streakTask,
+                recentTask,
+                frequentTask
+            )
 
             let animation = initialLoad ? nil : Animation.default
             withAnimation(animation) {
@@ -329,41 +370,20 @@ final class MainViewModel {
         try await service.fetchFrequentVolumes(excluding: Constants.standardVolumes, limit: 3)
     }
 
-    func scheduleMidnightRefresh() {
-        midnightTimer?.invalidate()
-
-        let calendar = Calendar.current
-        let now = Date()
-        let tomorrow = calendar.date(byAdding: .day, value: 1, to: calendar.startOfDay(for: now))!
-        let timeInterval = tomorrow.timeIntervalSince(now)
-
-        midnightTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: false) { [weak self] _ in
-            Task { @MainActor in
-                await self?.handleMidnightTransition()
-            }
-        }
-    }
-
     private func handleMidnightTransition() async {
         let calendar = Calendar.current
         let currentDay = calendar.startOfDay(for: Date())
         let lastRefreshDay = calendar.startOfDay(for: lastRefreshDate)
 
-        guard currentDay > lastRefreshDay else { return }
+        guard currentDay > lastRefreshDay else {
+            return
+        }
 
         lastRefreshDate = Date()
         await loadData(initialLoad: false)
         await updateReminders()
         scheduleMidnightRefresh()
         reloadWidgets()
-    }
-
-    func handleScenePhaseChange(_ phase: ScenePhase) {
-        if phase == .active {
-            Task {
-                await handleMidnightTransition()
-            }
-        }
     }
 
     private func updateReminders() async {

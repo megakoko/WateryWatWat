@@ -1,5 +1,7 @@
-import SwiftUI
 import Charts
+import SwiftUI
+
+// MARK: - HistoryChartView
 
 struct HistoryChartView: View {
     let dailyTotals: [DailyTotal]
@@ -9,6 +11,16 @@ struct HistoryChartView: View {
 
     private let calendar = Calendar.current
     private let volumeFormatter = VolumeFormatter(unit: .liters)
+
+    private var xAxisValues: [Date] {
+        let today = calendar.startOfDay(for: Date())
+        return [
+            calendar.date(byAdding: .day, value: -28, to: today)!,
+            calendar.date(byAdding: .day, value: -21, to: today)!,
+            calendar.date(byAdding: .day, value: -14, to: today)!,
+            calendar.date(byAdding: .day, value: -7, to: today)!,
+        ]
+    }
 
     var body: some View {
         Chart {
@@ -24,12 +36,12 @@ struct HistoryChartView: View {
             ForEach(goalPeriods, id: \.start) { period in
                 RuleMark(xStart: .value("Start", period.start), xEnd: .value("End", period.end.nextDay), y: .value("Goal", period.value))
                     .lineStyle(StrokeStyle(lineWidth: 2, dash: [10, 5]))
-                    .foregroundStyle(Color.init(uiColor: .secondaryLabel))
+                    .foregroundStyle(Color(uiColor: .secondaryLabel))
             }
         }
         .chartXAxis {
             if periodDays == 7 {
-                AxisMarks(values: .stride(by: .day)) { value in
+                AxisMarks(values: .stride(by: .day)) { _ in
                     AxisValueLabel(format: .dateTime.weekday(.narrow), centered: true)
                 }
             } else {
@@ -55,16 +67,6 @@ struct HistoryChartView: View {
             }
         }
         .frame(height: 100)
-    }
-
-    private var xAxisValues: [Date] {
-        let today = calendar.startOfDay(for: Date())
-        return [
-            calendar.date(byAdding: .day, value: -28, to: today)!,
-            calendar.date(byAdding: .day, value: -21, to: today)!,
-            calendar.date(byAdding: .day, value: -14, to: today)!,
-            calendar.date(byAdding: .day, value: -7, to: today)!,
-        ]
     }
 
     private func labelForDate(_ date: Date) -> String {
@@ -107,8 +109,8 @@ struct HistoryChartView: View {
     }
 }
 
-private extension Date {
-    var nextDay: Date {
+extension Date {
+    fileprivate var nextDay: Date {
         Calendar.current.date(byAdding: .day, value: 1, to: self)!
     }
 }

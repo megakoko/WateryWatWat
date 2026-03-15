@@ -1,7 +1,9 @@
-import Foundation
 import AppIntents
-import SwiftUI
 import CoreData
+import Foundation
+import SwiftUI
+
+// MARK: - AddWaterIntent
 
 struct AddWaterIntent: AppIntent {
     static var title: LocalizedStringResource = "Add Water"
@@ -10,12 +12,12 @@ struct AddWaterIntent: AppIntent {
     static var openAppWhenRun: Bool = false
     static var isDiscoverable: Bool = true
 
-    @Parameter(title: "Volume")
-    var volume: Measurement<UnitVolume>
-
     static var parameterSummary: some ParameterSummary {
         Summary("Add \(\.$volume)")
     }
+
+    @Parameter(title: "Volume")
+    var volume: Measurement<UnitVolume>
 
     @MainActor
     func perform() async throws -> some IntentResult & ProvidesDialog & ShowsSnippetView {
@@ -38,6 +40,8 @@ struct AddWaterIntent: AppIntent {
         )
     }
 }
+
+// MARK: - AddWaterResultView
 
 struct AddWaterResultView: View {
     let addedVolume: Int64
