@@ -28,7 +28,7 @@ final class VolumeFormatter {
 
     init(unit: UnitVolume, minimumFractionDigits: Int) {
         self.unit = unit
-        self.locale = .current
+        locale = .current
         self.minimumFractionDigits = minimumFractionDigits
     }
 
