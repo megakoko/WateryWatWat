@@ -25,7 +25,7 @@ final class GoalViewModel: Identifiable {
     var onComplete: (() -> Void)?
 
     private let hydrationService: HydrationService
-    private let volumeFormatter = VolumeFormatter(unit: .liters)
+    private let volumeFormatter = VolumeFormatter(unit: .liters, minimumFractionDigits: 0)
 
     var canGoNext: Bool {
         switch currentPage {

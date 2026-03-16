@@ -7,7 +7,7 @@ struct GoalSlider: View {
     let maxGoal: Int64
     let step: Int64
 
-    let volumeFormatter = VolumeFormatter(unit: .liters)
+    let volumeFormatter = VolumeFormatter(unit: .liters, minimumFractionDigits: 0)
 
     var body: some View {
         Slider(

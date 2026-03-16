@@ -28,7 +28,7 @@ final class MainViewModel {
     private let notificationService: NotificationService
     private let healthKitService: HealthKitService
     private let notificationDelegate = NotificationDelegate()
-    private let volumeFormatter = VolumeFormatter(unit: .liters)
+    private let volumeFormatter = VolumeFormatter(unit: .liters, minimumFractionDigits: 0)
     private var cancellables = Set<AnyCancellable>()
     private var midnightTimer: Timer?
     private var lastRefreshDate: Date = .init()
@@ -38,7 +38,7 @@ final class MainViewModel {
             return ""
         }
 
-        let mlFormatter = VolumeFormatter(unit: .milliliters)
+        let mlFormatter = VolumeFormatter(unit: .milliliters, minimumFractionDigits: 0)
         return mlFormatter.string(from: entry.volume)
     }
 
@@ -218,7 +218,7 @@ final class MainViewModel {
     }
 
     func formattedVolume(for volume: Int64) -> String {
-        let mlFormatter = VolumeFormatter(unit: .milliliters)
+        let mlFormatter = VolumeFormatter(unit: .milliliters, minimumFractionDigits: 0)
         return mlFormatter.string(from: volume)
     }
 

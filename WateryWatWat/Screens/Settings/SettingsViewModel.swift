@@ -17,7 +17,7 @@ final class SettingsViewModel: Identifiable {
     private let settingsService: SettingsService
     private let hydrationService: HydrationService
     private let notificationService: NotificationService
-    private let volumeFormatter = VolumeFormatter(unit: .liters)
+    private let volumeFormatter = VolumeFormatter(unit: .liters, minimumFractionDigits: 0)
     private let healthKitService: HealthKitService
     private var isInitialLoad = true
 

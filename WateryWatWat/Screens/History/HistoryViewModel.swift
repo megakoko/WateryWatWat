@@ -13,7 +13,7 @@ final class HistoryViewModel: Identifiable {
     var showDeleteConfirmation = false
 
     private let service: HydrationService
-    private let volumeFormatter = VolumeFormatter(unit: .milliliters)
+    private let volumeFormatter = VolumeFormatter(unit: .milliliters, minimumFractionDigits: 0)
 
     var formattedVolumeToDelete: String {
         guard let entry = entryToDelete else {

@@ -13,6 +13,6 @@ struct GroupedHydrationEntries: Identifiable, Equatable {
     }
 
     var formattedTotalVolume: String {
-        VolumeFormatter(unit: .liters).string(from: totalVolume)
+        VolumeFormatter(unit: .liters, minimumFractionDigits: 0).string(from: totalVolume)
     }
 }

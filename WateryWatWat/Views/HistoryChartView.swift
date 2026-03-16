@@ -14,7 +14,7 @@ struct HistoryChartView: View {
     let onTogglePeriod: () -> Void
 
     private let calendar = Calendar.current
-    private let volumeFormatter = VolumeFormatter(unit: .liters)
+    private let volumeFormatter = VolumeFormatter(unit: .liters, minimumFractionDigits: 1)
 
     private var xAxisValues: [Date] {
         let today = calendar.startOfDay(for: Date())
@@ -82,24 +82,19 @@ struct HistoryChartView: View {
     @ViewBuilder
     private var tooltipView: some View {
         if let total = selectedTotal, let x = selectedX {
-            ZStack {
-                Text(volumeFormatter.string(from: 2200))
-                    .hidden()
-
-                Text(volumeFormatter.string(from: total.volume))
-            }
-            .font(.caption.bold())
-            .textCase(.uppercase)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 6))
-            .fixedSize()
-            .background(GeometryReader { geo in
-                Color.clear.onAppear { tooltipWidth = geo.size.width }
-                    .onChange(of: geo.size.width) { tooltipWidth = $1 }
-            })
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .offset(x: x - tooltipWidth / 2)
+            Text(volumeFormatter.string(from: total.volume))
+                .font(.caption.bold().monospacedDigit())
+                .textCase(.uppercase)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 6))
+                .fixedSize()
+                .background(GeometryReader { geo in
+                    Color.clear.onAppear { tooltipWidth = geo.size.width }
+                        .onChange(of: geo.size.width) { tooltipWidth = $1 }
+                })
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .offset(x: x - tooltipWidth / 2)
         }
     }
 

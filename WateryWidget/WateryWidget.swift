@@ -13,7 +13,7 @@ import WidgetKit
 
 struct Provider: TimelineProvider {
     private var volumeFormatter: VolumeFormatter {
-        VolumeFormatter(unit: .liters)
+        VolumeFormatter(unit: .liters, minimumFractionDigits: 0)
     }
 
     func placeholder(in context: Context) -> WidgetHydrationEntry {

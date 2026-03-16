@@ -17,7 +17,7 @@ final class EntryViewModel: Identifiable {
 
     private let service: HydrationService
     private let entry: HydrationEntry?
-    private let volumeFormatter = VolumeFormatter(unit: .milliliters)
+    private let volumeFormatter = VolumeFormatter(unit: .milliliters, minimumFractionDigits: 0)
 
     var isEditing: Bool {
         entry != nil

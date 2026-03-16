@@ -5,12 +5,14 @@ import Foundation
 final class VolumeFormatter {
     let unit: UnitVolume
     let locale: Locale
+    let minimumFractionDigits: Int
 
     private lazy var measurementFormatter: MeasurementFormatter = {
         let formatter = MeasurementFormatter()
         formatter.locale = locale
         formatter.unitOptions = .providedUnit
         formatter.unitStyle = .short
+        formatter.numberFormatter.minimumFractionDigits = minimumFractionDigits
         formatter.numberFormatter.maximumFractionDigits = 1
         return formatter
     }()
@@ -19,18 +21,21 @@ final class VolumeFormatter {
         let formatter = NumberFormatter()
         formatter.locale = locale
         formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = minimumFractionDigits
         formatter.maximumFractionDigits = 1
         return formatter
     }()
 
-    init(unit: UnitVolume) {
+    init(unit: UnitVolume, minimumFractionDigits: Int) {
         self.unit = unit
-        locale = .current
+        self.locale = .current
+        self.minimumFractionDigits = minimumFractionDigits
     }
 
-    init(unit: UnitVolume, locale: Locale) {
+    init(unit: UnitVolume, locale: Locale, minimumFractionDigits: Int) {
         self.unit = unit
         self.locale = locale
+        self.minimumFractionDigits = minimumFractionDigits
     }
 
     func formattedComponents(from volumeML: Int64) -> FormattedVolume {
