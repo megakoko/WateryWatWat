@@ -11,5 +11,14 @@ struct WateryWatWatShortcuts: AppShortcutsProvider {
             shortTitle: "Add Water",
             systemImageName: "drop.fill"
         )
+        AppShortcut(
+            intent: LogWaterWithAmountIntent(),
+            phrases: [
+                "Quick log water with \(.applicationName)",
+                "Log a drink with \(.applicationName)"
+            ],
+            shortTitle: "Quick Log Water",
+            systemImageName: "drop.fill"
+        )
     }
 }
